@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.centerComponent{
+    
+        display: flex;
+        justify-content: center;
+      
+}
+.error{
+        color: red;
+}
+
+.success {
+        color : green;
+}
+
+.backgroundPicture{
+        /* background-image: url('assets/olimpijada.png');
+        min-height: 100%;
+      
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover; */
+        background-color: #daf0ff;
+        height: 110%;
+      }
+ .navbar{
+        justify-content: space-between;
+}
+    
+span{
+        padding-right:1rem;
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,73 @@
+<app-user-menu></app-user-menu>
+
+
+<mat-card *ngFor="let appraisal of appraisals"  class="example-card" >
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <!-- <mat-card-title>Procena</mat-card-title> -->
+      <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    </mat-card-header>
+    <!-- <img mat-card-image style="width: 400px; height: 300px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+
+    <img mat-card-image style="width: 400px; height: 300px;" *ngFor='let preview of appraisal.img_names' [src]="'http://localhost:4000/uploads/' + preview" class="preview">
+    <mat-card-content>
+      <p>
+     Opis: <br> {{appraisal.description}}
+      </p> 
+      <p>
+        Broj procena:
+        {{number_of_evaluations(appraisal)}}
+      </p>
+
+      <p>
+        Trenutna procena: 
+        {{current_evaluation(appraisal)}}
+      </p>
+
+      
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>Zavrsi procenu odmah</button>
+    </mat-card-actions>
+  </mat-card>
+
+
+
+
+
+  <!-- <div *ngIf="realEstates" fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap="20px">
+            
+    <mat-card (click)="showRealEstate(realEstate)" fxLayout="column" fxFlex.md="0 1 calc(33% - 20px)" fxFlex="0 1 calc(25% - 20px)" fxFlex.sm="0 1 calc(50% - 20px)" fxFlex.xs="100" *ngFor="let realEstate of realEstatesOnPage" class="product" >
+        <img mat-card-image  *ngIf='isPicture(getPicture(realEstate))' class="picture"  src='{{"http://localhost:4000/uploads/"+getPicture(realEstate)}}'>
+        <video *ngIf="!isPicture(getPicture(realEstate))" src='{{"http://localhost:4000/uploads/"+getPicture}}'  class="video" controls></video>
+        <mat-card-title>{{realEstate.title}}</mat-card-title>
+        <mat-card-content fxFlex>
+                
+            <mat-grid-list cols="2" rowHeight="20px" class="script-menu">
+                <mat-grid-tile> State and City:</mat-grid-tile>
+                <mat-grid-tile> {{realEstate.adress.state}},{{realEstate.adress.city}}</mat-grid-tile>
+                <mat-grid-tile> Price:</mat-grid-tile>
+                <mat-grid-tile> {{realEstate.price}}</mat-grid-tile>
+                <mat-grid-tile> Type:</mat-grid-tile>
+                <mat-grid-tile> {{realEstate.type}}</mat-grid-tile>
+                <mat-grid-tile> number of rooms:</mat-grid-tile>
+                <mat-grid-tile> {{realEstate.rooms}}</mat-grid-tile>
+                <mat-grid-tile> Quadrature:</mat-grid-tile>
+                <mat-grid-tile> {{realEstate.quadrature}}</mat-grid-tile>
+                <mat-grid-tile> Sell/Rent: </mat-grid-tile>
+                <mat-grid-tile> {{realEstate.reason}} </mat-grid-tile>
+             
+            </mat-grid-list>
+               
+            </mat-card-content>
+    </mat-card>
+
+</div>
+<div *ngIf="realEstates && realEstates.length>0">
+    <mat-paginator #paginator
+        [length]="realEstates.length"
+        [pageSize]="8"
+        (page)="pageEvent($event)">
+    </mat-paginator>
+</div> -->

@@ -1,0 +1,59 @@
+<app-user-menu></app-user-menu>
+
+
+
+
+<br>
+
+<!-- <mat-card class="cardDesign"> -->
+
+<div class="row">
+  <div class="col">
+    <input type="file" style="display: none" (change)="upload($event)" #fileInput>
+    <button mat-raised-button (click)="fileInput.click()">Choose picture</button>
+    <div class="inline" *ngIf="pic">
+      Picture name: {{pic.name}
+    </div>
+  </div>
+</div>
+
+
+<!-- </mat-card> -->
+
+
+<div>
+  <img style="width: 200px; height:150px;" *ngFor='let preview of previews' [src]="preview" class="preview">
+</div>
+
+
+
+
+<form class="example-form">
+
+  
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Opis</mat-label>
+      <textarea  class="example-full-width" matInput placeholder="Dodatni opis artikla" name="description" [(ngModel)]="description"></textarea>
+    </mat-form-field>
+  </form>
+
+
+  <div class="row">
+    <div class="col">
+      <button mat-raised-button (click)="confirm_upload()">Upload</button>
+  
+    </div>
+  </div>
+
+
+  <div style="color: green;" *ngIf="message_success">
+    Uspesno slanje
+</div>
+
+<div style="color: red;" *ngIf="message_fail">
+    Neuspesno slanje
+</div>
+<!-- <img src='{{"http://localhost:4000/uploads/"+"1644117757163-slika.png"}}'> -->
+
+
+<!-- backend\uploads\1644117757165-slika2.png -->

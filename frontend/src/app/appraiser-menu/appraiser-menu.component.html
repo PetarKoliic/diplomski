@@ -1,0 +1,19 @@
+<mat-toolbar color='primary' class='navbar'>
+    <div>
+      {{username}}
+  </div>
+    <div>
+      <!-- <a mat-button href="/account-requests" >Zahtevi novih naloga</a>
+      <a mat-button href="/sports">Dodavanje sportova</a>
+      <a mat-button href="/competitions" >Pravljenje turnira</a> -->
+  
+      <a mat-button href="/art-for-appraisal"> Umetnine za procenu</a>
+      <a mat-button href="/appraiser-change-mind">Promena procena</a>
+      <a mat-button href="/change-password">Promeni lozinku</a>      
+      <a mat-button href="/forum">Forum</a>
+
+
+
+      <button mat-button (click)='logout()'>logout</button>
+    </div>
+  </mat-toolbar>

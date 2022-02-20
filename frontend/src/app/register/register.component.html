@@ -1,0 +1,86 @@
+<p>register works!</p>
+
+
+<mat-form-field class="half-width" appearance='legacy'>
+    <mat-label>Korisnicko ime</mat-label>
+    <input matInput required placeholder="Korisnicko ime" [(ngModel)]="username">
+  </mat-form-field>
+
+  <div class='divider'></div>
+
+<mat-form-field class="half-width" appearance='legacy'>
+    <mat-label>Ime</mat-label>
+    <input matInput required placeholder="Ime" [(ngModel)]="firstname">
+  </mat-form-field>
+
+  <div class='divider'></div>
+
+  <mat-form-field class="half-width">
+    <mat-label>Prezime</mat-label>
+    <input matInput required placeholder="Prezime" [(ngModel)]="lastname">
+  </mat-form-field>
+
+  <div class='divider'></div>
+
+  <mat-form-field class="half-width">
+    <mat-label>Password</mat-label>
+    <input matInput type='password' required placeholder="Password" [(ngModel)]="password">
+  </mat-form-field>
+
+  <div class='divider'></div>
+
+  <mat-form-field class="half-width">
+    <mat-label>Ponovi Password</mat-label>
+    <input matInput type='password' required placeholder="Ponovljen Password" [(ngModel)]="password_repeat">
+  </mat-form-field>
+
+
+
+  <div class='divider'></div>
+
+
+  <mat-form-field class="half-width">
+    <mat-label>Email</mat-label>
+    <input matInput type='password' required placeholder="Ponovljen Password" [(ngModel)]="email">
+  </mat-form-field>
+
+
+
+  <div class='divider'></div>
+  <!-- <mat-form-field appearance="fill">
+    <mat-label>Tip</mat-label>
+    <select matNativeControl required [(value)]="type">
+      <option value="procenitelj">Procenitelj</option>
+      <option value="clan">Clan</option>
+
+    </select>
+  </mat-form-field> -->
+
+  <mat-form-field>
+    <mat-select name="Tip naloga" [(value)]="type" placeholder="Tip naloga">
+      <mat-option [value]="'user'">Clan</mat-option>
+      <mat-option [value]="'appraiser'">Procenitelj</mat-option>
+     
+    </mat-select>
+  </mat-form-field>
+
+
+  <div class='divider'></div>
+
+  <div class="centerComponent">
+    <button mat-raised-button color="primary" (click)='register()'>Registracija</button>
+  </div>
+
+  <div class='divider'></div>
+
+  {{message}}
+
+  {{type}}
+<!-- {{}} -->
+
+
+
+
+
+
+
