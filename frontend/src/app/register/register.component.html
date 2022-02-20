@@ -41,7 +41,7 @@
 
   <mat-form-field class="half-width">
     <mat-label>Email</mat-label>
-    <input matInput type='password' required placeholder="Ponovljen Password" [(ngModel)]="email">
+    <input matInput required placeholder="Ponovljen Password" [(ngModel)]="email">
   </mat-form-field>
 
 
@@ -73,9 +73,16 @@
 
   <div class='divider'></div>
 
-  {{message}}
 
-  {{type}}
+
+  <div style="color: green;" *ngIf="message_success != ''">
+    {{message_success}}
+</div>
+
+<div style="color: red;" *ngIf="message_failure != ''">
+  {{message_failure}}
+</div>
+
 <!-- {{}} -->
 
 

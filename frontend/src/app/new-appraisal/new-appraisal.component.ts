@@ -79,6 +79,7 @@ export class NewAppraisalComponent implements OnInit {
       this.images = [];
       this.previews = [];
       this.pic = null;
+      this.description = "";
 
 
     });

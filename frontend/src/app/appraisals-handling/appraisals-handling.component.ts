@@ -122,5 +122,27 @@ export class AppraisalsHandlingComponent implements OnInit {
       });
   }
 
+  delete_appraisal(appraisal: Appraisal) {
+  
+    this.service.delete_appraisal(appraisal._id).subscribe(
+      (res: Object) => {
+
+
+        console.log(res["msg"]);
+        if (res["msg"] == "ok") {
+          for (let i in this.appraisals) {
+            if (this.appraisals[i]._id === appraisal._id) {
+
+              this.appraisals.splice(Number(i), 1);
+            }
+          }
+        }
+
+
+        console.log("response : " + res["msg"]);
+
+      });
+
+  }
 
 }

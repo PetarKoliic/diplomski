@@ -127,10 +127,19 @@ export class GeneralService {
       'value': value,
       '_id': id
     }
+    
 
     return this.http.post(`${this.uri}/finish-appraisal`, data);
   }
 
+  delete_appraisal(id: string) {
+    const data = {
+      '_id': id
+    }
+    
+
+    return this.http.post(`${this.uri}/delete-appraisal`, data);
+  }
 
   give_appraisal(id: string, username: string, value: number) {
 
@@ -172,7 +181,6 @@ export class GeneralService {
 
   load_all_users()
   {
-
 
     return this.http.get(`${this.uri}/load-all-users`);
   }

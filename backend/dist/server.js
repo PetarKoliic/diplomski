@@ -411,6 +411,21 @@ router.route('/delete-user').post((req, res) => {
     });
 });
 /////////////////////////////////////////////////
+router.route('/delete-appraisal').post((req, res) => {
+    console.log(req);
+    let id = ObjectId(req.body._id);
+    console.log(id);
+    appraisal_1.default.deleteOne({ '_id': id }, (err) => {
+        if (err)
+            console.log(err);
+        else {
+            console.log('obrisali smo umetninu');
+            // res.json({ 'msg': 'ok' });
+            res.json({ 'msg': 'ok' });
+        }
+    });
+});
+/////////////////////////////////////////////////////
 // C:\Users\Petar\Desktop\diplomski\backend\uploads\1644117757163-slika.PNG
 app.get("/image.png", (req, res) => {
     console.log("usao u img");

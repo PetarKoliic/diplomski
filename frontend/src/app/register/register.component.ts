@@ -13,18 +13,17 @@ export class RegisterComponent implements OnInit {
   constructor(private router: Router, private service: GeneralService) { }
 
   ngOnInit(): void {
-    this.message = "";
+    this.message_failure = "";
     this.message_success = "";
 
   }
 
   register() {
 
-    this.message = "";
+    this.message_failure = "";
     this.message_success = "";
 
-    this.message = "";
-    console.log(this.message);
+    console.log(this.message_failure);
     console.log('usao u register');
 
     // username: string;
@@ -40,14 +39,14 @@ export class RegisterComponent implements OnInit {
     if (this.username == "" || this.password == "" || this.firstname == "" ||
       this.lastname == "" || this.email == "" ||
       this.type == "") {
-      this.message = "svako polje mora biti uneto";
+      this.message_failure = "svako polje mora biti uneto";
     } 
     else if(this.password!=this.password_repeat){
-      this.message='lozinke se ne poklapaju';
+      this.message_failure ='lozinke se ne poklapaju';
     }
     else if(this.validateEmail(this.email) == false)
     {
-      this.message = "email mora postovati formu";
+      this.message_failure = "email mora postovati formu";
     }
     else {
 
@@ -59,10 +58,27 @@ export class RegisterComponent implements OnInit {
             if (user['msg'] == 'ok') {
               console.log('sve ok');
 
-              this.message_success = "uspesno poslat nov zahtev za nalog";
+              this.message_success = "uspesno napravljen nov nalog";
+              
+              this.username = "";
+              this.password = "";
+              this.firstname = "";
+              this.lastname = "";
+              this.email = "";
+              this.type = "";
+              this.password_repeat = "";
+
+
+              // username: string = "";
+              // password: string = "";
+              // firstname: string = "";
+              // lastname: string = "";
+              // email: string = "";
+              // type: string = "";
+              // password_repeat:string="";
             }
             else
-              this.message = user['user'];
+              this.message_failure = user['user'];
 
 
           });
@@ -165,7 +181,7 @@ export class RegisterComponent implements OnInit {
   password_repeat:string="";
 
   message_success: string;
-  message: string = "";
+  message_failure: string = "";
 
 
 
