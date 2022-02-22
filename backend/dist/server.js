@@ -382,6 +382,19 @@ router.route('/get-ratings-by-user').post((req, res) => {
         }
     });
 });
+/////////////////////////////////////////////////
+router.route('/get-rating').post((req, res) => {
+    let username = req.body.username;
+    rating_1.default.findOne({ "username": username }, (err, ratings) => {
+        if (err)
+            console.log(err);
+        else {
+            let rating = calculate_new_rating(ratings.toObject());
+            res.json({ "rating": rating });
+        }
+    });
+});
+////////////////////////////////////////////////
 router.route('/load-all-users').get((req, res) => {
     user_1.default.find({ "type": { $ne: "admin" } }, (err, users) => {
         if (err)

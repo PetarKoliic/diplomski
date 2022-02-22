@@ -201,6 +201,15 @@ export class GeneralService {
 
   }
 
+  get_rating(username : string)
+  {
+    const data = {
+      'username': username,
+    }
+
+    return this.http.post(`${this.uri}/get-rating`, data);
+  }
+
 }
 
 

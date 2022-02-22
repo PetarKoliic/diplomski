@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GeneralService } from '../services/general.service';
 
 
 @Component({
@@ -9,12 +10,22 @@ import { Router } from '@angular/router';
 })
 export class AppraiserMenuComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service: GeneralService) { }
 
   username: string;
+  rating: any;
+
 
   ngOnInit(): void {
     this.username = JSON.parse(localStorage.getItem("user")).username;
+
+    this.service.get_rating(this.username).subscribe((res) => {
+
+      
+      this.rating = res["rating"].toFixed(2);
+
+      // this.rating.toFixed(2);
+    });  
   }
 
   logout()

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { GeneralService } from '../services/general.service';
 
 @Component({
   selector: 'app-admin-menu',
@@ -9,12 +9,16 @@ import { Router } from '@angular/router';
 })
 export class AdminMenuComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service: GeneralService) { }
 
   username: string;
+  rating: number;
 
   ngOnInit(): void {
     this.username = JSON.parse(localStorage.getItem("user")).username;
+
+
+
   }
 
   logout()

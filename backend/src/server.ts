@@ -608,6 +608,31 @@ router.route('/get-ratings-by-user').post((req, res) => {
     })
 });
 
+
+/////////////////////////////////////////////////
+
+
+router.route('/get-rating').post((req, res) => {
+
+    let username = req.body.username;
+
+    rating.findOne({ "username": username }, (err, ratings) => {
+        if (err) console.log(err);
+        else {
+
+
+            let rating = calculate_new_rating(ratings.toObject());
+
+            res.json({"rating": rating});
+        }
+    })
+
+
+    
+});
+
+////////////////////////////////////////////////
+
 router.route('/load-all-users').get((req, res) => {
 
     User.find({ "type": { $ne: "admin" } }, (err, users) => {
