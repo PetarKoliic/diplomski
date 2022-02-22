@@ -14,6 +14,7 @@ import rating from './models/rating';
 import { Ratings } from './models/ratings.model';
 import Topic from './models/topic';
 import { Comment } from './models/comment.model';
+import user from './models/user';
 
 const app = express();
 var ObjectId = require('mongoose').Types.ObjectId;
@@ -117,7 +118,7 @@ router.route('/register').post((req, res) => {
 
     let user = new User(req.body);
 
-    if (req.body.type === "procenitelj") {
+    if (req.body.type === "appraiser") {
         user.set("rating", 5);
     }
 
@@ -354,8 +355,10 @@ router.route('/get-current-appraisals-appraiser-history').post((req, res) => {
 router.route('/get-current-appraisals-appraiser').post((req, res) => {
 
     let username = req.body.username;
+
+    console.log("usao u appraisals appraiser ");
     // M.findOne({list: {$ne: 'A'}}
-    Appraisal.find({ "finished": false }, (err, appraisals) => {
+    Appraisal.find({"finished": false}, (err, appraisals) => {
         if (err) console.log(err);
         else {
 
@@ -371,7 +374,7 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => {
                 let flag: boolean = false;
                 for (let j in appraisal.evaluations) {
                     console.log(appraisal.evaluations[j].username);
-                    if (appraisal.evaluations[j].username === "ana")
+                    if (appraisal.evaluations[j].username === username)
                         flag = true;
                 }
 

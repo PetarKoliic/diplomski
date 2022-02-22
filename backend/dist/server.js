@@ -83,7 +83,7 @@ router.route('/login').post((req, res) => {
 //////////////////////////////////////////////////
 router.route('/register').post((req, res) => {
     let user = new user_1.default(req.body);
-    if (req.body.type === "procenitelj") {
+    if (req.body.type === "appraiser") {
         user.set("rating", 5);
     }
     console.log(user);
@@ -230,6 +230,7 @@ router.route('/get-current-appraisals-appraiser-history').post((req, res) => {
 // db.inventory.find( { quantity: { $nin: [ 5, 15 ] } }, { _id: 0 } )
 router.route('/get-current-appraisals-appraiser').post((req, res) => {
     let username = req.body.username;
+    console.log("usao u appraisals appraiser ");
     // M.findOne({list: {$ne: 'A'}}
     appraisal_1.default.find({ "finished": false }, (err, appraisals) => {
         if (err)
@@ -242,7 +243,7 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => {
                 let flag = false;
                 for (let j in appraisal.evaluations) {
                     console.log(appraisal.evaluations[j].username);
-                    if (appraisal.evaluations[j].username === "ana")
+                    if (appraisal.evaluations[j].username === username)
                         flag = true;
                 }
                 if (!flag)

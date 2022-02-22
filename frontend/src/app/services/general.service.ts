@@ -107,6 +107,7 @@ export class GeneralService {
     const data = {
       "username": username
     }
+    console.log("pozvan sam");
     return this.http.post(`${this.uri}/get-current-appraisals-appraiser`, data);
   }
 
