@@ -194,6 +194,12 @@ export class GeneralService {
     return this.http.post(`${this.uri}/delete-user`, data);
   }
 
+  get_all_topics()
+  {
+    return this.http.post(`${this.uri}/get-all-topics`, {});
+
+  }
+
 }
 
 

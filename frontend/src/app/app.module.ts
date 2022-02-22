@@ -32,6 +32,8 @@ import { UserMenuComponent } from './user-menu/user-menu.component';
 import { NewAppraisalComponent } from './new-appraisal/new-appraisal.component';
 import { CurrentAppraisalsComponent } from './current-appraisals/current-appraisals.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatListModule} from '@angular/material/list';
+
 
 
 import { HistoryComponent } from './history/history.component';
@@ -76,8 +78,6 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     FormsModule,
     BrowserAnimationsModule,
 
-    // HighchartsChartComponent,
-    // HighchartsChartModule,
 
 
     MatButtonModule,
@@ -93,7 +93,8 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     MatRadioModule,
     MatCardModule,
     ReactiveFormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

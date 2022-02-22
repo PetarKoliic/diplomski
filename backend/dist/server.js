@@ -20,6 +20,7 @@ const user_1 = __importDefault(require("./models/user"));
 const image_1 = __importDefault(require("./models/image"));
 const appraisal_1 = __importDefault(require("./models/appraisal"));
 const rating_1 = __importDefault(require("./models/rating"));
+const topic_1 = __importDefault(require("./models/topic"));
 const app = express_1.default();
 var ObjectId = require('mongoose').Types.ObjectId;
 // var fs = require('fs-extra');
@@ -423,6 +424,12 @@ router.route('/delete-appraisal').post((req, res) => {
             // res.json({ 'msg': 'ok' });
             res.json({ 'msg': 'ok' });
         }
+    });
+});
+//////////////////////////////////////////////////
+router.route('/get-all-topics').post((req, res) => {
+    topic_1.default.find({}, (err, topics) => {
+        res.json(topics);
     });
 });
 /////////////////////////////////////////////////////

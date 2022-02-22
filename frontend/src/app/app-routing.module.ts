@@ -34,6 +34,8 @@ const routes: Routes = [
   {path:'statistics', component : StatisticsComponent},
   {path:'appraisals-handling', component : AppraisalsHandlingComponent},
   {path:'delete-user', component : DeleteUserComponent},
+  {path:'forum', component : ForumComponent},
+
   
 
 ];

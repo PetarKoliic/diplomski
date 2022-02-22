@@ -12,6 +12,8 @@ import { Evaluation } from './models/evaluation.model';
 import { find } from 'tslint/lib/utils';
 import rating from './models/rating';
 import { Ratings } from './models/ratings.model';
+import Topic from './models/topic';
+import { Comment } from './models/comment.model';
 
 const app = express();
 var ObjectId = require('mongoose').Types.ObjectId;
@@ -675,6 +677,18 @@ router.route('/delete-appraisal').post((req, res) => {
 
 });
 
+//////////////////////////////////////////////////
+
+
+router.route('/get-all-topics').post((req, res) => {
+
+
+    Topic.find({}, (err, topics) => {
+        
+        res.json(topics);
+    })
+});
+
 
 /////////////////////////////////////////////////////
 
@@ -691,8 +705,6 @@ app.get("/image.png", (req, res) => {
 
 
 //////////////////////////////////////////////////
-
-
 
 
 app.use('/', router);
