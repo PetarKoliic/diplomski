@@ -12,10 +12,13 @@ let Topic = new Schema({
     title: {
         type: String
     },
-    theme: {
+    category: {
         type: String
     },
-    comments: {
+    date_added: {
+        type: Date
+    },
+    replies: {
         type: Array()
     }
 });

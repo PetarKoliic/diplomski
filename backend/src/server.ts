@@ -718,7 +718,38 @@ router.route('/get-all-topics').post((req, res) => {
 });
 
 
+//////////////////////////////////////////////////
+
+
+router.route('/add-topic').post((req, res) => {
+
+    let username = req.body.username;
+    let title = req.body.title;
+    let category = req.body.category;
+    let description = req.body.description;
+    let date = req.body.date;
+    
+
+    let reply = {"description": description, "date_added": date, "username": username,
+                    };
+
+    let topic = new Topic({
+        "username": username, "title": title, category,
+         "date_added": date, "replies" : [reply]
+        }); 
+    
+
+    topic.save().then(u => {
+        res.json({ "msg": "ok" });
+    }).catch(err => {
+        res.json({ "msg": "error" });
+    })
+    });
+
+
 /////////////////////////////////////////////////////
+
+
 
 
 // C:\Users\Petar\Desktop\diplomski\backend\uploads\1644117757163-slika.PNG

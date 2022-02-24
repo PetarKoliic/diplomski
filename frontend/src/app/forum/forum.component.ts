@@ -12,7 +12,7 @@ import { Topic } from '../models/topic.model';
 export class ForumComponent implements OnInit {
 
   constructor(private router: Router, private service: GeneralService) { }
-  
+
 
   topics: Topic[];
   topics_social: Topic[] = [];
@@ -20,13 +20,12 @@ export class ForumComponent implements OnInit {
   topics_fair: Topic[] = [];
 
   ngOnInit(): void {
-    
+
 
     this.init();
   }
 
-  init(): void
-  {
+  init(): void {
 
     this.service.get_all_topics().subscribe((topics: Topic[]) => {
 
@@ -34,20 +33,16 @@ export class ForumComponent implements OnInit {
 
       this.topics = topics;
 
-      for(let i = 0; i < this.topics.length; i++)
-      {
+      for (let i = 0; i < this.topics.length; i++) {
         console.log(this.topics[i]);
         console.log(this.topics);
-        if(this.topics[i].theme === "social")
-        {
+        if (this.topics[i].theme === "social") {
           this.topics_social.push(this.topics[i]);
         }
-        else if (this.topics[i].theme === "fair")
-        {
+        else if (this.topics[i].theme === "fair") {
           this.topics_fair.push(this.topics[i]);
         }
-        else if(this.topics[i].theme === "art_piece")
-        {
+        else if (this.topics[i].theme === "art_piece") {
           this.topics_art_piece.push(this.topics[i]);
 
         }
@@ -58,6 +53,5 @@ export class ForumComponent implements OnInit {
 
   }
 
-  folder: Object [];
 
 }

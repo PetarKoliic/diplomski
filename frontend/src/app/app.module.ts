@@ -33,7 +33,7 @@ import { NewAppraisalComponent } from './new-appraisal/new-appraisal.component';
 import { CurrentAppraisalsComponent } from './current-appraisals/current-appraisals.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatListModule} from '@angular/material/list';
-
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 import { HistoryComponent } from './history/history.component';
@@ -46,6 +46,8 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { AppraisalsHandlingComponent } from './appraisals-handling/appraisals-handling.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { ForumMenuComponent } from './forum-menu/forum-menu.component';
+import { NewTopicDialogComponent } from './new-topic-dialog/new-topic-dialog.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } from 'highcharts-angular';
 
@@ -69,7 +71,9 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     AdminMenuComponent,
     StatisticsComponent,
     AppraisalsHandlingComponent,
-    DeleteUserComponent
+    DeleteUserComponent,
+    ForumMenuComponent,
+    NewTopicDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +98,8 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     MatCardModule,
     ReactiveFormsModule,
     MatPaginatorModule,
-    MatListModule
+    MatListModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

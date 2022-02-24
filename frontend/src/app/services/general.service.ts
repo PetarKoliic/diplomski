@@ -210,6 +210,19 @@ export class GeneralService {
     return this.http.post(`${this.uri}/get-rating`, data);
   }
 
+  add_topic(username: string, title: string, category: string, description: string)
+  {
+    const data = {
+      'username': username,
+      "title": title,
+      "category": category,
+      "description": description,
+      "date": new Date()
+    }
+
+    return this.http.post(`${this.uri}/add-topic`, data);
+  }
+
 }
 
 

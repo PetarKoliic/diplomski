@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 // import { Evaluation } from './evaluation.model';
-import { Comment } from './comment.model';
-
+import { Reply } from './reply.model';
 const Schema = mongoose.Schema;
 
 let Topic = new Schema({
@@ -12,11 +11,14 @@ let Topic = new Schema({
     title: {
         type: String
     },
-    theme: {
+    category: {
         type: String
     },
-    comments: {
-        type: Array<Comment>()
+    date_added: {
+        type: Date
+    },
+    replies: {
+        type: Array<Reply>()
     }
 
 });
