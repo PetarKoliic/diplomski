@@ -730,13 +730,13 @@ router.route('/add-topic').post((req, res) => {
     let date = req.body.date;
     
 
-    let reply = {"description": description, "date_added": date, "username": username,
+    let comment = {"description": description, "date_added": date, "username": username,
                     };
 
     let topic = new Topic({
         "username": username, "title": title,
-         "date_added": date, "replies" : [reply],
-         "category": category
+         "date_added": date, "comments" : [comment],
+         "category": category, "views": 0
         }); 
     
 

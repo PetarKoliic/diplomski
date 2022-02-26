@@ -1,6 +1,7 @@
 export class Comment{
     
     username: string;
-    comment: string;
+    description: string;
+    date_added: Date;
 
 }

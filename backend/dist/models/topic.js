@@ -18,9 +18,12 @@ let Topic = new Schema({
     date_added: {
         type: Date
     },
-    replies: {
+    comments: {
         type: Array()
-    }
+    },
+    views: {
+        type: Number
+    },
 });
 exports.default = mongoose_1.default.model('topic', Topic, 'topics');
 //# sourceMappingURL=topic.js.map

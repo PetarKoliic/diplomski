@@ -453,12 +453,12 @@ router.route('/add-topic').post((req, res) => {
     let category = req.body.category;
     let description = req.body.description;
     let date = req.body.date;
-    let reply = { "description": description, "date_added": date, "username": username,
+    let comment = { "description": description, "date_added": date, "username": username,
     };
     let topic = new topic_1.default({
         "username": username, "title": title,
-        "date_added": date, "replies": [reply],
-        "category": category
+        "date_added": date, "comments": [comment],
+        "category": category, "views": 0
     });
     topic.save().then(u => {
         res.json({ "msg": "ok" });
