@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeneralService } from '../services/general.service';
 import {MatDialog} from '@angular/material/dialog'
@@ -12,6 +12,7 @@ import { NewTopicDialogComponent } from '../new-topic-dialog/new-topic-dialog.co
 })
 export class ForumMenuComponent implements OnInit {
 
+  @Output("load_topics") load_topics: EventEmitter<any> = new EventEmitter();
   constructor(private router: Router, private service: GeneralService, public dialog: MatDialog) { }
 
 
@@ -35,6 +36,8 @@ export class ForumMenuComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+
+      this.load_topics.emit();
     });
   }
   

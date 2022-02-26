@@ -19,6 +19,12 @@ export class AppraiserMenuComponent implements OnInit {
   ngOnInit(): void {
     this.username = JSON.parse(localStorage.getItem("user")).username;
 
+
+    this.load_all_topics();
+  }
+
+  load_all_topics()
+  {
     this.service.get_rating(this.username).subscribe((res) => {
 
       

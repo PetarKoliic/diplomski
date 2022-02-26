@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { GeneralService } from '../services/general.service';
 
 
@@ -7,8 +7,10 @@ import { GeneralService } from '../services/general.service';
   templateUrl: './new-topic-dialog.component.html',
   styleUrls: ['./new-topic-dialog.component.css']
 })
-export class NewTopicDialogComponent implements OnInit {
 
+export class NewTopicDialogComponent implements OnInit {
+  
+  // @Output("dummy_fun") parentFun: EventEmitter<any> = new EventEmitter();
   constructor(private service: GeneralService) { }
 
   ngOnInit(): void {
@@ -22,19 +24,21 @@ export class NewTopicDialogComponent implements OnInit {
   category: string;
   description: string;
   selected_category: string;
-  categories: String[] = ["umetnost", "druzenje", "sajmovi"];
+  categories: String[] = ["art", "fair", "social"];
+  // result: boolean;
 
   add_topic()
   {
     console.log("nesto smo i uradili" + this. title + " " + this.category + " " + this.description);
 
 
+    // this.result = false;
+    
+    // this.parentFun.emit();    
+
     this.service.add_topic(this.username, this.title, this.category, this.description).subscribe((res: any) => {
 
-
       console.log(res["msg"]);
-
-
       
     });
 

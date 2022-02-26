@@ -734,8 +734,9 @@ router.route('/add-topic').post((req, res) => {
                     };
 
     let topic = new Topic({
-        "username": username, "title": title, category,
-         "date_added": date, "replies" : [reply]
+        "username": username, "title": title,
+         "date_added": date, "replies" : [reply],
+         "category": category
         }); 
     
 
