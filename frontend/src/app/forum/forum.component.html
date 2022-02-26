@@ -54,7 +54,7 @@
 
    <mat-list>
       <h3 mat-subheader>Umetnine diskusija</h3>
-      <mat-list-item *ngFor="let topic of topics_art_piece; last as last">
+      <mat-list-item *ngFor="let topic of show_topics_art_piece; last as last">
          <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
          <h4 mat-line>{{topic.title}}</h4>
          <p mat-line class="demo-2"> {{topic.username}} </p>
@@ -68,6 +68,9 @@
       <mat-divider></mat-divider>
       <!-- <h3 mat-subheader>Notes</h3> -->
    </mat-list>
+
+   <mat-paginator #paginator [length]="topics_art_piece.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]" aria-label="Select page" (page)="pageEvent($event)">
+   </mat-paginator>
 
 
    <mat-list>

@@ -30,28 +30,29 @@
 
 <form class="example-form">
 
-  
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Opis</mat-label>
-      <textarea  class="example-full-width" matInput placeholder="Dodatni opis artikla" name="description" [(ngModel)]="description"></textarea>
-    </mat-form-field>
-  </form>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Opis</mat-label>
+    <textarea class="example-full-width" matInput placeholder="Dodatni opis artikla" name="description"
+      [(ngModel)]="description"></textarea>
+  </mat-form-field>
+</form>
 
 
-  <div class="row">
-    <div class="col">
-      <button mat-raised-button (click)="confirm_upload()">Upload</button>
-  
-    </div>
+<div class="row">
+  <div class="col">
+    <button mat-raised-button (click)="confirm_upload()">Upload</button>
+
   </div>
+</div>
 
 
-  <div style="color: green;" *ngIf="message_success">
-    Uspesno slanje
+<div style="color: green;" *ngIf="message_success">
+  Uspesno slanje
 </div>
 
 <div style="color: red;" *ngIf="message_fail">
-    Neuspesno slanje
+  Neuspesno slanje
 </div>
 <!-- <img src='{{"http://localhost:4000/uploads/"+"1644117757163-slika.png"}}'> -->
 

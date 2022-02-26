@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeneralService } from '../services/general.service';
 import { Topic } from '../models/topic.model';
+import { MatPaginator } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-forum',
@@ -89,6 +91,7 @@ export class ForumComponent implements OnInit {
       console.log(this.topics_art_piece);
 
       this.topics_art_piece = this.topics_art_piece.filter(topic => topic.title.includes(this.search_topic));
+      this.show_topics_art_piece = this.topics_art_piece;
 
       console.log("art piece");
       console.log(this.topics_art_piece);
@@ -113,7 +116,30 @@ export class ForumComponent implements OnInit {
 
     this.load_topics();
 
+    console.log("prodji sa mnom ");
 
+  }
+
+  endIndex: number = 1;
+  startIndex : number = 0;
+
+  paginator_images: Array<String[]>;
+  show_topics_art_piece: Topic[];
+  pageEvent(event: PageEvent) {
+    this.startIndex = event.pageIndex * event.pageSize;
+    this.endIndex = this.startIndex + event.pageSize;
+
+    this.show_topics_art_piece = [];
+
+    if (this.endIndex > this.topics_art_piece.length)
+      this.endIndex = this.topics_art_piece.length;
+
+    // ovo izmeni
+    // this.paginator_images=this.all_countries.slice(startIndex,endIndex);
+
+    // this.img_pagination.set(appraisal._id, { "start_index": startIndex, "end_index": endIndex });
+
+    this.show_topics_art_piece = this.topics_art_piece.slice(this.startIndex, this.endIndex);
 
   }
 
@@ -153,6 +179,9 @@ export class ForumComponent implements OnInit {
 
         }
       }
+    this.show_topics_art_piece = this.topics_art_piece.slice(0, this.endIndex);
+
+
       console.log(this.topics_art_piece);
     });
   }
