@@ -186,4 +186,13 @@ export class ForumComponent implements OnInit {
     });
   }
 
+
+
+  open_topic(topic_name: string)
+  {
+
+    console.log("usao 22");
+
+    this.router.navigate(['topic/', topic_name ]);
+  }
 }

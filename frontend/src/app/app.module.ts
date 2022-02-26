@@ -48,6 +48,7 @@ import { AppraisalsHandlingComponent } from './appraisals-handling/appraisals-ha
 import { DeleteUserComponent } from './delete-user/delete-user.component';
 import { ForumMenuComponent } from './forum-menu/forum-menu.component';
 import { NewTopicDialogComponent } from './new-topic-dialog/new-topic-dialog.component';
+import { TopicComponent } from './topic/topic.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } from 'highcharts-angular';
 
@@ -73,7 +74,8 @@ import { NewTopicDialogComponent } from './new-topic-dialog/new-topic-dialog.com
     AppraisalsHandlingComponent,
     DeleteUserComponent,
     ForumMenuComponent,
-    NewTopicDialogComponent
+    NewTopicDialogComponent,
+    TopicComponent
   ],
   imports: [
     BrowserModule,

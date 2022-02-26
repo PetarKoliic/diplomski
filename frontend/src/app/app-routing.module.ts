@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AppraiserComponent } from './appraiser/appraiser.component';
 import { AdminComponent } from './admin/admin.component';
@@ -15,8 +16,10 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { StatisticsComponent } from './statistics/statistics.component';
 import { AppraisalsHandlingComponent } from './appraisals-handling/appraisals-handling.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { TopicComponent } from './topic/topic.component';
 
 const routes: Routes = [
+
 
   {path:'', redirectTo: 'login',  pathMatch: 'full'},
   {path:'login', component : LoginComponent },  
@@ -35,6 +38,7 @@ const routes: Routes = [
   {path:'appraisals-handling', component : AppraisalsHandlingComponent},
   {path:'delete-user', component : DeleteUserComponent},
   {path:'forum', component : ForumComponent},
+  {path:'topic/:name',  component : TopicComponent},
 
   
 
@@ -45,3 +49,12 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { } 
+
+
+// this._router.navigate(['SecondComponent', {p1: this.property1, p2: property2 }]);
+// whereas the definition of the link with parameters would be
+
+// @RouteConfig([
+//       // ...
+//       { path: '/SecondComponent/:p1:p2', name: 'SecondComponent', component: SecondComponent} 
+// )]

@@ -52,12 +52,12 @@
    </mat-select>
  </mat-form-field> -->
 
-   <mat-list>
+   <mat-list >
       <h3 mat-subheader>Umetnine diskusija</h3>
       <mat-list-item *ngFor="let topic of show_topics_art_piece; last as last">
          <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
-         <h4 mat-line>{{topic.title}}</h4>
-         <p mat-line class="demo-2"> {{topic.username}} </p>
+         <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
+         <p mat-line class="demo-2"  > {{topic.username}} </p>
          <div>
             <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
             <div>Napravljeno: {{format_date(topic.date_added)}}</div>
