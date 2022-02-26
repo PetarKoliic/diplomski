@@ -21,9 +21,10 @@ export class ForumComponent implements OnInit {
 
 
 
+  search_topic: string;
   sort_choosen: string = "date_created";
   up_down_flag: string;
-
+  
 
   // $event
   sort() {
@@ -48,6 +49,56 @@ export class ForumComponent implements OnInit {
         return a.comments[a.comments.length - 1].date_added > b.comments[a.comments.length - 1].date_added ? 1 * flag : -1 * flag;
 
     });
+  }
+
+  search()
+  {
+    console.log(this.search_topic);
+
+
+
+    this.service.get_all_topics().subscribe((topics: Topic[]) => {
+
+      console.log(topics);
+
+      this.topics = topics;
+
+      this.topics_art_piece = [];
+      this.topics_fair = [];
+      this.topics_social = [];
+
+      for (let i = 0; i < this.topics.length; i++) {
+        // console.log(this.topics[i]);
+        // console.log(this.topics);
+        if (this.topics[i].category === "social") {
+          this.topics_social.push(this.topics[i]);
+        }
+        else if (this.topics[i].category === "fair") {
+          this.topics_fair.push(this.topics[i]);
+        }
+        else if (this.topics[i].category === "art") {
+          this.topics_art_piece.push(this.topics[i]);
+
+          // console.log(i);
+          // console.log("jer sam usao ovde");
+          // this.format_date(this.topics_art_piece[i].comments[this.topics[i].comments.length].date_added);
+
+        }
+      }
+      console.log("dosli dovde");
+      console.log(this.topics_art_piece);
+
+      this.topics_art_piece = this.topics_art_piece.filter(topic => topic.title.includes(this.search_topic));
+
+      console.log("art piece");
+      console.log(this.topics_art_piece);
+    });
+
+
+
+
+
+    // console.log(this.topics_art_piece);
   }
 
   ngOnInit(): void {
@@ -78,6 +129,10 @@ export class ForumComponent implements OnInit {
       console.log(topics);
 
       this.topics = topics;
+
+      this.topics_art_piece = [];
+      this.topics_fair = [];
+      this.topics_social = [];
 
 
       for (let i = 0; i < this.topics.length; i++) {
