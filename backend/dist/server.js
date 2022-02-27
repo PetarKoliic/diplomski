@@ -460,24 +460,18 @@ router.route('/delete-user').post((req, res) => {
 //////////////////////////////////////////////////
 // TODO
 router.route('/delete-comment').post((req, res) => {
-    console.log(req);
+    console.log("usao u delete comment");
     let username = req.body.username;
     let date_added = req.body.date_added;
-    console.log(username);
-    user_1.default.deleteOne({ 'username': username }, (err) => {
+    let _id = ObjectId(req.body._id);
+    console.log(username + " " + date_added + " " + _id);
+    // List.findOneAndUpdate({ name: listName }, { $pull: { <field1>: <value|condition> } }
+    topic_1.default.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "date_added": date_added } } }, (err) => {
         if (err)
             console.log(err);
         else {
-            console.log('obrisali smo korisnika');
-            // res.json({ 'msg': 'ok' });
-            appraisal_1.default.deleteMany({ "username": username, "finished": false }, (err) => {
-                if (err)
-                    console.log(err);
-                else {
-                    console.log('obrisali smo appraisale');
-                    res.json({ 'msg': 'ok' });
-                }
-            });
+            console.log('obrisali smo komentar');
+            res.json({ 'msg': 'ok' });
         }
     });
 });

@@ -6,6 +6,7 @@ import { inherits } from 'util';
 import { Topic } from '../models/topic.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
+import { Comment } from '../models/comment.model';
 
 @Component({
   selector: 'app-topic',
@@ -57,6 +58,38 @@ export class TopicComponent implements OnInit {
 
       console.log(res["msg"]);
 
+      this.reload_comments();
+
+      this.new_comment = "";
+    });
+  }
+
+  delete_comment(comment: Comment)
+  {
+    console.log(comment.username + " " + comment.comment + " " + comment.date_added); 
+
+
+    this.service.delete_comment(comment.username,this.topic._id, comment.date_added).subscribe((res: any) => {
+
+      console.log("vratili smo se iz http zahteva");
+      console.log(res["msg"]);
+
+      
+
+      this.reload_comments();
+
+
+    });
+  }
+
+  reload_comments()
+  {
+    this.service.get_topic(this.topic_title).subscribe((topic: Topic) => {
+
+      this.topic = topic;
+      console.log(topic);
+
+      console.log(topic);
 
     });
   }

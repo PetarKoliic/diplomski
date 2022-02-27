@@ -246,6 +246,18 @@ export class GeneralService {
     return this.http.post(`${this.uri}/add-comment`, data);
   }
 
+  delete_comment(username: string,topic_id: string, date_added:Date)
+  {
+    const data = {
+      'username': username,
+      "date_added": date_added,
+      "_id": topic_id,
+    }
+
+    console.log(data);
+
+    return this.http.post(`${this.uri}/delete-comment`, data);
+  }
 
 
 }
