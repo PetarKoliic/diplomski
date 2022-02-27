@@ -358,7 +358,7 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => {
 
     console.log("usao u appraisals appraiser ");
     // M.findOne({list: {$ne: 'A'}}
-    Appraisal.find({"finished": false}, (err, appraisals) => {
+    Appraisal.find({ "finished": false }, (err, appraisals) => {
         if (err) console.log(err);
         else {
 
@@ -586,6 +586,31 @@ router.route('/get-all-current-appraisals').post((req, res) => {
     })
 });
 
+//////////////////////////////////////////////////
+router.route('/get-topic').post(
+    (req, res) => {
+
+
+        console.log("inside login");
+
+        let title = req.body.title;
+        console.log(title);
+
+
+        Topic.findOne({ 'title': title }, (err, topic) => {
+
+
+            if (err)
+                console.log('error delegate');
+            else {
+                // let retObj = { 'user': user };
+                console.log(topic);
+                res.json(topic);
+            }
+        });
+    }
+);
+
 
 /////////////////////////////////////////////////
 
@@ -623,12 +648,12 @@ router.route('/get-rating').post((req, res) => {
 
             let rating = calculate_new_rating(ratings.toObject());
 
-            res.json({"rating": rating});
+            res.json({ "rating": rating });
         }
     })
 
 
-    
+
 });
 
 ////////////////////////////////////////////////
@@ -663,13 +688,13 @@ router.route('/delete-user').post((req, res) => {
             console.log('obrisali smo korisnika');
             // res.json({ 'msg': 'ok' });
 
-            Appraisal.deleteMany({"username": username, "finished": false}, (err) => {
+            Appraisal.deleteMany({ "username": username, "finished": false }, (err) => {
                 if (err)
-                console.log(err);
-            else {
-                console.log('obrisali smo appraisale');
-                res.json({ 'msg': 'ok' });
-            }
+                    console.log(err);
+                else {
+                    console.log('obrisali smo appraisale');
+                    res.json({ 'msg': 'ok' });
+                }
             })
         }
 
@@ -698,8 +723,8 @@ router.route('/delete-appraisal').post((req, res) => {
             console.log('obrisali smo umetninu');
             // res.json({ 'msg': 'ok' });
 
-                res.json({ 'msg': 'ok' });
-            }
+            res.json({ 'msg': 'ok' });
+        }
 
     });
 
@@ -712,7 +737,7 @@ router.route('/get-all-topics').post((req, res) => {
 
 
     Topic.find({}, (err, topics) => {
-        
+
         res.json(topics);
     })
 });
@@ -728,24 +753,25 @@ router.route('/add-topic').post((req, res) => {
     let category = req.body.category;
     let description = req.body.description;
     let date = req.body.date;
-    
 
-    let comment = {"description": description, "date_added": date, "username": username,
-                    };
+
+    let comment = {
+        "description": description, "date_added": date, "username": username,
+    };
 
     let topic = new Topic({
         "username": username, "title": title,
-         "date_added": date, "comments" : [comment],
-         "category": category, "views": 0
-        }); 
-    
+        "date_added": date, "comments": [comment],
+        "category": category, "views": 0
+    });
+
 
     topic.save().then(u => {
         res.json({ "msg": "ok" });
     }).catch(err => {
         res.json({ "msg": "error" });
     })
-    });
+});
 
 
 /////////////////////////////////////////////////////

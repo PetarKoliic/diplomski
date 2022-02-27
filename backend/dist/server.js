@@ -369,6 +369,21 @@ router.route('/get-all-current-appraisals').post((req, res) => {
         }
     });
 });
+//////////////////////////////////////////////////
+router.route('/get-topic').post((req, res) => {
+    console.log("inside login");
+    let title = req.body.title;
+    console.log(title);
+    topic_1.default.findOne({ 'title': title }, (err, topic) => {
+        if (err)
+            console.log('error delegate');
+        else {
+            // let retObj = { 'user': user };
+            console.log(topic);
+            res.json(topic);
+        }
+    });
+});
 /////////////////////////////////////////////////
 router.route('/get-ratings-by-user').post((req, res) => {
     console.log(req);
@@ -453,7 +468,8 @@ router.route('/add-topic').post((req, res) => {
     let category = req.body.category;
     let description = req.body.description;
     let date = req.body.date;
-    let comment = { "description": description, "date_added": date, "username": username,
+    let comment = {
+        "description": description, "date_added": date, "username": username,
     };
     let topic = new topic_1.default({
         "username": username, "title": title,

@@ -210,6 +210,15 @@ export class GeneralService {
     return this.http.post(`${this.uri}/get-rating`, data);
   }
 
+  get_topic(title: string)
+  {
+    const data = {
+      'title': title,
+    }
+
+    return this.http.post(`${this.uri}/get-topic`, data);
+  }
+
   add_topic(username: string, title: string, category: string, description: string)
   {
     const data = {
@@ -222,6 +231,8 @@ export class GeneralService {
 
     return this.http.post(`${this.uri}/add-topic`, data);
   }
+
+
 
 }
 

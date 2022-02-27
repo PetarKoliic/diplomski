@@ -1,1 +1,35 @@
-<p>topic works!</p>
+
+<mat-toolbar color='primary' class='navbar'>
+    <div>
+      {{username}}
+  </div>
+    <div>
+  
+        <!-- <button mat-button (click)="open_new_topic()">Nova tema</button> -->
+      <a mat-button href="/forum">Forum</a>
+
+
+
+      <button mat-button (click)='logout()'>logout</button>
+    </div>
+  </mat-toolbar>
+
+<div *ngIf="topic != null">
+  <mat-list >
+    <h3 mat-subheader>{{topic_title}}</h3>
+    <mat-list-item *ngFor="let comment of topic.comments">
+       <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
+       <!-- (click)="open_topic(topic.title)" -->
+       <!-- {{comment.comment} -->
+       <h4 mat-line >{{comment.username}}</h4>
+       <p mat-line class="demo-2"  > {{comment.comment}} </p>
+       <p mat-line class="demo-2"  >Dodato: {{format_date(comment.date_added)}} </p>
+
+
+       <mat-divider [inset]="true"></mat-divider>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <!-- <h3 mat-subheader>Notes</h3> -->
+ </mat-list>
+
+</div> 
