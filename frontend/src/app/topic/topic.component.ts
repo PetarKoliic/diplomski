@@ -24,6 +24,7 @@ export class TopicComponent implements OnInit {
   topic_title: string; 
   username: string;
   topic: Topic = null;
+  new_comment: string;
 
   init(): void
   {
@@ -38,7 +39,7 @@ export class TopicComponent implements OnInit {
       this.topic = topic;
       console.log(topic);
 
-      console.log(topic.comments);
+      console.log(topic);
 
     });
   }
@@ -49,6 +50,16 @@ export class TopicComponent implements OnInit {
     return date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ".";
   }
 
+  add_comment()
+  {
+    console.log(this.username + " " + this.topic._id + " " + new Date() + " " + this.new_comment);
+    this.service.add_comment(this.username,this.topic._id, new Date(), this.new_comment).subscribe((res: any) => {
+
+      console.log(res["msg"]);
+
+
+    });
+  }
 
 
   logout()

@@ -6,6 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
 let Topic = new Schema({
+    _id: {
+        type: Schema.Types.ObjectId
+    },
     username: {
         type: String
     },

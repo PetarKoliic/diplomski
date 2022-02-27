@@ -5,6 +5,9 @@ const Schema = mongoose.Schema;
 
 let Topic = new Schema({
     
+    _id: {
+        type: Schema.Types.ObjectId
+    },
     username: {
         type: String
     },

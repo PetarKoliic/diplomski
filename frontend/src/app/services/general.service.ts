@@ -232,6 +232,20 @@ export class GeneralService {
     return this.http.post(`${this.uri}/add-topic`, data);
   }
 
+  add_comment(username: string,topic_id: string, date_added:Date, comment: string)
+  {
+    const data = {
+      'username': username,
+      "date_added": date_added,
+      "_id": topic_id,
+      "comment": comment,
+    }
+
+    console.log(data);
+
+    return this.http.post(`${this.uri}/add-comment`, data);
+  }
+
 
 
 }

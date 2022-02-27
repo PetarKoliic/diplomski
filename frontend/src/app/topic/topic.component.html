@@ -21,7 +21,7 @@
        <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
        <!-- (click)="open_topic(topic.title)" -->
        <!-- {{comment.comment} -->
-       <h4 mat-line >{{comment.username}}</h4>
+       <h4 mat-line >{{comment.username}} </h4>
        <p mat-line class="demo-2"  > {{comment.comment}} </p>
        <p mat-line class="demo-2"  >Dodato: {{format_date(comment.date_added)}} </p>
 
@@ -31,5 +31,14 @@
     <mat-divider></mat-divider>
     <!-- <h3 mat-subheader>Notes</h3> -->
  </mat-list>
+
+ <mat-form-field class="example-full-width" appearance="fill">
+  <mat-label>Nov komentar</mat-label>
+  <textarea class="example-full-width" matInput placeholder="Nov komentar" name="description"
+      [(ngModel)]="new_comment"></textarea>
+</mat-form-field>
+
+
+ <button mat-raised-button color="primary" (click)='add_comment()'>Dodaj komentar</button>
 
 </div> 

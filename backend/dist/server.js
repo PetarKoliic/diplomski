@@ -280,6 +280,23 @@ router.route('/give-appraisal').post((req, res) => {
     });
 });
 /////////////////////////////////////////////////
+router.route('/add-comment').post((req, res) => {
+    let username = req.body.username;
+    let date_added = req.body.date_added;
+    let comment = req.body.comment;
+    let _id = ObjectId(req.body._id);
+    console.log("usli smo ovde");
+    console.log("username: " + username + " date: " + date_added + " _id: " + _id +
+        " comment: " + comment);
+    topic_1.default.updateOne({ "_id": _id }, { $push: { "comments": { "username": username, "comment": comment, "date_added": date_added } } }).
+        then(user => {
+        res.status(200).json({ "msg": "ok" });
+    }).catch(err => {
+        res.status(400).json({ 'msg': 'no' });
+    });
+    ;
+});
+/////////////////////////////////////////////////
 router.route('/finish-appraisal').post((req, res) => {
     console.log(req.body.value);
     let value = req.body.value;
@@ -422,6 +439,30 @@ router.route('/load-all-users').get((req, res) => {
 router.route('/delete-user').post((req, res) => {
     console.log(req);
     let username = req.body.username;
+    console.log(username);
+    user_1.default.deleteOne({ 'username': username }, (err) => {
+        if (err)
+            console.log(err);
+        else {
+            console.log('obrisali smo korisnika');
+            // res.json({ 'msg': 'ok' });
+            appraisal_1.default.deleteMany({ "username": username, "finished": false }, (err) => {
+                if (err)
+                    console.log(err);
+                else {
+                    console.log('obrisali smo appraisale');
+                    res.json({ 'msg': 'ok' });
+                }
+            });
+        }
+    });
+});
+//////////////////////////////////////////////////
+// TODO
+router.route('/delete-comment').post((req, res) => {
+    console.log(req);
+    let username = req.body.username;
+    let date_added = req.body.date_added;
     console.log(username);
     user_1.default.deleteOne({ 'username': username }, (err) => {
         if (err)
