@@ -26,6 +26,7 @@ export class TopicComponent implements OnInit {
   username: string;
   topic: Topic = null;
   new_comment: string;
+  
 
   init(): void
   {
@@ -42,7 +43,31 @@ export class TopicComponent implements OnInit {
 
       console.log(topic);
 
+      this.show_comments = this.topic.comments.slice(this.startIndex, this.endIndex);
+
     });
+  }
+
+  endIndex: number = 1;
+  startIndex : number = 0;
+  show_comments: Comment[];
+
+  pageEvent(event: PageEvent) {
+    this.startIndex = event.pageIndex * event.pageSize;
+    this.endIndex = this.startIndex + event.pageSize;
+
+    this.show_comments = [];
+
+    if (this.endIndex > this.topic.comments.length)
+      this.endIndex = this.topic.comments.length;
+
+    // ovo izmeni
+    // this.paginator_images=this.all_countries.slice(startIndex,endIndex);
+
+    // this.img_pagination.set(appraisal._id, { "start_index": startIndex, "end_index": endIndex });
+
+    this.show_comments = this.topic.comments.slice(this.startIndex, this.endIndex);
+
   }
 
   format_date(date_d: Date): string {

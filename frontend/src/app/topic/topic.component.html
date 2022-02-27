@@ -17,7 +17,7 @@
 <div *ngIf="topic != null">
   <mat-list >
     <h3 mat-subheader>{{topic_title}}</h3>
-    <mat-list-item *ngFor="let comment of topic.comments">
+    <mat-list-item *ngFor="let comment of show_comments">
        <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
        <!-- (click)="open_topic(topic.title)" -->
        <!-- {{comment.comment} -->
@@ -40,6 +40,10 @@
   <textarea class="example-full-width" matInput placeholder="Nov komentar" name="description"
       [(ngModel)]="new_comment"></textarea>
 </mat-form-field>
+
+
+<mat-paginator #paginator [length]="topic.comments.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]" aria-label="Select page" (page)="pageEvent($event)">
+</mat-paginator>
 
 
  <button mat-raised-button color="primary" (click)='add_comment()'>Dodaj komentar</button>
