@@ -23,6 +23,40 @@ import {MatTableModule} from '@angular/material/table';
 import {MatCard, MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
+
+
+
+import {A11yModule} from '@angular/cdk/a11y';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {PortalModule} from '@angular/cdk/portal';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import {CdkTableModule} from '@angular/cdk/table';
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTreeModule} from '@angular/material/tree';
+
+
+
 import { AdminComponent } from './admin/admin.component';
 import { AppraiserComponent } from './appraiser/appraiser.component';
 import { UserComponent } from './user/user.component';
@@ -49,6 +83,7 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
 import { ForumMenuComponent } from './forum-menu/forum-menu.component';
 import { NewTopicDialogComponent } from './new-topic-dialog/new-topic-dialog.component';
 import { TopicComponent } from './topic/topic.component';
+import { NotificationComponent } from './notification/notification.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } from 'highcharts-angular';
 
@@ -75,7 +110,8 @@ import { TopicComponent } from './topic/topic.component';
     DeleteUserComponent,
     ForumMenuComponent,
     NewTopicDialogComponent,
-    TopicComponent
+    TopicComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -101,7 +137,38 @@ import { TopicComponent } from './topic/topic.component';
     ReactiveFormsModule,
     MatPaginatorModule,
     MatListModule,
-    MatDialogModule
+    MatDialogModule,
+
+
+    A11yModule,
+    ClipboardModule,
+    CdkStepperModule,
+    CdkTableModule,
+    CdkTreeModule,
+    DragDropModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
+    MatButtonToggleModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRippleModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatTreeModule,
+    PortalModule,
+    ScrollingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
