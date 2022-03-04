@@ -61,7 +61,7 @@
          <div>
             <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
             <div>Napravljeno: {{format_date(topic.date_added)}}</div>
-            <!-- <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div> -->
+            <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
          </div>
          <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>

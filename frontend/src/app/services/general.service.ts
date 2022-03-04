@@ -75,12 +75,17 @@ export class GeneralService {
   }
 
 
-  add_appraisals(images: File[], username: string, description: string) {
+  add_appraisals(images: File[], username: string, name: string, country: string, date: Date, author: string, description: string) {
 
     console.log(username);
     const data = new FormData();
     data.append("username", username);
-    data.append("description", description)
+    data.append("description", description);
+    data.append("name", name);
+    data.append("country", country);
+    data.append("date", date.toString());
+    data.append("author", author);
+  
 
     for (let i = 0; i < images.length; i++) {
       data.append('images', images[i]);
@@ -101,6 +106,18 @@ export class GeneralService {
     console.log(username);
 
     return this.http.post(`${this.uri}/get-current-appraisals-user`, data);
+  }
+
+  get_history_appraisals_user(username: string) {
+
+    const data = {
+      'username': username
+    }
+
+    console.log("usao u history appraisal user");
+    console.log(username);
+
+    return this.http.post(`${this.uri}/get-history-appraisals-user`, data);
   }
 
   get_current_appraisals_appraiser(username: string) {
@@ -128,9 +145,22 @@ export class GeneralService {
       'value': value,
       '_id': id
     }
+
+  
     
 
     return this.http.post(`${this.uri}/finish-appraisal`, data);
+  }
+
+  user_finish_appraisal(id: string) {
+    const data = {
+      '_id': id
+    }
+
+  
+    
+
+    return this.http.post(`${this.uri}/user-finish-appraisal`, data);
   }
 
   delete_appraisal(id: string) {

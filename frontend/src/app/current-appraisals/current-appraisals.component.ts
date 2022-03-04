@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeneralService } from '../services/general.service';
 import { Appraisal } from '../models/appraisal.model';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-current-appraisals',
@@ -10,7 +11,8 @@ import { Appraisal } from '../models/appraisal.model';
 })
 export class CurrentAppraisalsComponent implements OnInit {
 
-  constructor(private router: Router, private service: GeneralService) { }
+  constructor(private router: Router, private service: GeneralService,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.username = localStorage.getItem("username");
@@ -32,6 +34,8 @@ export class CurrentAppraisalsComponent implements OnInit {
 
         this.appraisals = appraisals;
 
+
+
         console.log(this.appraisals);
 
       });
@@ -40,6 +44,30 @@ export class CurrentAppraisalsComponent implements OnInit {
 
   number_of_evaluations(appraisal: Appraisal): number {
     return appraisal.evaluations.length;
+  }
+
+
+
+  finish_appraisal(appraisal: Appraisal)
+  {
+    this.service.user_finish_appraisal(appraisal._id).subscribe(
+      (res: Object) => {
+
+
+        console.log(res["msg"]);
+        if (res["msg"] == "ok") {
+          for (let i in this.appraisals) {
+            if (this.appraisals[i]._id === appraisal._id) {
+
+              this.appraisals.splice(Number(i), 1);
+            }
+          }
+        }
+
+        this.notificationService.alert("Nasilno zavrsena procena");
+        console.log("response : " + res["msg"]);
+
+      });
   }
 
 

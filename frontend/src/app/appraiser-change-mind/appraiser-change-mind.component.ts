@@ -4,6 +4,7 @@ import { GeneralService } from '../services/general.service';
 import { Appraisal } from '../models/appraisal.model';
 import { PageEvent } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-appraiser-change-mind',
@@ -12,7 +13,8 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class AppraiserChangeMindComponent implements OnInit {
 
-  constructor(private router: Router, private service: GeneralService) { }
+  constructor(private router: Router, private service: GeneralService,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.username = localStorage.getItem("username")
@@ -131,7 +133,10 @@ export class AppraiserChangeMindComponent implements OnInit {
                 this.appraisals.splice(Number(i), 1);
               }
             }
+            this.notificationService.success("Uspesno promenjena procena");
           }
+          else
+            this.notificationService.error("Neuspesno promenjena procena");
         
 
           console.log("response : " + res["msg"]);

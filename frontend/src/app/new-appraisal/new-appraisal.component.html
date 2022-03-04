@@ -9,7 +9,7 @@
 
 <div class="row">
   <div class="col">
-    <input type="file" style="display: none" (change)="upload($event)" #fileInput>
+    <input type="file" style="display: none" multiple (change)="upload($event)" #fileInput>
     <button mat-raised-button (click)="fileInput.click()">Choose picture</button>
     <div class="inline" *ngIf="pic">
       Picture name: {{pic.name}
@@ -26,6 +26,34 @@
 </div>
 
 
+<div>
+  <mat-form-field class="full-width" appearance='legacy'>
+    <mat-label>Naziv</mat-label>
+    <input matInput required placeholder="Naziv" [(ngModel)]="name">
+  </mat-form-field>
+</div>
+
+<div>
+  <mat-form-field class="full-width" appearance='legacy'>
+    <mat-label>Zemlja porekla</mat-label>
+    <input matInput required placeholder="Zemlja porekla opciono polje" [(ngModel)]="country">
+  </mat-form-field>
+</div>
+
+<mat-form-field class="half-width" appearance="fill">
+  <mat-label>Napravljeno</mat-label>
+  <input matInput type="date" [(ngModel)]="date">
+  <button *ngIf="date" matSuffix mat-icon-button aria-label="Clear" (click)="date=undefined">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+
+<div>
+  <mat-form-field class="full-width" appearance='legacy'>
+    <mat-label>Autor</mat-label>
+    <input matInput required placeholder="autor" [(ngModel)]="author">
+  </mat-form-field>
+</div>
 
 
 <form class="example-form">
@@ -47,13 +75,14 @@
 </div>
 
 
-<div style="color: green;" *ngIf="message_success">
+
+<!-- <div style="color: green;" *ngIf="message_success">
   Uspesno slanje
 </div>
 
 <div style="color: red;" *ngIf="message_fail">
   Neuspesno slanje
-</div>
+</div> -->
 <!-- <img src='{{"http://localhost:4000/uploads/"+"1644117757163-slika.png"}}'> -->
 
 

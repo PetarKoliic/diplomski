@@ -7,4 +7,8 @@ export class Appraisal {
     description: string;
     img_names: Array<string>;
     evaluations: Array<Evaluation>;
+    name: string;
+    country: string;
+    date: Date;
+    author: string;
 }

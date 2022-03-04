@@ -1,2 +1,44 @@
 <app-user-menu></app-user-menu>
 
+<mat-card *ngFor="let appraisal of appraisals" class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <!-- <mat-card-title>Procena</mat-card-title> -->
+      <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    </mat-card-header>
+    <!-- <img mat-card-image style="width: 400px; height: 300px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+  
+    <img mat-card-image style="width: 400px; height: 300px;" *ngFor='let preview of appraisal.img_names'
+      [src]="'http://localhost:4000/uploads/' + preview" class="preview">
+    <mat-card-content>
+      <p *ngIf="appraisal.name != ''">
+        Ime: {{appraisal.name}} </p>
+      <p *ngIf="appraisal.country!= ''"> Zemlja porekla: {{appraisal.country}} </p>
+  
+      <p *ngIf="appraisal.date != null">
+        Datum pravljenja: {{appraisal.date}}
+      </p>
+      <p *ngIf="appraisal.author != ''">
+        Autor: {{appraisal.author}}
+      </p>
+      <p>
+        Opis: </p>
+      <p> {{appraisal.description}}
+      </p>
+      <p>
+        Broj procena:
+        {{number_of_evaluations(appraisal)}}
+      </p>
+  
+      <p>
+        Zavrsna prrocena:
+        {{current_evaluation(appraisal)}}
+      </p>
+  
+  
+  
+    </mat-card-content>
+    <!-- <mat-card-actions>
+      <button (click)="finish_appraisal(appraisal)" mat-button>Zavrsi procenu odmah</button>
+    </mat-card-actions> -->
+  </mat-card>

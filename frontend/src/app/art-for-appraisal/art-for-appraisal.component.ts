@@ -4,6 +4,7 @@ import { GeneralService } from '../services/general.service';
 import { Appraisal } from '../models/appraisal.model';
 import { PageEvent } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-art-for-appraisal',
@@ -14,7 +15,8 @@ import { MatPaginator } from '@angular/material/paginator';
 
 export class ArtForAppraisalComponent implements OnInit {
 
-  constructor(private router: Router, private service: GeneralService) { }
+  constructor(private router: Router, private service: GeneralService,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
 
@@ -136,7 +138,11 @@ export class ArtForAppraisalComponent implements OnInit {
                 this.appraisals.splice(Number(i), 1);
               }
             }
+
+            this.notificationService.success("uspesno procenjena umetnina");
           }
+          else
+            this.notificationService.error("neuspesno procenjena umetnina");
 
 
           console.log("response : " + res["msg"]);

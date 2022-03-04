@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeneralService } from '../services/general.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-new-appraisal',
@@ -15,11 +16,16 @@ export class NewAppraisalComponent implements OnInit {
   previews: string[] = [];
   images: File[] = [];
   username: string;
-  message_success: boolean = false;
-  message_fail: boolean = false;
   description: string;
+  name: string;
+  country: string;
+  date: Date;
+  author: string;
 
-  constructor(private router: Router, private service: GeneralService) { }
+  // message_success: boolean = false;
+  // message_fail: boolean = false;
+
+  constructor(private router: Router, private service: GeneralService, private notificationService: NotificationService) { }
 
 
   ngOnInit(): void {
@@ -30,8 +36,8 @@ export class NewAppraisalComponent implements OnInit {
 
   upload(event: any) {
 
-    this.message_fail = false;
-    this.message_success = false;
+    // this.message_fail = false;
+    // this.message_success = false;
     this.pic = event.target.files[0];
 
 
@@ -60,18 +66,24 @@ export class NewAppraisalComponent implements OnInit {
 
   }
 
-
+  // name: string;
+  // country: string;
+  // date: Date;
   confirm_upload() {
 
-    this.service.add_appraisals(this.images, this.username, this.description).subscribe((res: any) => {
+    this.service.add_appraisals(this.images, this.username, this.name, this.country, this.date, this.author, this.description).subscribe((res: any) => {
 
       if (res.msg == "ok") {
-        this.message_success = true;
-        this.message_fail = false;
+        // this.message_success = true;
+        // this.message_fail = false;
+        console.log("Dobro sam proslo");
+        this.notificationService.success("uspesno postavljena nova umetnina na procenu");
       }
       else {
-        this.message_success = false;
-        this.message_fail = true;
+        // this.message_success = false;
+        // this.message_fail = true;
+
+        this.notificationService.error("neuspesno postavljena nova umetnina na procenu");
       }
 
       console.log(res);
@@ -80,6 +92,10 @@ export class NewAppraisalComponent implements OnInit {
       this.previews = [];
       this.pic = null;
       this.description = "";
+      this.author = "";
+      this.country = "";
+      this.date = null;
+      this.name = "";
 
 
     });

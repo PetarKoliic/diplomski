@@ -5,6 +5,7 @@ import { GeneralService } from '../services/general.service';
 import { Topic } from '../models/topic.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-forum',
@@ -13,7 +14,8 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class ForumComponent implements OnInit {
 
-  constructor(private router: Router, private service: GeneralService) { }
+  constructor(private router: Router, private service: GeneralService,
+    private notificationService: NotificationService) { }
 
 
   topics: Topic[];
@@ -33,7 +35,7 @@ export class ForumComponent implements OnInit {
     console.log(this.up_down_flag);
     console.log(this.sort_choosen);
 
-    this.topics_art_piece.sort((a: Topic, b: Topic) => {
+    this.show_topics_art_piece.sort((a: Topic, b: Topic) => {
 
 
       let flag = this.up_down_flag === "up" ? 1 : -1;
@@ -48,10 +50,41 @@ export class ForumComponent implements OnInit {
       else if (this.sort_choosen === "comments_count")
         return a.comments.length - b.comments.length;
       else // last comment
-        return a.comments[a.comments.length - 1].date_added > b.comments[a.comments.length - 1].date_added ? 1 * flag : -1 * flag;
+        return a.comments[a.comments.length - 1].date_added > b.comments[b.comments.length - 1].date_added ? 1 * flag : -1 * flag;
 
     });
+
+    this.sort_array_criteria(this.show_topics_art_piece);
+    this.sort_array_criteria(this.topics_art_piece);
+
+    console.log(this.show_topics_art_piece);
+    console.log(this.topics_art_piece);
+
   }
+
+  sort_array_criteria(topics: Topic[])
+  {
+    topics.sort((a: Topic, b: Topic) => {
+
+
+      let flag = this.up_down_flag === "up" ? 1 : -1;
+
+
+      // if (this.sort_choosen === "date_created")
+      //   return a.title > b.title ? 1 * flag : -1 * flag;
+
+      if (this.sort_choosen === "title" || this.sort_choosen === "views" ||
+        this.sort_choosen === "date_added")
+        return a[this.sort_choosen] > b[this.sort_choosen] ? 1 * flag : -1 * flag;
+      else if (this.sort_choosen === "comments_count")
+        return a.comments.length - b.comments.length;
+      else // last comment
+        return a.comments[a.comments.length - 1].date_added > b.comments[b.comments.length - 1].date_added ? 1 * flag : -1 * flag;
+
+    });
+
+    console.log(topics);
+  }  
 
   search()
   {

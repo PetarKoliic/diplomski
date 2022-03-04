@@ -15,7 +15,19 @@ let Appraisal = new Schema({
     username: {
         type: String
     },
+    name: {
+        type: String
+    },
+    country: {
+        type: String
+    },
     description: {
+        type: String
+    },
+    date_created: {
+        type: Date
+    },
+    author: {
         type: String
     },
     date_added: {

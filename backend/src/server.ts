@@ -15,6 +15,7 @@ import { Ratings } from './models/ratings.model';
 import Topic from './models/topic';
 import { Comment } from './models/comment.model';
 import user from './models/user';
+import { name } from 'ejs';
 
 const app = express();
 var ObjectId = require('mongoose').Types.ObjectId;
@@ -264,8 +265,10 @@ router.post('/add-appraisal', upload.array("images"), (req, res) => {
 
     let appraisal = new Appraisal({
         "_id": id, "username": req.body.username,
-        "description": req.body.description,
-        "img_names": images, "date_added": new Date(), "finished": false
+        "description": req.body.description, "name": req.body.name,
+        "country": req.body.country, "date_created": req.body.date,
+        "img_names": images, "date_added": new Date(), "finished": false,
+        "author": req.body.author,
     });
 
 
@@ -325,6 +328,24 @@ router.route('/get-current-appraisals-user').post((req, res) => {
         res.json(appraisals);
     })
 });
+
+
+////////////////////////////////////////////////
+
+router.route('/get-history-appraisals-user').post((req, res) => {
+
+    let username = req.body.username;
+
+    console.log("usao u get current appraisal");
+
+    Appraisal.find({ "username": username, "finished": true }, (err, appraisals) => {
+
+        console.log(appraisals);
+
+        res.json(appraisals);
+    })
+});
+
 
 /////////////////////////////////////////////////
 
@@ -454,6 +475,32 @@ router.route('/add-comment').post((req, res) => {
             res.status(400).json({ 'msg': 'no' });
         });;
 
+
+
+});
+
+/////////////////////////////////////////////////
+
+
+router.route('/user-finish-appraisal').post((req, res) => {
+
+    console.log(req.body.value);
+    let _id = ObjectId(req.body._id);
+
+
+    // console.log("value: " + value + " _id : " + _id);
+
+
+    // console.log("11111111111111111111111");
+
+    Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then(async (user: any) => {
+
+        res.status(200).json({ 'msg': "ok" });
+    }).catch((err: any) => {
+        if (err)
+            console.log(err);
+        res.status(400).json({ 'msg': 'no' });
+    });
 
 
 });

@@ -29,7 +29,6 @@ export class NotificationComponent implements OnInit {
       panelClass: [className]
 
     });
-
   }
 
 
@@ -37,10 +36,9 @@ export class NotificationComponent implements OnInit {
   showAlert() {
 
     this.notificationService.alert("an alert", "notice", () => {
-      
+
       this.notificationService.success("alert oked");
     });
-
   }
 
 
@@ -50,15 +48,10 @@ export class NotificationComponent implements OnInit {
     this.notificationService.confirmation("it will be gone forever", () => {
 
       this.notificationService.success("confirm oked");
-
     },
-
       'Are you sure?',
-
       () => {
-
         this.notificationService.error("confirm canceled");
-
       });
 
   }
