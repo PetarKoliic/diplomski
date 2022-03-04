@@ -7,6 +7,8 @@ import { Topic } from '../models/topic.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { Comment } from '../models/comment.model';
+import { NotificationService } from '../services/notification.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-topic',
@@ -15,7 +17,8 @@ import { Comment } from '../models/comment.model';
 })
 export class TopicComponent implements OnInit {
 
-  constructor(private _router:Router, private router: ActivatedRoute, private service: GeneralService) { }
+  constructor(private _router:Router, private router: ActivatedRoute, private service: GeneralService, private notificationService: NotificationService,
+    private changeDetectorRefs: ChangeDetectorRef) { }
 
   ngOnInit(): void {
 
@@ -86,8 +89,12 @@ export class TopicComponent implements OnInit {
       this.reload_comments();
 
       this.new_comment = "";
+
+      this.notificationService.success("uspesno dodat komentar");
     });
   }
+
+
 
   delete_comment(comment: Comment)
   {
@@ -100,6 +107,7 @@ export class TopicComponent implements OnInit {
       console.log(res["msg"]);
 
       
+      this.notificationService.success("uspesno obrisan komentar");
 
       this.reload_comments();
 
@@ -109,14 +117,25 @@ export class TopicComponent implements OnInit {
 
   reload_comments()
   {
+    // this.show_comments = [];
     this.service.get_topic(this.topic_title).subscribe((topic: Topic) => {
 
       this.topic = topic;
       console.log(topic);
 
       console.log(topic);
+      this.show_comments = this.topic.comments.slice(this.startIndex, this.endIndex);
+      // console.log(this.)
 
+      this.show_comments= Object.assign([],this.show_comments);
+
+      this.changeDetectorRefs.detectChanges();
     });
+  }
+
+  show_comments_fun() : Comment[]
+  {
+    return this.show_comments;
   }
 
 
