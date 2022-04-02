@@ -1,19 +1,27 @@
 <mat-toolbar color='primary' class='navbar'>
-    <div>
-      {{username}}
+  <div>
+    {{username}}
   </div>
-    <div>
-      <!-- <a mat-button href="/account-requests" >Zahtevi novih naloga</a>
+  <div>
+    <!-- <a mat-button href="/account-requests" >Zahtevi novih naloga</a>
       <a mat-button href="/sports">Dodavanje sportova</a>
       <a mat-button href="/competitions" >Pravljenje turnira</a> -->
-  
-      <a mat-button href="/statistics">Statistika</a>
-      <a mat-button href="/appraisals-handling">Upravljanje procenama</a>
-      <a mat-button href="/delete-user">Brisanje korisnika</a>
-      <a mat-button href="/forum">Forum</a>
+
+    <!-- <a mat-button href="/statistics">Statistika</a> -->
+    <a mat-button href="/appraisals-handling">Upravljanje procenama</a>
+    <a mat-button href="/delete-user">Brisanje korisnika</a>
+    <a mat-button href="/forum">Forum</a>
+
+    <button mat-button [matMenuTriggerFor]="menu">Statistika</button>
+    <mat-menu #menu="matMenu">
+
+      <a mat-button href="/statistics-appraiser-rating">procenitelja</a> <br>
+      <a mat-button href="/statistics-user">clana</a> <br>
 
 
+    </mat-menu>
 
-      <button mat-button (click)='logout()'>logout</button>
-    </div>
-  </mat-toolbar>
+
+    <button mat-button (click)='logout()'>logout</button>
+  </div>
+</mat-toolbar>

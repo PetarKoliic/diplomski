@@ -77,13 +77,14 @@ import { ArtForAppraisalComponent } from './art-for-appraisal/art-for-appraisal.
 import { AppraiserChangeMindComponent } from './appraiser-change-mind/appraiser-change-mind.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
-import { StatisticsComponent } from './statistics/statistics.component';
 import { AppraisalsHandlingComponent } from './appraisals-handling/appraisals-handling.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
 import { ForumMenuComponent } from './forum-menu/forum-menu.component';
 import { NewTopicDialogComponent } from './new-topic-dialog/new-topic-dialog.component';
 import { TopicComponent } from './topic/topic.component';
 import { NotificationComponent } from './notification/notification.component';
+import { StatisticsAppraiserRatingComponent } from './statistics-appraiser-rating/statistics-appraiser-rating.component';
+import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } from 'highcharts-angular';
 
@@ -105,13 +106,14 @@ import { NotificationComponent } from './notification/notification.component';
     AppraiserChangeMindComponent,
     ChangePasswordComponent,
     AdminMenuComponent,
-    StatisticsComponent,
     AppraisalsHandlingComponent,
     DeleteUserComponent,
     ForumMenuComponent,
     NewTopicDialogComponent,
     TopicComponent,
-    NotificationComponent
+    NotificationComponent,
+    StatisticsAppraiserRatingComponent,
+    StatisticsUserComponent
   ],
   imports: [
     BrowserModule,

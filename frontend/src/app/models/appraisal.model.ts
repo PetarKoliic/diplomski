@@ -11,4 +11,6 @@ export class Appraisal {
     country: string;
     date: Date;
     author: string;
+    value: number
+    
 }

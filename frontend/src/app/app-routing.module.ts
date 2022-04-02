@@ -13,10 +13,12 @@ import { HistoryComponent } from './history/history.component';
 import { ArtForAppraisalComponent } from './art-for-appraisal/art-for-appraisal.component';
 import { AppraiserChangeMindComponent } from './appraiser-change-mind/appraiser-change-mind.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { StatisticsComponent } from './statistics/statistics.component';
 import { AppraisalsHandlingComponent } from './appraisals-handling/appraisals-handling.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
 import { TopicComponent } from './topic/topic.component';
+import { StatisticsAppraiserRatingComponent } from './statistics-appraiser-rating/statistics-appraiser-rating.component';
+import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
+
 
 const routes: Routes = [
 
@@ -34,11 +36,15 @@ const routes: Routes = [
   {path:'art-for-appraisal', component : ArtForAppraisalComponent},
   {path:'appraiser-change-mind', component : AppraiserChangeMindComponent},
   {path:'change-password', component : ChangePasswordComponent},
-  {path:'statistics', component : StatisticsComponent},
   {path:'appraisals-handling', component : AppraisalsHandlingComponent},
   {path:'delete-user', component : DeleteUserComponent},
   {path:'forum', component : ForumComponent},
+  {path:'statistics-appraiser-rating', component : StatisticsAppraiserRatingComponent},
+  {path:'statistics-user', component : StatisticsUserComponent},
+  {path:'forum', component : ForumComponent},
   {path:'topic/:name',  component : TopicComponent},
+  
+
 
   
 

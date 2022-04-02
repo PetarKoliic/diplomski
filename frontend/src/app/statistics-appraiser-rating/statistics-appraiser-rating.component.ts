@@ -6,12 +6,15 @@ import * as Highcharts from 'highcharts';
 import { Ratings } from '../models/rating.model';
 
 
+
+
+
 @Component({
-  selector: 'app-statistics',
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.css']
+  selector: 'app-statistics-appraiser-rating',
+  templateUrl: './statistics-appraiser-rating.component.html',
+  styleUrls: ['./statistics-appraiser-rating.component.css']
 })
-export class StatisticsComponent implements OnInit {
+export class StatisticsAppraiserRatingComponent implements OnInit {
 
 
 
@@ -124,6 +127,4 @@ export class StatisticsComponent implements OnInit {
 
     });
   }
-
-
 }

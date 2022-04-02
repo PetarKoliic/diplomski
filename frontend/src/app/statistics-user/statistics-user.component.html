@@ -1,0 +1,61 @@
+<app-admin-menu></app-admin-menu>
+
+
+<div>
+    <mat-form-field class="full-width" appearance='legacy'>
+      <mat-label>Unesite ime korisnika za statistiku artikla</mat-label>
+      <input matInput required placeholder="Username" [(ngModel)]="username_search">
+    </mat-form-field>
+</div>
+
+<button mat-raised-button color="primary" (click)='search_user()'>Pretrazi</button>
+
+<br>
+
+<mat-form-field  *ngIf='username_search!= null' class='full-width' appearance="fill">
+    <mat-label>Ime umetnine</mat-label>
+    <mat-select (selectionChange)="fun_change($event)" [(ngModel)]="appraisal_selected">
+      <mat-option *ngFor="let appraisal of  appraisals" [value]="appraisal">
+        {{appraisal.name}}
+
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+
+
+  <!-- <div>
+    <mat-form-field class="full-width" appearance='legacy'>
+      <mat-label>Sport</mat-label>
+      <input matInput  placeholder="Skok u vis" [(ngModel)]="sport">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="full-width">
+      <mat-label>Disciplina</mat-label>
+      <input matInput placeholder="Atletika" [(ngModel)]='discipline'>
+    </mat-form-field>
+  </div> -->
+
+
+
+  <!-- <mat-form-field class='half-width'appearance="fill">
+    <mat-label>Sport</mat-label>
+    <mat-select  [(ngModel)]="temp_sport_selected">
+      <mat-option *ngFor="let sport of sport_discipline" [value]="sport">
+        {{sport.sport}}
+
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class='divider'></div>
+  <mat-form-field  *ngIf='temp_sport_selected != null' class='half-width' appearance="fill">
+    <mat-label>Disciplina</mat-label>
+    <mat-select (selectionChange)="fun_change($event)" [(ngModel)]="temp_discipline_selected">
+      <mat-option *ngFor="let discipline of  temp_sport_selected.disciplines" [value]="discipline.discipline">
+        {{discipline.discipline}}
+
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->

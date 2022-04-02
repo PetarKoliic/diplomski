@@ -34,7 +34,14 @@
         Zavrsna prrocena:
         {{current_evaluation(appraisal)}}
       </p>
-  
+
+      <p *ngIf="appraisal.value != 0">
+        Prodata cena:
+        {{appraisal.value}}
+      </p>
+      <p *ngIf="appraisal.value == 0">
+        Procena je zavrsena pre prodaje artikla
+      </p>
   
   
     </mat-card-content>
