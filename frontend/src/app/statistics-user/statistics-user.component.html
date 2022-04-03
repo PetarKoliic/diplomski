@@ -1,0 +1,18 @@
+<app-admin-menu></app-admin-menu>
+
+
+<div>
+    <mat-form-field class="full-width" appearance='legacy'>
+        <mat-label>Unesite ime korisnika za statistiku artikla</mat-label>
+        <input matInput required placeholder="Username" [(ngModel)]="username_search">
+    </mat-form-field>
+</div>
+
+<button mat-raised-button color="primary" (click)='search_user()'>Pretrazi</button>
+
+<br>
+
+
+<div style="display: flex;">
+    <div id="container_1" style="height:600px; width:800px"></div>
+</div>

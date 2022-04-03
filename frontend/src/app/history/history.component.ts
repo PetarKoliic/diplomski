@@ -3,6 +3,7 @@ import { GeneralService } from '../services/general.service';
 import { Appraisal } from '../models/appraisal.model';
 import { NotificationService } from '../services/notification.service';
 import { Router } from '@angular/router';
+import { FunctionService } from '../services/function.service';
 
 
 @Component({
@@ -12,7 +13,8 @@ import { Router } from '@angular/router';
 })
 export class HistoryComponent implements OnInit {
   constructor(private router: Router, private service: GeneralService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    public functions: FunctionService) { }
 
   ngOnInit(): void {
     this.username = localStorage.getItem("username");
@@ -42,9 +44,9 @@ export class HistoryComponent implements OnInit {
   }
 
 
-  number_of_evaluations(appraisal: Appraisal): number {
-    return appraisal.evaluations.length;
-  }
+  // number_of_evaluations(appraisal: Appraisal): number {
+  //   return appraisal.evaluations.length;
+  // }
 
 
 
@@ -71,53 +73,53 @@ export class HistoryComponent implements OnInit {
   // }
 
 
-  current_evaluation(appraisal: Appraisal): String {
+  // current_evaluation(appraisal: Appraisal): String {
 
 
-    console.log("appraisal");
-    console.log(appraisal);
+  //   console.log("appraisal");
+  //   console.log(appraisal);
 
-    if (this.number_of_evaluations(appraisal) == 0)
-      return "jos uvek ni jedan procenitelj nije dao svoju procenu";
-    else {
-      let value = 0;
+  //   if (this.number_of_evaluations(appraisal) == 0)
+  //     return "jos uvek ni jedan procenitelj nije dao svoju procenu";
+  //   else {
+  //     let value = 0;
 
-      let value_high_priority = 0;
-      let rating_formula_high_priority = 0;
-      let value_low_priority = 0;
-      let cnt_low_priority = 0;
+  //     let value_high_priority = 0;
+  //     let rating_formula_high_priority = 0;
+  //     let value_low_priority = 0;
+  //     let cnt_low_priority = 0;
 
-      let evaluations = appraisal.evaluations;
-      for (let i in appraisal.evaluations) {
-        if (evaluations[i].rating <= 5) {
-          value_low_priority += Number(evaluations[i].value);
-          cnt_low_priority++;
-          // console.log(value_low_priority + " : " + cnt_low_priority);
+  //     let evaluations = appraisal.evaluations;
+  //     for (let i in appraisal.evaluations) {
+  //       if (evaluations[i].rating <= 5) {
+  //         value_low_priority += Number(evaluations[i].value);
+  //         cnt_low_priority++;
+  //         // console.log(value_low_priority + " : " + cnt_low_priority);
 
-        }
-        else {
-          value_high_priority += evaluations[i].rating ^ 3 * evaluations[i].value;
-          rating_formula_high_priority += evaluations[i].rating ^ 3;
-          // console.log(value_high_priority + " : " + rating_formula_high_priority);
-        }
-      }
+  //       }
+  //       else {
+  //         value_high_priority += evaluations[i].rating ^ 3 * evaluations[i].value;
+  //         rating_formula_high_priority += evaluations[i].rating ^ 3;
+  //         // console.log(value_high_priority + " : " + rating_formula_high_priority);
+  //       }
+  //     }
 
-      // console.log(value_high_priority + " : " + rating_formula_high_priority);
-      // console.log(value_low_priority + " : " + cnt_low_priority);
+  //     // console.log(value_high_priority + " : " + rating_formula_high_priority);
+  //     // console.log(value_low_priority + " : " + cnt_low_priority);
 
-      if (rating_formula_high_priority > 0) {
-        value_high_priority /= rating_formula_high_priority;
-      }
-      if (cnt_low_priority > 0)
-        value_low_priority /= cnt_low_priority;
+  //     if (rating_formula_high_priority > 0) {
+  //       value_high_priority /= rating_formula_high_priority;
+  //     }
+  //     if (cnt_low_priority > 0)
+  //       value_low_priority /= cnt_low_priority;
 
-      if (value_high_priority == 0)
-        return value_low_priority.toString();
-      else if (value_low_priority == 0)
-        return value_high_priority.toString();
-      else
-        return (value_high_priority * 0.95 + value_low_priority * 0.05).toString();
-    }
-  }
+  //     if (value_high_priority == 0)
+  //       return value_low_priority.toString();
+  //     else if (value_low_priority == 0)
+  //       return value_high_priority.toString();
+  //     else
+  //       return (value_high_priority * 0.95 + value_low_priority * 0.05).toString();
+  //   }
+  // }
 
 }

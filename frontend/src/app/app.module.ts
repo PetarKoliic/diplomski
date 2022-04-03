@@ -85,6 +85,7 @@ import { TopicComponent } from './topic/topic.component';
 import { NotificationComponent } from './notification/notification.component';
 import { StatisticsAppraiserRatingComponent } from './statistics-appraiser-rating/statistics-appraiser-rating.component';
 import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-appraisal.component';
+import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } as 'highcharts-angular';
 
@@ -101,7 +102,7 @@ import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-
     CurrentAppraisalsComponent,
     HistoryComponent,
     ForumComponent,
-    AppraiserMenuComponent,
+      AppraiserMenuComponent,
     ArtForAppraisalComponent,
     AppraiserChangeMindComponent,
     ChangePasswordComponent,
@@ -113,7 +114,8 @@ import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-
     TopicComponent,
     NotificationComponent,
     StatisticsAppraiserRatingComponent,
-    StatisticsAppraisalComponent
+    StatisticsAppraisalComponent,
+    StatisticsUserComponent
   ],
   imports: [
     BrowserModule,

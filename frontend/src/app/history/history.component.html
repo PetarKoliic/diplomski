@@ -27,12 +27,12 @@
       </p>
       <p>
         Broj procena:
-        {{number_of_evaluations(appraisal)}}
+        {{functions.number_of_evaluations(appraisal)}}
       </p>
   
       <p>
         Zavrsna prrocena:
-        {{current_evaluation(appraisal)}}
+        {{functions.current_evaluation(appraisal)}}
       </p>
 
       <p *ngIf="appraisal.value != 0">
