@@ -17,7 +17,7 @@ import { AppraisalsHandlingComponent } from './appraisals-handling/appraisals-ha
 import { DeleteUserComponent } from './delete-user/delete-user.component';
 import { TopicComponent } from './topic/topic.component';
 import { StatisticsAppraiserRatingComponent } from './statistics-appraiser-rating/statistics-appraiser-rating.component';
-import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
+import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-appraisal.component';
 
 
 const routes: Routes = [
@@ -40,7 +40,7 @@ const routes: Routes = [
   {path:'delete-user', component : DeleteUserComponent},
   {path:'forum', component : ForumComponent},
   {path:'statistics-appraiser-rating', component : StatisticsAppraiserRatingComponent},
-  {path:'statistics-user', component : StatisticsUserComponent},
+  {path:'statistics-appraisal', component : StatisticsAppraisalComponent},
   {path:'forum', component : ForumComponent},
   {path:'topic/:name',  component : TopicComponent},
   

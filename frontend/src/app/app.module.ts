@@ -84,9 +84,9 @@ import { NewTopicDialogComponent } from './new-topic-dialog/new-topic-dialog.com
 import { TopicComponent } from './topic/topic.component';
 import { NotificationComponent } from './notification/notification.component';
 import { StatisticsAppraiserRatingComponent } from './statistics-appraiser-rating/statistics-appraiser-rating.component';
-import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
+import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-appraisal.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
-// import { HighchartsChartComponent } from 'highcharts-angular';
+// import { HighchartsChartComponent } as 'highcharts-angular';
 
 @NgModule({
   declarations: [
@@ -113,7 +113,7 @@ import { StatisticsUserComponent } from './statistics-user/statistics-user.compo
     TopicComponent,
     NotificationComponent,
     StatisticsAppraiserRatingComponent,
-    StatisticsUserComponent
+    StatisticsAppraisalComponent
   ],
   imports: [
     BrowserModule,

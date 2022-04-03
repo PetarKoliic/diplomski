@@ -8,11 +8,11 @@ import { Appraisal } from '../models/appraisal.model';
 
 
 @Component({
-  selector: 'app-statistics-user',
-  templateUrl: './statistics-user.component.html',
-  styleUrls: ['./statistics-user.component.css']
+  selector: 'app-statistics-appraisal',
+  templateUrl: './statistics-appraisal.component.html',
+  styleUrls: ['./statistics-appraisal.component.css']
 })
-export class StatisticsUserComponent implements OnInit {
+export class StatisticsAppraisalComponent implements OnInit {
 
   constructor(private router: Router, private service: GeneralService) { }
 
