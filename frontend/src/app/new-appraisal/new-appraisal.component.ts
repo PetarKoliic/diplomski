@@ -71,33 +71,51 @@ export class NewAppraisalComponent implements OnInit {
   // date: Date;
   confirm_upload() {
 
-    this.service.add_appraisals(this.images, this.username, this.name, this.country, this.date, this.author, this.description).subscribe((res: any) => {
+    console.log("slika");
+    console.log(this.images == [] ? "prazna slika" : "nije prazna");
+    console.log(this.images);    
 
-      if (res.msg == "ok") {
-        // this.message_success = true;
-        // this.message_fail = false;
-        console.log("Dobro sam proslo");
-        this.notificationService.success("uspesno postavljena nova umetnina na procenu");
-      }
-      else {
-        // this.message_success = false;
-        // this.message_fail = true;
+    if (this.name == "" || this.name == null ||  
+        this.country == "" || this.country == null ||
+                              this.date == null ||
+        this.author == "" || this.author == null ||
+        // this.description == "" || this.description == null ||
+        this.images == [] || this.images.length == 0) {
 
-        this.notificationService.error("neuspesno postavljena nova umetnina na procenu");
-      }
+          this.notificationService.error("polja ime, zemlja, autor i slika su obavezna polja");
 
-      console.log(res);
+    }
+    else {
 
-      this.images = [];
-      this.previews = [];
-      this.pic = null;
-      this.description = "";
-      this.author = "";
-      this.country = "";
-      this.date = null;
-      this.name = "";
+      this.service.add_appraisals(this.images, this.username, this.name, this.country, this.date, this.author, this.description).subscribe((res: any) => {
+
+        if (res.msg == "ok") {
+          // this.message_success = true;
+          // this.message_fail = false;
+          console.log("Dobro sam proslo");
+          this.notificationService.success("uspesno postavljena nova umetnina na procenu");
+        }
+        else {
+          // this.message_success = false;
+          // this.message_fail = true;
+
+          this.notificationService.error("neuspesno postavljena nova umetnina na procenu");
+        }
+
+        console.log(res);
+
+        this.images = [];
+        this.previews = [];
+        this.pic = null;
+        this.description = "";
+        this.author = "";
+        this.country = "";
+        this.date = null;
+        this.name = "";
 
 
-    });
+      });
+    }
   }
+
 }

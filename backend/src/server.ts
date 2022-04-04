@@ -375,10 +375,14 @@ router.route('/get-current-appraisals-appraiser-history').post((req, res) => {
 
 router.route('/get-current-appraisals-appraiser').post((req, res) => {
 
+    console.log("username");
     let username = req.body.username;
+    console.log(username);
 
     console.log("usao u appraisals appraiser ");
     // M.findOne({list: {$ne: 'A'}}
+
+
     Appraisal.find({ "finished": false }, (err, appraisals) => {
         if (err) console.log(err);
         else {
@@ -390,10 +394,13 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => {
 
             let a2 = [];
 
-            for (let i in appraisals) {
+            for (let i = 0; i < appraisals.length; i++) {
+                console.log("i : " + i + " duzina: " + appraisals.length);
                 let appraisal = appraisals[i].toObject();
                 let flag: boolean = false;
-                for (let j in appraisal.evaluations) {
+                for (let j = 0; j < appraisal.evaluations; j++) {
+                    console.log("usao a nije trebalo");
+                console.log("j : " + j + " duzina: " + appraisals.length);
                     console.log(appraisal.evaluations[j].username);
                     if (appraisal.evaluations[j].username === username)
                         flag = true;
@@ -403,11 +410,14 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => {
                     a2.push(appraisal);
             }
 
-            // console.log(a2);
+            console.log("prazno");
+            console.log(a2);
 
             res.json(a2);
         }
     })
+
+
 });
 
 
@@ -468,7 +478,7 @@ router.route('/add-comment').post((req, res) => {
 
 
 
-    Topic.updateOne({ "_id": _id }, { $push: { "comments" : {"username": username,"comment": comment, "date_added": date_added }} }).
+    Topic.updateOne({ "_id": _id }, { $push: { "comments": { "username": username, "comment": comment, "date_added": date_added } } }).
         then(user => {
             res.status(200).json({ "msg": "ok" });
         }).catch(err => {
@@ -630,12 +640,21 @@ function calculate_new_rating(rating: Ratings) {
     // console.log("calculate new rating");
     // console.log(rating);
 
-    for (let i = 0; i < rating.ratings.length; i++) {
-        rating_val += rating.ratings[i];
+    if (rating == null)
+        return 5;
+    else if (rating.ratings == null)
+        return 5;
+
+    else {
+        for (let i = 0; i < rating.ratings.length; i++) {
+            rating_val += rating.ratings[i];
+        }
+        if (rating.ratings.length > 0)
+            return rating_val / rating.ratings.length;
+        else
+            return 5;
+
     }
-
-
-    return rating_val / rating.ratings.length;
 }
 
 
@@ -721,7 +740,7 @@ router.route('/get-rating').post((req, res) => {
         else {
 
 
-            let rating = calculate_new_rating(ratings.toObject());
+            let rating = calculate_new_rating(ratings != null ? ratings.toObject() : {});
 
             res.json({ "rating": rating });
         }
@@ -793,7 +812,7 @@ router.route('/delete-comment').post((req, res) => {
 
     // List.findOneAndUpdate({ name: listName }, { $pull: { <field1>: <value|condition> } }
 
-    Topic.findOneAndUpdate({ '_id': _id },{ $pull: { "comments": {"username": username, "date_added": date_added} }}, (err) => {
+    Topic.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "date_added": date_added } } }, (err) => {
 
         if (err)
             console.log(err);

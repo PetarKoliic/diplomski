@@ -240,7 +240,9 @@ router.route('/get-current-appraisals-appraiser-history').post((req, res) => {
 /////////////////////////////////////////////////
 // db.inventory.find( { quantity: { $nin: [ 5, 15 ] } }, { _id: 0 } )
 router.route('/get-current-appraisals-appraiser').post((req, res) => {
+    console.log("username");
     let username = req.body.username;
+    console.log(username);
     console.log("usao u appraisals appraiser ");
     // M.findOne({list: {$ne: 'A'}}
     appraisal_1.default.find({ "finished": false }, (err, appraisals) => {
@@ -249,10 +251,13 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => {
         else {
             console.log(appraisals);
             let a2 = [];
-            for (let i in appraisals) {
+            for (let i = 0; i < appraisals.length; i++) {
+                console.log("i : " + i + " duzina: " + appraisals.length);
                 let appraisal = appraisals[i].toObject();
                 let flag = false;
-                for (let j in appraisal.evaluations) {
+                for (let j = 0; j < appraisal.evaluations; j++) {
+                    console.log("usao a nije trebalo");
+                    console.log("j : " + j + " duzina: " + appraisals.length);
                     console.log(appraisal.evaluations[j].username);
                     if (appraisal.evaluations[j].username === username)
                         flag = true;
@@ -260,7 +265,8 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => {
                 if (!flag)
                     a2.push(appraisal);
             }
-            // console.log(a2);
+            console.log("prazno");
+            console.log(a2);
             res.json(a2);
         }
     });
@@ -394,10 +400,19 @@ function calculate_new_rating(rating) {
     let rating_val = 0;
     // console.log("calculate new rating");
     // console.log(rating);
-    for (let i = 0; i < rating.ratings.length; i++) {
-        rating_val += rating.ratings[i];
+    if (rating == null)
+        return 5;
+    else if (rating.ratings == null)
+        return 5;
+    else {
+        for (let i = 0; i < rating.ratings.length; i++) {
+            rating_val += rating.ratings[i];
+        }
+        if (rating.ratings.length > 0)
+            return rating_val / rating.ratings.length;
+        else
+            return 5;
     }
-    return rating_val / rating.ratings.length;
 }
 /////////////////////////////////////////////////
 router.route('/get-all-current-appraisals').post((req, res) => {
@@ -446,7 +461,7 @@ router.route('/get-rating').post((req, res) => {
         if (err)
             console.log(err);
         else {
-            let rating = calculate_new_rating(ratings.toObject());
+            let rating = calculate_new_rating(ratings != null ? ratings.toObject() : {});
             res.json({ "rating": rating });
         }
     });
