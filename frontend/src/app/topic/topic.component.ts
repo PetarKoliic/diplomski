@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeneralService } from '../services/general.service';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { inherits } from 'util';
 import { Topic } from '../models/topic.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,22 +17,23 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class TopicComponent implements OnInit {
 
-  constructor(private _router:Router, private router: ActivatedRoute, private service: GeneralService, private notificationService: NotificationService,
+  constructor(private _router: Router, private router: ActivatedRoute, private service: GeneralService, private notificationService: NotificationService,
     private changeDetectorRefs: ChangeDetectorRef) { }
 
   ngOnInit(): void {
 
 
     this.init();
+
+    console.log("usao u ngOnInit");
   }
-  topic_title: string; 
+  topic_title: string;
   username: string;
   topic: Topic = null;
   new_comment: string;
-  
 
-  init(): void
-  {
+
+  init(): void {
     this.topic_title = this.router.snapshot.paramMap.get('name');
     this.username = localStorage.getItem("username");
 
@@ -52,7 +53,7 @@ export class TopicComponent implements OnInit {
   }
 
   endIndex: number = 1;
-  startIndex : number = 0;
+  startIndex: number = 0;
   show_comments: Comment[];
 
   pageEvent(event: PageEvent) {
@@ -79,34 +80,40 @@ export class TopicComponent implements OnInit {
     return date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ".";
   }
 
-  add_comment()
-  {
-    console.log(this.username + " " + this.topic._id + " " + new Date() + " " + this.new_comment);
-    this.service.add_comment(this.username,this.topic._id, new Date(), this.new_comment).subscribe((res: any) => {
+  add_comment() {
 
-      console.log(res["msg"]);
+    if (this.new_comment == "" || this.new_comment == null)
+      this.notificationService.error("komentar ne sme da stoji prazan");
 
-      this.reload_comments();
+    else {
 
-      this.new_comment = "";
+      console.log(this.username + " " + this.topic._id + " " + new Date() + " " + this.new_comment);
+      this.service.add_comment(this.username, this.topic._id, new Date(), this.new_comment).subscribe((res: any) => {
 
-      this.notificationService.success("uspesno dodat komentar");
-    });
+        console.log(res["msg"]);
+
+        this.reload_comments();
+
+        this.new_comment = "";
+
+        this.notificationService.success("uspesno dodat komentar");
+      });
+
+    }
   }
 
 
 
-  delete_comment(comment: Comment)
-  {
-    console.log(comment.username + " " + comment.comment + " " + comment.date_added); 
+  delete_comment(comment: Comment) {
+    console.log(comment.username + " " + comment.comment + " " + comment.date_added);
 
 
-    this.service.delete_comment(comment.username,this.topic._id, comment.date_added).subscribe((res: any) => {
+    this.service.delete_comment(comment.username, this.topic._id, comment.date_added).subscribe((res: any) => {
 
       console.log("vratili smo se iz http zahteva");
       console.log(res["msg"]);
 
-      
+
       this.notificationService.success("uspesno obrisan komentar");
 
       this.reload_comments();
@@ -115,8 +122,7 @@ export class TopicComponent implements OnInit {
     });
   }
 
-  reload_comments()
-  {
+  reload_comments() {
     // this.show_comments = [];
     this.service.get_topic(this.topic_title).subscribe((topic: Topic) => {
 
@@ -127,20 +133,18 @@ export class TopicComponent implements OnInit {
       this.show_comments = this.topic.comments.slice(this.startIndex, this.endIndex);
       // console.log(this.)
 
-      this.show_comments= Object.assign([],this.show_comments);
+      this.show_comments = Object.assign([], this.show_comments);
 
       this.changeDetectorRefs.detectChanges();
     });
   }
 
-  show_comments_fun() : Comment[]
-  {
+  show_comments_fun(): Comment[] {
     return this.show_comments;
   }
 
 
-  logout()
-  {
+  logout() {
     localStorage.clear();
     this._router.navigate(['']);
 

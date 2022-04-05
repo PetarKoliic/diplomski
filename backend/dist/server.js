@@ -431,7 +431,7 @@ router.route('/get-topic').post((req, res) => {
     console.log("inside login");
     let title = req.body.title;
     console.log(title);
-    topic_1.default.findOne({ 'title': title }, (err, topic) => {
+    topic_1.default.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
         if (err)
             console.log('error delegate');
         else {
@@ -543,18 +543,28 @@ router.route('/add-topic').post((req, res) => {
     let category = req.body.category;
     let description = req.body.description;
     let date = req.body.date;
+    let _id = ObjectId(req.body._id);
+    console.log("usao u add-topic");
     let comment = {
         "description": description, "date_added": date, "username": username,
     };
-    let topic = new topic_1.default({
-        "username": username, "title": title,
-        "date_added": date, "comments": [comment],
-        "category": category, "views": 0
-    });
-    topic.save().then(u => {
-        res.json({ "msg": "ok" });
-    }).catch(err => {
-        res.json({ "msg": "error" });
+    topic_1.default.findOne({ "title": title }, (err, topic_found) => {
+        if (topic_found) {
+            res.json({ "msg": "postoji vec ista tema" });
+        }
+        else {
+            let topic = new topic_1.default({
+                "_id": _id,
+                "username": username, "title": title,
+                "date_added": date, "comments": [comment],
+                "category": category, "views": 0
+            });
+            topic.save().then(u => {
+                res.json({ "msg": "ok" });
+            }).catch(err => {
+                res.json({ "msg": "greska unutar servera" });
+            });
+        }
     });
 });
 /////////////////////////////////////////////////////

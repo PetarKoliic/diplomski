@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { GeneralService } from '../services/general.service';
+import { NotificationService } from '../services/notification.service';
 
 
 @Component({
@@ -9,9 +10,9 @@ import { GeneralService } from '../services/general.service';
 })
 
 export class NewTopicDialogComponent implements OnInit {
-  
+
   // @Output("dummy_fun") parentFun: EventEmitter<any> = new EventEmitter();
-  constructor(private service: GeneralService) { }
+  constructor(private service: GeneralService, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
 
@@ -27,21 +28,34 @@ export class NewTopicDialogComponent implements OnInit {
   categories: String[] = ["art", "fair", "social"];
   // result: boolean;
 
-  add_topic()
-  {
-    console.log("nesto smo i uradili" + this. title + " " + this.category + " " + this.description);
+  close_topic() {
 
+  }
+
+  add_topic() {
+    console.log("nesto smo i uradili" + this.title + " " + this.category + " " + this.description);
+
+    if (this.title == "" || this.title == null ||
+      this.category == "" || this.category == null ||
+      this.description == "" || this.description == null) {
+      this.notificationService.error("sva polja moraju biti uneta");
+    }
 
     // this.result = false;
-    
+
     // this.parentFun.emit();    
 
-    this.service.add_topic(this.username, this.title, this.category, this.description).subscribe((res: any) => {
+    else {
 
-      console.log(res["msg"]);
-      
-    });
+      this.service.add_topic(this.username, this.title, this.category, this.description).subscribe((res: any) => {
 
+        if(res["msg"] == "ok")
+          this.notificationService.success("uspesno napravljena nova tema");
+        else
+          this.notificationService.error(res["msg"]);
+
+      });
+    }
 
   }
 

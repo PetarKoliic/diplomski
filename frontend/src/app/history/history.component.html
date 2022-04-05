@@ -32,7 +32,7 @@
   
       <p>
         Zavrsna prrocena:
-        {{functions.current_evaluation(appraisal)}}
+        {{functions.toFixed(functions.current_evaluation(appraisal), 2)}}
       </p>
 
       <p *ngIf="appraisal.value != 0">

@@ -39,7 +39,7 @@ export class FunctionService {
 
         }
         else {
-          value_high_priority += evaluations[i].rating ^ 3 * evaluations[i].value;
+          value_high_priority += (evaluations[i].rating ^ 3) * evaluations[i].value;
           rating_formula_high_priority += evaluations[i].rating ^ 3;
           // console.log(value_high_priority + " : " + rating_formula_high_priority);
         }
@@ -51,6 +51,9 @@ export class FunctionService {
       if (rating_formula_high_priority > 0) {
         value_high_priority /= rating_formula_high_priority;
       }
+
+
+
       if (cnt_low_priority > 0)
         value_low_priority /= cnt_low_priority;
 
@@ -78,6 +81,12 @@ export class FunctionService {
 
     return extractedValue;
 
+}
+
+
+toFixed(num, fixed) {
+  var re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
+  return num.toString().match(re)[0];
 }
 
 }
