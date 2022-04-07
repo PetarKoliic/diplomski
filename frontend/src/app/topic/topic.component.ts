@@ -10,6 +10,7 @@ import { Comment } from '../models/comment.model';
 import { NotificationService } from '../services/notification.service';
 import { ChangeDetectorRef } from '@angular/core';
 
+
 @Component({
   selector: 'app-topic',
   templateUrl: './topic.component.html',
@@ -40,6 +41,7 @@ export class TopicComponent implements OnInit {
     console.log(this.topic_title);
     console.log(this.username);
 
+    this.show_comments = [];
     this.service.get_topic(this.topic_title).subscribe((topic: Topic) => {
 
       this.topic = topic;
@@ -48,6 +50,8 @@ export class TopicComponent implements OnInit {
       console.log(topic);
 
       this.show_comments = this.topic.comments.slice(this.startIndex, this.endIndex);
+
+      this.show_comments = [...this.show_comments];
 
     });
   }
@@ -87,6 +91,7 @@ export class TopicComponent implements OnInit {
 
     else {
 
+      this.show_comments = [];
       console.log(this.username + " " + this.topic._id + " " + new Date() + " " + this.new_comment);
       this.service.add_comment(this.username, this.topic._id, new Date(), this.new_comment).subscribe((res: any) => {
 
@@ -123,7 +128,7 @@ export class TopicComponent implements OnInit {
   }
 
   reload_comments() {
-    // this.show_comments = [];
+    this.show_comments = [];
     this.service.get_topic(this.topic_title).subscribe((topic: Topic) => {
 
       this.topic = topic;
@@ -136,6 +141,7 @@ export class TopicComponent implements OnInit {
       this.show_comments = Object.assign([], this.show_comments);
 
       this.changeDetectorRefs.detectChanges();
+      
     });
   }
 

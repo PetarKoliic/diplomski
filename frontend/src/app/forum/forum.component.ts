@@ -6,6 +6,8 @@ import { Topic } from '../models/topic.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { NotificationService } from '../services/notification.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-forum',
@@ -15,7 +17,7 @@ import { NotificationService } from '../services/notification.service';
 export class ForumComponent implements OnInit {
 
   constructor(private router: Router, private service: GeneralService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService, private changeDetectorRefs: ChangeDetectorRef) { }
 
 
   topics: Topic[];
@@ -183,6 +185,12 @@ export class ForumComponent implements OnInit {
   }
 
   load_topics() {
+
+
+    this.show_topics_art_piece = [];
+
+    this.changeDetectorRefs.detectChanges();
+
     this.service.get_all_topics().subscribe((topics: Topic[]) => {
 
       console.log(topics);
@@ -212,9 +220,11 @@ export class ForumComponent implements OnInit {
 
         }
       }
-    this.show_topics_art_piece = this.topics_art_piece.slice(0, this.endIndex);
+    this.show_topics_art_piece = [...this.topics_art_piece.slice(0, this.endIndex)];
 
-
+    this.changeDetectorRefs.detectChanges();
+    
+      console.log("load_topics()");
       console.log(this.topics_art_piece);
     });
   }
