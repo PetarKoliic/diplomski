@@ -189,7 +189,6 @@ export class ForumComponent implements OnInit {
 
     this.show_topics_art_piece = [];
 
-    this.changeDetectorRefs.detectChanges();
 
     this.service.get_all_topics().subscribe((topics: Topic[]) => {
 
@@ -220,12 +219,17 @@ export class ForumComponent implements OnInit {
 
         }
       }
-    this.show_topics_art_piece = [...this.topics_art_piece.slice(0, this.endIndex)];
 
-    this.changeDetectorRefs.detectChanges();
-    
+
+      console.log("duzina niza" + this.topics_art_piece.length);
+      if (this.endIndex + 1 <= this.topics_art_piece.length)
+        this.endIndex++;
+
+    this.show_topics_art_piece = [...this.topics_art_piece.slice(this.startIndex, this.endIndex)];
+
+    this.changeDetectorRefs.detectChanges();      
       console.log("load_topics()");
-      console.log(this.topics_art_piece);
+      console.log(this.show_topics_art_piece);
     });
   }
 
