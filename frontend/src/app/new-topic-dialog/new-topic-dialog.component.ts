@@ -23,7 +23,7 @@ export class NewTopicDialogComponent implements OnInit {
   username: string;
   title: string;
   category: string;
-  description: string;
+  comment: string;
   selected_category: string;
   categories: String[] = ["art", "fair", "social"];
   // result: boolean;
@@ -33,11 +33,11 @@ export class NewTopicDialogComponent implements OnInit {
   }
 
   add_topic() {
-    console.log("nesto smo i uradili" + this.title + " " + this.category + " " + this.description);
+    console.log("nesto smo i uradili" + this.title + " " + this.category + " " + this.comment);
 
     if (this.title == "" || this.title == null ||
       this.category == "" || this.category == null ||
-      this.description == "" || this.description == null) {
+      this.comment == "" || this.comment == null) {
       this.notificationService.error("sva polja moraju biti uneta");
     }
 
@@ -47,7 +47,7 @@ export class NewTopicDialogComponent implements OnInit {
 
     else {
 
-      this.service.add_topic(this.username, this.title, this.category, this.description).subscribe((res: any) => {
+      this.service.add_topic(this.username, this.title, this.category, this.comment).subscribe((res: any) => {
 
         if(res["msg"] == "ok")
           this.notificationService.success("uspesno napravljena nova tema");

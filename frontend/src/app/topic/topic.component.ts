@@ -53,16 +53,20 @@ export class TopicComponent implements OnInit {
 
       this.show_comments = [...this.show_comments];
 
+      console.log(this.show_comments);
+
     });
   }
 
   endIndex: number = 1;
   startIndex: number = 0;
+  pageSize: number
   show_comments: Comment[];
 
   pageEvent(event: PageEvent) {
     this.startIndex = event.pageIndex * event.pageSize;
     this.endIndex = this.startIndex + event.pageSize;
+    this.pageSize = event.pageSize;
 
     this.show_comments = [];
 
@@ -97,6 +101,8 @@ export class TopicComponent implements OnInit {
 
         console.log(res["msg"]);
 
+        if (this.endIndex - this.startIndex + 1 <= this.pageSize)
+          this.endIndex++;
         this.reload_comments();
 
         this.new_comment = "";
@@ -121,6 +127,9 @@ export class TopicComponent implements OnInit {
 
       this.notificationService.success("uspesno obrisan komentar");
 
+      if (this.endIndex - 1 >= 0)
+        this.endIndex--;
+
       this.reload_comments();
 
 
@@ -138,10 +147,13 @@ export class TopicComponent implements OnInit {
       this.show_comments = this.topic.comments.slice(this.startIndex, this.endIndex);
       // console.log(this.)
 
+
+      console.log(this.startIndex);
+      console.log(this.endIndex);
       this.show_comments = Object.assign([], this.show_comments);
 
       this.changeDetectorRefs.detectChanges();
-      
+
     });
   }
 

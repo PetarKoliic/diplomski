@@ -874,7 +874,7 @@ router.route('/add-topic').post((req, res) => {
     let username = req.body.username;
     let title = req.body.title;
     let category = req.body.category;
-    let description = req.body.description;
+    let comment_description = req.body.comment;
     let date = req.body.date;
     let _id = ObjectId(req.body._id);
 
@@ -882,7 +882,7 @@ router.route('/add-topic').post((req, res) => {
     console.log("usao u add-topic");
 
     let comment = {
-        "description": description, "date_added": date, "username": username,
+        "comment": comment_description, "date_added": date, "username": username,
     };
 
 

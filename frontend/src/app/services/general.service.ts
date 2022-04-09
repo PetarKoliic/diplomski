@@ -249,13 +249,13 @@ export class GeneralService {
     return this.http.post(`${this.uri}/get-topic`, data);
   }
 
-  add_topic(username: string, title: string, category: string, description: string)
+  add_topic(username: string, title: string, category: string, comment: string)
   {
     const data = {
       'username': username,
       "title": title,
       "category": category,
-      "description": description,
+      "comment": comment,
       "date": new Date()
     }
 
