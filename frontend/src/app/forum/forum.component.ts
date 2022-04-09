@@ -22,14 +22,16 @@ export class ForumComponent implements OnInit {
 
 
   topics: Topic[];
-  topics_social: Topic[] = [];
-  
-  topics_fair: Topic[] = [];
+  // topics_social: Topic[] = [];
+  // topics_fair: Topic[] = [];
 
+  page_size_options: number[] = [1, 3, 5];
 
   // topics_art_piece: Topic[] = [];
   // show_topics_art_piece: Topic[];
-  arts: TopicPagination = new TopicPagination();
+  arts: TopicPagination = new TopicPagination("art",0, this.page_size_options[0], this.page_size_options[0]);
+  fairs : TopicPagination = new TopicPagination("fair",0, this.page_size_options[0], this.page_size_options[0]);
+  socials: TopicPagination = new TopicPagination("social", 0, this.page_size_options[0], this.page_size_options[0]);
 
 
   search_topic: string;
@@ -42,58 +44,14 @@ export class ForumComponent implements OnInit {
     console.log(this.up_down_flag);
     console.log(this.sort_choosen);
 
-    this.arts.sort(this.search_topic, this.sort_choosen, this.up_down_flag);
-    // this.show_topics_art_piece.sort((a: Topic, b: Topic) => {
-
-
-    //   let flag = this.up_down_flag === "up" ? 1 : -1;
-
-
-    //   // if (this.sort_choosen === "date_created")
-    //   //   return a.title > b.title ? 1 * flag : -1 * flag;
-
-    //   if (this.sort_choosen === "title" || this.sort_choosen === "views" ||
-    //     this.sort_choosen === "date_added")
-    //     return a[this.sort_choosen] > b[this.sort_choosen] ? 1 * flag : -1 * flag;
-    //   else if (this.sort_choosen === "comments_count")
-    //     return a.comments.length - b.comments.length;
-    //   else // last comment
-    //     return a.comments[a.comments.length - 1].date_added > b.comments[b.comments.length - 1].date_added ? 1 * flag : -1 * flag;
-
-    // });
-
-    // this.sort_array_criteria(this.show_topics_art_piece);
-    // this.sort_array_criteria(this.topics_art_piece);
-
-    // console.log(this.show_topics_art_piece);
-    // console.log(this.topics_art_piece);
+    TopicPagination.sort_all(this.search_topic, this.sort_choosen, this.up_down_flag);
+    // this.arts.sort(this.search_topic, this.sort_choosen, this.up_down_flag);
 
   }
 
-  sort_array_criteria(topics: Topic[])
-  {
-    topics.sort((a: Topic, b: Topic) => {
-
-
-      let flag = this.up_down_flag === "up" ? 1 : -1;
-
-
-      // if (this.sort_choosen === "date_created")
-      //   return a.title > b.title ? 1 * flag : -1 * flag;
-
-      if (this.sort_choosen === "title" || this.sort_choosen === "views" ||
-        this.sort_choosen === "date_added")
-        return a[this.sort_choosen] > b[this.sort_choosen] ? 1 * flag : -1 * flag;
-      else if (this.sort_choosen === "comments_count")
-        return a.comments.length - b.comments.length;
-      else // last comment
-        return a.comments[a.comments.length - 1].date_added > b.comments[b.comments.length - 1].date_added ? 1 * flag : -1 * flag;
-
-    });
-
-    console.log(topics);
-  }  
-
+  // search mora da se ponovi ?????????????????????????????????????????
+  // TODO TODO
+  // topic_pagination: TopicPagination
   search()
   {
     console.log(this.search_topic);
@@ -106,52 +64,46 @@ export class ForumComponent implements OnInit {
 
       this.topics = topics;
 
-      // this.topics_art_piece = [];
-      this.arts.topics = []
-      this.topics_fair = [];
-      this.topics_social = [];
+      // this.arts.topics = [];
+      // this.fairs.topics = [];
+      // this.topics_social = [];
+      TopicPagination.empty_all_topics();
 
       for (let i = 0; i < this.topics.length; i++) {
-        // console.log(this.topics[i]);
-        // console.log(this.topics);
+        
         if (this.topics[i].category === "social") {
-          this.topics_social.push(this.topics[i]);
+          this.socials.topics.push(this.topics[i]);
         }
         else if (this.topics[i].category === "fair") {
-          this.topics_fair.push(this.topics[i]);
+          this.fairs.topics.push(this.topics[i]);
         }
         else if (this.topics[i].category === "art") {
-          // this.topics_art_piece.push(this.topics[i]);
           this.arts.topics.push(this.topics[i]);
 
-          // console.log(i);
-          // console.log("jer sam usao ovde");
-          // this.format_date(this.topics_art_piece[i].comments[this.topics[i].comments.length].date_added);
 
         }
       }
       console.log("dosli dovde");
       // console.log(this.topics_art_piece);
       console.log(this.arts.topics);
-      
-      // this.topics_art_piece = this.topics_art_piece.filter(topic => topic.title.includes(this.search_topic));
-      // this.show_topics_art_piece = this.topics_art_piece;
+      console.log(this.fairs.topics);
+      console.log(this.socials.topics);
+
       this.arts.topics = this.arts.topics.filter(topic => topic.title.includes(this.search_topic));
+      this.socials.topics = this.socials.topics.filter(topic => topic.title.includes(this.search_topic));
+      this.fairs.topics = this.fairs.topics.filter(topic => topic.title.includes(this.search_topic));
+
 
       console.log("art piece");
       console.log(this.arts.topics);
+
+      TopicPagination.refresh_all_topics(this.startIndex, this.endIndex, 1);
     });
 
 
-
-
-
-    // console.log(this.topics_art_piece);
   }
 
   ngOnInit(): void {
-
-
     this.init();
   }
 
@@ -168,31 +120,22 @@ export class ForumComponent implements OnInit {
   endIndex: number = 1;
   startIndex : number = 0;
 
-  // paginator_images: Array<String[]>;
-  pageEvent(event: PageEvent) {
+  pageEvent(event: PageEvent, topic_pagination: TopicPagination) {
     this.startIndex = event.pageIndex * event.pageSize;
     this.endIndex = this.startIndex + event.pageSize;
 
-    // this.show_topics_art_piece = [];
-    this.arts.show_topics = [];
+    // this.arts.show_topics = [];
 
-    // if (this.endIndex == this.topics_art_piece.length)
-    //   this.endIndex = this.topics_art_piece.length;
+    // topic_pagination.show_topics = [];
 
-    if (this.endIndex == this.arts.topics.length)
-      this.endIndex = this.arts.topics.length;
-
-
-    this.arts.fill_indexes(this.startIndex, this.endIndex, event.pageSize);
-
-    // ovo izmeni
-    // this.paginator_images=this.all_countries.slice(startIndex,endIndex);
-
-    // this.img_pagination.set(appraisal._id, { "start_index": startIndex, "end_index": endIndex });
-
-
-    this.arts.refresh_show_topics();
-    // this.show_topics_art_piece = this.topics_art_piece.slice(this.startIndex, this.endIndex);
+    // if (this.endIndex == this.arts.topics.length)
+    //   this.endIndex = this.arts.topics.length;
+    // console.log("osvezena stranica");
+    // console.log("startIndex :" + this.startIndex + " endIndex: " + this.endIndex);
+    topic_pagination.refresh_show_topics(this.startIndex, this.endIndex, event.pageSize);
+    // console.log(this.arts.show_topics)
+    // console.log(this.arts.topics);
+    this.changeDetectorRefs.detectChanges();
 
   }
 
@@ -204,29 +147,25 @@ export class ForumComponent implements OnInit {
 
   load_topics() {
 
-
-    // this.show_topics_art_piece = [];
-
+    TopicPagination.empty_all_topics();
 
     this.service.get_all_topics().subscribe((topics: Topic[]) => {
 
       console.log(topics);
 
       this.topics = topics;
-
-      // this.topics_art_piece = [];
-      this.topics_fair = [];
-      this.topics_social = [];
+      
 
 
       for (let i = 0; i < this.topics.length; i++) {
-        // console.log(this.topics[i]);
-        // console.log(this.topics);
+
         if (this.topics[i].category === "social") {
-          this.topics_social.push(this.topics[i]);
+          // this.topics_social.push(this.topics[i]);
+          this.socials.topics.push(this.topics[i]);
         }
         else if (this.topics[i].category === "fair") {
-          this.topics_fair.push(this.topics[i]);
+          // this.topics_fair.push(this.topics[i]);
+          this.fairs.topics.push(this.topics[i]);
         }
         else if (this.topics[i].category === "art") {
           // this.topics_art_piece.push(this.topics[i]);
@@ -241,22 +180,15 @@ export class ForumComponent implements OnInit {
       }
 
 
-      // console.log("duzina niza" + this.topics_art_piece.length);
       console.log("duzina niza" + this.arts.topics.length);
+      console.log("arts niz");
+      console.log(this.arts.topics);
 
-      // ???????????????????????????????????????
-      // if (this.endIndex + 1 == this.topics_art_piece.length)
-      //   this.endIndex++;
-      // ???????????????????????????????????????
-
-    // this.show_topics_art_piece = [...this.topics_art_piece.slice(this.startIndex, this.endIndex)];
-    this.arts.fill_indexes(this.startIndex, this.endIndex, 1);
-
-      this.arts.refresh_show_topics();
+      // this.arts.refresh_show_topics(this.startIndex, this.endIndex, this.page_size_options[0]);
+      TopicPagination.refresh_all_topics(this.startIndex, this.endIndex, this.page_size_options[0]);
 
     this.changeDetectorRefs.detectChanges();      
       console.log("load_topics()");
-      // console.log(this.show_topics_art_piece);
       console.log(this.arts.show_topics);
     });
   }
@@ -265,9 +197,7 @@ export class ForumComponent implements OnInit {
 
   open_topic(topic_name: string)
   {
-
     console.log("usao 22");
-
     this.router.navigate(['topic/', topic_name ]);
   }
 }

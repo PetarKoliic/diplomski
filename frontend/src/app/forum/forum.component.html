@@ -71,31 +71,52 @@ neke izmene
       <!-- <h3 mat-subheader>Notes</h3> -->
    </mat-list>
 
-   <mat-paginator #paginator [length]="arts.topics.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]" aria-label="Select page" (page)="pageEvent($event)">
+   <mat-paginator #paginator [length]="arts.topics.length" [pageSize]="page_size_options[0]" [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, arts)">
    </mat-paginator>
 
 
-   <mat-list>
+
+
+   <mat-list >
       <h3 mat-subheader>Druzenje</h3>
-      <mat-list-item *ngFor="let topic of topics_social; last as last">
+      <mat-list-item *ngFor="let topic of socials.show_topics; last as last">
          <mat-icon mat-list-icon>folder</mat-icon>
-         <h4 mat-line>{{topic.title}}</h4>
-         <p mat-line class="demo-2"> {{topic.username}} </p>
+         <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
+         <p mat-line class="demo-2"  > {{topic.username}} </p>
+         <div>
+            <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
+            <div>Napravljeno: {{format_date(topic.date_added)}}</div>
+            <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
+         </div>
          <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
       <mat-divider></mat-divider>
       <!-- <h3 mat-subheader>Notes</h3> -->
    </mat-list>
 
+   <mat-paginator #paginator [length]="socials.topics.length" [pageSize]="page_size_options[0]" [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, socials)">
+   </mat-paginator>
 
-   <mat-list>
+
+
+   <mat-list >
       <h3 mat-subheader>Sajmovi</h3>
-      <mat-list-item *ngFor="let topic of topics_fair; last as last">
-         <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
-         <h4 mat-line>{{topic.title}}</h4>
-         <p mat-line class="demo-2"> {{topic.username}} </p>
+      <mat-list-item *ngFor="let topic of fairs.show_topics; last as last">
+         <mat-icon mat-list-icon>folder</mat-icon>
+         <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
+         <p mat-line class="demo-2"  > {{topic.username}} </p>
+         <div>
+            <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
+            <div>Napravljeno: {{format_date(topic.date_added)}}</div>
+            <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
+         </div>
          <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
       <mat-divider></mat-divider>
       <!-- <h3 mat-subheader>Notes</h3> -->
    </mat-list>
+
+   <mat-paginator #paginator [length]="fairs.topics.length" [pageSize]="page_size_options[0]" [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, fairs)">
+   </mat-paginator>
+
+

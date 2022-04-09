@@ -1,3 +1,4 @@
+import { allowedNodeEnvironmentFlags } from "process";
 import { Appraisal } from "./appraisal.model";
 import { Topic } from "./topic.model";
 
@@ -8,12 +9,16 @@ export class TopicPagination {
     endIndex: number;
     pageSize: number;
     topics: Topic[] = [];
-    show_topics: Topic[] = []
+    show_topics: Topic[] = [];
+    name : string;
 
+    static all_objects: TopicPagination[] = [];
 
-    constructor(startIndex: number = 0, endIndex: number = 1, pageSize: number = 0) {
-
+    constructor(name: string, startIndex: number = 0, endIndex: number = 1, pageSize: number = 0) {
+        TopicPagination.all_objects.push(this);
         this.fill_indexes(startIndex, endIndex, pageSize);
+
+        this.name = name;
     }
 
     fill_indexes(startIndex: number, endIndex: number, pageSize: number) {
@@ -53,6 +58,30 @@ export class TopicPagination {
     
       }
 
+  static empty_all_topics()
+  {
+    for(let i = 0; i < TopicPagination.all_objects.length; i++)
+    {
+      TopicPagination.all_objects[i].topics = [];
+      TopicPagination.all_objects[i].show_topics = [];
+    }
+  }
+
+  static refresh_all_topics(startIndex: number, endIndex: number, pageSize: number)
+  {
+    for(let i = 0; i < TopicPagination.all_objects.length; i++)
+    {
+      TopicPagination.all_objects[i].refresh_show_topics(startIndex, endIndex, pageSize);
+    }
+  }
+  static sort_all(search_topic: string, sort_choosen: string, up_down_flag: string)
+  {
+    for(let i = 0; i < TopicPagination.all_objects.length; i++)
+    {
+      TopicPagination.all_objects[i].sort(search_topic, sort_choosen, up_down_flag);
+    }
+  }
+
   static sort_array_criteria(topics: Topic[], search_topic: string,sort_choosen: string ,up_down_flag:string)
   {
     topics.sort((a: Topic, b: Topic) => {
@@ -77,9 +106,19 @@ export class TopicPagination {
     console.log(topics);
   }
 
-  refresh_show_topics()
+  refresh_show_topics(startIndex: number, endIndex: number, pageSize: number)
   {
+
+    // console.log("prenete vrednosti");
+    // console.log(startIndex + " : " + endIndex);
+    this.fill_indexes(startIndex, endIndex, pageSize);
+
+
     this.show_topics = [...this.topics.slice(this.startIndex, this.endIndex)];
+
+    // console.log("pocetak kraj : " + this.startIndex + " kraj :" + this.endIndex);
+
+    console.log(this.topics.slice(this.startIndex, this.endIndex));
   }
 
 
