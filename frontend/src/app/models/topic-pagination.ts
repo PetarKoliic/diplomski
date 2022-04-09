@@ -11,7 +11,7 @@ export class TopicPagination {
     show_topics: Topic[] = []
 
 
-    constructor(startIndex: number = 0, endIndex: number = 0, pageSize: number = 0) {
+    constructor(startIndex: number = 0, endIndex: number = 1, pageSize: number = 0) {
 
         this.fill_indexes(startIndex, endIndex, pageSize);
     }
