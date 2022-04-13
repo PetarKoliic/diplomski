@@ -86,6 +86,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { StatisticsAppraiserRatingComponent } from './statistics-appraiser-rating/statistics-appraiser-rating.component';
 import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-appraisal.component';
 import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
+import { GoogleSignInComponent } from './google-sign-in/google-sign-in.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } as 'highcharts-angular';
 
@@ -115,7 +116,8 @@ import { StatisticsUserComponent } from './statistics-user/statistics-user.compo
     NotificationComponent,
     StatisticsAppraiserRatingComponent,
     StatisticsAppraisalComponent,
-    StatisticsUserComponent
+    StatisticsUserComponent,
+    GoogleSignInComponent
   ],
   imports: [
     BrowserModule,

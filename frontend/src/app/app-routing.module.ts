@@ -19,7 +19,7 @@ import { TopicComponent } from './topic/topic.component';
 import { StatisticsAppraiserRatingComponent } from './statistics-appraiser-rating/statistics-appraiser-rating.component';
 import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-appraisal.component';
 import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
-
+import { GoogleSignInComponent } from './google-sign-in/google-sign-in.component';
 
 const routes: Routes = [
 
@@ -45,6 +45,8 @@ const routes: Routes = [
   {path:'statistics-user', component : StatisticsUserComponent},
   {path:'forum', component : ForumComponent},
   {path:'topic/:name',  component : TopicComponent},
+  {path:'google-sign-in', component : GoogleSignInComponent},
+
   
 
 

@@ -16,6 +16,10 @@ import Topic from './models/topic';
 import { Comment } from './models/comment.model';
 import user from './models/user';
 import { name } from 'ejs';
+import passport from 'passport';
+
+require('./auth');
+
 
 const app = express();
 var ObjectId = require('mongoose').Types.ObjectId;
@@ -931,6 +935,80 @@ app.get("/image.png", (req, res) => {
 });
 
 
+
+//////////////////////////////////////////////////
+
+ 
+
+
+//  router.get('/auth-google', passport.authenticate('google', {
+//     session: false,
+//     scope: ['profile', 'email']
+// }));
+
+//  router.route('/auth-google').get((req, res) => {
+
+//     console.log("usao u auth google");
+//       let a = passport.authenticate('google', {scope: ['email', 'profile']});  
+
+//     console.log("vratio se iz auth");
+    
+
+//     res.send(a);
+  
+// });
+
+//
+app.all('/*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
+
+app.get('/auth-google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+
+
+app.get('/auth-google/callback', passport.authenticate('google',
+{successRedirect: '/protected',
+ failureRedirect: '/auth/fail'},
+));
+
+// app.use(cors());
+
+// app.get('/auth-google/callback',
+//     passport.authenticate('google', { failureRedirect: '/auth/fail' }),
+// function(req, res) {
+
+//     console.log("req then responce");
+//     console.log(req);
+//     console.log(res);
+
+//     console.log("usao u callback");
+//     var responseHTML = '<html><head><title>Main</title></head><body></body><script>res = %value%; window.opener.postMessage(res, "*");window.close();</script></html>'
+//     responseHTML = responseHTML.replace('%value%', JSON.stringify({
+//         user: req.user
+//     }));
+
+//     console.log(responseHTML);
+
+//     res.status(200).send("RESPONSE");
+
+
+// });
+
+app.get('/auth/fail', (req, res) => {
+
+    res.send("Greska neka");
+});
+
+app.get('/protected', (req, res) => {
+
+    res.send("Uspeh");
+});
+
+
+app.get('/redirect', (req, res) => {
+    res.redirect("https://google.com");
+});
 
 //////////////////////////////////////////////////
 

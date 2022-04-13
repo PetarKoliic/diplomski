@@ -290,6 +290,24 @@ export class GeneralService {
   }
 
 
+  redirect()
+  {
+
+    return this.http.get(`${this.uri}/redirect`, {});
+  }
+
+  auth_google()
+  {
+    // const data = {'responseType': 'text'};
+    return this.http.get(`${this.uri}/auth-google`, {responseType: 'text'});
+
+    // return this.http.post(
+    //   'http://10.0.1.19/login',
+    //   {email, password},
+    //   {responseType: 'text'})
+  }
+
+
 }
 
 
