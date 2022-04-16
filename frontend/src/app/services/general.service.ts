@@ -307,6 +307,18 @@ export class GeneralService {
     //   {responseType: 'text'})
   }
 
+  login_register(username: string, firstname: string, lastname: string, email: string)
+  {
+    const data = {
+      'username': username,
+      'firstname': firstname,
+      'lastname': lastname,
+      "email": email
+    }
+
+    return this.http.post(`${this.uri}/login-register`, data);
+  }
+
 
 }
 

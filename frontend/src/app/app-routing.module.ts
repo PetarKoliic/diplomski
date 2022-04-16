@@ -20,6 +20,7 @@ import { StatisticsAppraiserRatingComponent } from './statistics-appraiser-ratin
 import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-appraisal.component';
 import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
 import { GoogleSignInComponent } from './google-sign-in/google-sign-in.component';
+import { RedirectComponent } from './redirect/redirect.component';
 
 const routes: Routes = [
 
@@ -46,6 +47,8 @@ const routes: Routes = [
   {path:'forum', component : ForumComponent},
   {path:'topic/:name',  component : TopicComponent},
   {path:'google-sign-in', component : GoogleSignInComponent},
+  {path:'redirect',  component : RedirectComponent},
+
 
   
 

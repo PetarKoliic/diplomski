@@ -576,47 +576,63 @@ app.get("/image.png", (req, res) => {
     res.sendFile(path.join(__dirname, "../uploads/" + req.body.url));
 });
 //////////////////////////////////////////////////
-//  router.get('/auth-google', passport.authenticate('google', {
-//     session: false,
-//     scope: ['profile', 'email']
-// }));
-//  router.route('/auth-google').get((req, res) => {
-//     console.log("usao u auth google");
-//       let a = passport.authenticate('google', {scope: ['email', 'profile']});  
-//     console.log("vratio se iz auth");
-//     res.send(a);
-// });
-//
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     next();
 });
-app.get('/auth-google', passport_1.default.authenticate('google', { scope: ['email', 'profile'] }));
-app.get('/auth-google/callback', passport_1.default.authenticate('google', { successRedirect: '/protected',
-    failureRedirect: '/auth/fail' }));
-// app.use(cors());
-// app.get('/auth-google/callback',
-//     passport.authenticate('google', { failureRedirect: '/auth/fail' }),
-// function(req, res) {
-//     console.log("req then responce");
-//     console.log(req);
-//     console.log(res);
-//     console.log("usao u callback");
-//     var responseHTML = '<html><head><title>Main</title></head><body></body><script>res = %value%; window.opener.postMessage(res, "*");window.close();</script></html>'
-//     responseHTML = responseHTML.replace('%value%', JSON.stringify({
-//         user: req.user
-//     }));
-//     console.log(responseHTML);
-//     res.status(200).send("RESPONSE");
-// });
+app.get('/auth-google', passport_1.default.authenticate('google', { scope: ['email', 'profile'] }), () => {
+    console.log("i ja se pitam");
+});
+app.get('/auth-google/callback', passport_1.default.authenticate('google', {
+    successRedirect: '/auth/success',
+    failureRedirect: '/auth/fail'
+}));
 app.get('/auth/fail', (req, res) => {
     res.send("Greska neka");
 });
-app.get('/protected', (req, res) => {
-    res.send("Uspeh");
+app.get('/auth/success', (req, res) => {
+    console.log("user object");
+    console.log(usr_obj);
+    let username = usr_obj["username"];
+    let email = usr_obj["email"];
+    let firstname = usr_obj["firstname"];
+    let lastname = usr_obj["lastname"];
+    res.redirect('http://localhost:4200/redirect' + '/?email=' + email + "&username=" + username + "&firstname=" + firstname + "&lastname=" + lastname);
+    // res.redirect('http://localhost:4200/redirect/'+ email + "/"+ username);
 });
 app.get('/redirect', (req, res) => {
     res.redirect("https://google.com");
+});
+var usr_obj = {};
+function save_info(firstname, lastname, username, email) {
+    usr_obj = { "username": username, "email": email, "firstname": firstname,
+        "lastname": lastname };
+    console.log("***********************************");
+}
+exports.save_info = save_info;
+//////////////////////////////////////////////////
+router.route('/login-register').post((req, res) => {
+    let username = req.body.username;
+    let email = req.body.email;
+    let firstname = req.body.firstname;
+    let lastname = req.body.lastname;
+    console.log("username");
+    console.log(username);
+    console.log("email");
+    console.log(email);
+    user_1.default.findOne({ "email": email }, (err, user) => {
+        if (user) {
+            res.json(user);
+        }
+        else {
+            let user = new user_1.default({ "username": username,
+                "firstname": firstname, "lastname": lastname,
+                "email": email, "type": "user", "rating": 5 });
+            user.save().then(u => {
+                res.json(u);
+            });
+        }
+    });
 });
 //////////////////////////////////////////////////
 app.use('/', router);

@@ -404,7 +404,7 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => {
                 let flag: boolean = false;
                 for (let j = 0; j < appraisal.evaluations; j++) {
                     console.log("usao a nije trebalo");
-                console.log("j : " + j + " duzina: " + appraisals.length);
+                    console.log("j : " + j + " duzina: " + appraisals.length);
                     console.log(appraisal.evaluations[j].username);
                     if (appraisal.evaluations[j].username === username)
                         flag = true;
@@ -695,7 +695,7 @@ router.route('/get-topic').post(
         console.log(title);
 
 
-        Topic.findOneAndUpdate({ 'title': title }, {$inc: {"views": 1}}, (err, topic) => {
+        Topic.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
 
 
             if (err)
@@ -892,31 +892,29 @@ router.route('/add-topic').post((req, res) => {
 
 
 
-    Topic.findOne({ "title": title}, (err, topic_found) => {
+    Topic.findOne({ "title": title }, (err, topic_found) => {
 
-        if(topic_found)
-        {
-            res.json({"msg": "postoji vec ista tema"});
+        if (topic_found) {
+            res.json({ "msg": "postoji vec ista tema" });
         }
 
-        else 
-        {
+        else {
 
-        let topic = new Topic({
-            "_id": _id, 
-            "username": username, "title": title,
-            "date_added": date, "comments": [comment],
-            "category": category, "views": 0
-        });
-    
-    
-        topic.save().then(u => {
-            res.json({ "msg": "ok" });
-        }).catch(err => {
-            res.json({ "msg": "greska unutar servera" });
-        });
-    }
-});
+            let topic = new Topic({
+                "_id": _id,
+                "username": username, "title": title,
+                "date_added": date, "comments": [comment],
+                "category": category, "views": 0
+            });
+
+
+            topic.save().then(u => {
+                res.json({ "msg": "ok" });
+            }).catch(err => {
+                res.json({ "msg": "greska unutar servera" });
+            });
+        }
+    });
 });
 
 
@@ -938,71 +936,48 @@ app.get("/image.png", (req, res) => {
 
 //////////////////////////////////////////////////
 
- 
-
-
-//  router.get('/auth-google', passport.authenticate('google', {
-//     session: false,
-//     scope: ['profile', 'email']
-// }));
-
-//  router.route('/auth-google').get((req, res) => {
-
-//     console.log("usao u auth google");
-//       let a = passport.authenticate('google', {scope: ['email', 'profile']});  
-
-//     console.log("vratio se iz auth");
-    
-
-//     res.send(a);
-  
-// });
-
-//
-app.all('/*', function(req, res, next) {
+app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     next();
 });
 
-app.get('/auth-google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+app.get('/auth-google', passport.authenticate('google', { scope: ['email', 'profile'] }),
+    () => {
+        console.log("i ja se pitam");
+    });
 
 
 app.get('/auth-google/callback', passport.authenticate('google',
-{successRedirect: '/protected',
- failureRedirect: '/auth/fail'},
+    {
+        successRedirect: '/auth/success',
+        failureRedirect: '/auth/fail'
+    },
 ));
 
-// app.use(cors());
-
-// app.get('/auth-google/callback',
-//     passport.authenticate('google', { failureRedirect: '/auth/fail' }),
-// function(req, res) {
-
-//     console.log("req then responce");
-//     console.log(req);
-//     console.log(res);
-
-//     console.log("usao u callback");
-//     var responseHTML = '<html><head><title>Main</title></head><body></body><script>res = %value%; window.opener.postMessage(res, "*");window.close();</script></html>'
-//     responseHTML = responseHTML.replace('%value%', JSON.stringify({
-//         user: req.user
-//     }));
-
-//     console.log(responseHTML);
-
-//     res.status(200).send("RESPONSE");
-
-
-// });
 
 app.get('/auth/fail', (req, res) => {
 
     res.send("Greska neka");
 });
 
-app.get('/protected', (req, res) => {
+app.get('/auth/success', (req, res) => {
 
-    res.send("Uspeh");
+    console.log("user object");
+    console.log(usr_obj);
+
+
+    let username = usr_obj["username"];
+    let email = usr_obj["email"];
+    let firstname = usr_obj["firstname"];
+    let lastname = usr_obj["lastname"];
+
+
+
+
+    res.redirect('http://localhost:4200/redirect' + '/?email=' + email + "&username=" + username+ "&firstname="+ firstname + "&lastname=" + lastname);
+
+    // res.redirect('http://localhost:4200/redirect/'+ email + "/"+ username);
+
 });
 
 
@@ -1010,8 +985,51 @@ app.get('/redirect', (req, res) => {
     res.redirect("https://google.com");
 });
 
+var usr_obj: any = {};
+export function save_info(firstname: string, lastname: string, username: string, email: string) {
+    usr_obj = { "username": username, "email": email, "firstname": firstname,
+"lastname": lastname };
+    console.log("***********************************");
+}
+
 //////////////////////////////////////////////////
 
+router.route('/login-register').post((req, res) => {
+
+
+
+    let username = req.body.username;
+    let email = req.body.email;
+    let firstname = req.body.firstname;
+    let lastname = req.body.lastname; 
+
+    console.log("username");
+    console.log(username);
+    console.log("email");
+    console.log(email);
+
+
+    User.findOne({ "email": email }, (err, user) => {
+        if (user) {
+
+
+            res.json(user);
+        }
+        else {
+            let user = new User({"username": username,
+            "firstname": firstname, "lastname": lastname, 
+            "email": email, "type": "user", "rating": 5});
+            user.save().then(u => {
+                res.json(u);
+            });
+        }
+
+    });
+});
+
+
+
+//////////////////////////////////////////////////
 
 app.use('/', router);
 app.listen(4000, () => console.log(`Express server running on port 4000`));

@@ -18,18 +18,20 @@ export class GoogleSignInComponent implements OnInit {
 
 
   // window.location.href =  "http://localhost:4000/auth-google";
+//
+    this.service.auth_google().subscribe((user: any) => {
 
-    // this.service.auth_google().subscribe((user: any) => {
-
-    //   console.log(user);
-    // });
+      console.log(user);
+    });
 
 
     // this.service.redirect().subscribe((user: any) => {
     //   console.log("user");
     // })
+    window.location.href = 'http://localhost:4000/auth-google';
 
-      window.open('http://localhost:4000/auth-google',"location=1,status=1,scrollbars=1, width=800,height=800");
+
+      // window.open('");
      let listener = window.addEventListener('DOMContentLoaded', (message) => {
        //message will contain google user and details
 
