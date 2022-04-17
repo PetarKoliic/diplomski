@@ -319,6 +319,12 @@ export class GeneralService {
     return this.http.post(`${this.uri}/login-register`, data);
   }
 
+  pay(stripeToken: any)
+  {
+
+    return this.http.post(`${this.uri}/pay`, {"token": stripeToken});
+  }
+
 
 }
 

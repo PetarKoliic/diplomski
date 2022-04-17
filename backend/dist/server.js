@@ -634,7 +634,46 @@ router.route('/login-register').post((req, res) => {
         }
     });
 });
+const stripe = require('stripe')("sk_test_51KpTkCKC9d8RyJ0Ejxlyv3LhgX52fExbMMUyzQ1Kpqzz8aIbdDEssxTqDJm81UumKSDf9LMcoOvzpheLMnUCArfm00v1QbB8lu");
+router.route('/pay').post((req, res) => {
+    console.log(req.body);
+    let token;
+    try {
+        console.log(req.body);
+        token = req.body.token;
+        const customer = stripe.customers
+            .create({
+            email: "geekygautam1997@gmail.com",
+            source: token.id
+        })
+            .then((customer) => {
+            console.log(customer);
+            return stripe.charges.create({
+                amount: 1000,
+                description: "Test Purchase using express and Node",
+                currency: "USD",
+                customer: customer.id,
+            });
+        })
+            .then((charge) => {
+            console.log(charge);
+            res.json({
+                data: "success"
+            });
+        })
+            .catch((err) => {
+            res.json({
+                data: "failure",
+            });
+        });
+        return true;
+    }
+    catch (error) {
+        return false;
+    }
+});
 //////////////////////////////////////////////////
+/////////////////////////////////////////////////
 app.use('/', router);
 app.listen(4000, () => console.log(`Express server running on port 4000`));
 //# sourceMappingURL=server.js.map
