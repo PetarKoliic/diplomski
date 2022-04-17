@@ -21,6 +21,7 @@ import { StatisticsAppraisalComponent } from './statistics-appraisal/statistics-
 import { StatisticsUserComponent } from './statistics-user/statistics-user.component';
 import { GoogleSignInComponent } from './google-sign-in/google-sign-in.component';
 import { RedirectComponent } from './redirect/redirect.component';
+import { PaymentComponent } from './payment/payment.component';
 
 const routes: Routes = [
 
@@ -48,6 +49,8 @@ const routes: Routes = [
   {path:'topic/:name',  component : TopicComponent},
   {path:'google-sign-in', component : GoogleSignInComponent},
   {path:'redirect',  component : RedirectComponent},
+  {path:'payment',  component : PaymentComponent},
+
 
 
   
