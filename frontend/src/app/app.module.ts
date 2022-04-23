@@ -89,6 +89,7 @@ import { StatisticsUserComponent } from './statistics-user/statistics-user.compo
 import { GoogleSignInComponent } from './google-sign-in/google-sign-in.component';
 import { RedirectComponent } from './redirect/redirect.component';
 import { PaymentComponent } from './payment/payment.component';
+import { UserBlockedMenuComponent } from './user-blocked-menu/user-blocked-menu.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } as 'highcharts-angular';
 
@@ -121,7 +122,8 @@ import { PaymentComponent } from './payment/payment.component';
     StatisticsUserComponent,
     GoogleSignInComponent,
     RedirectComponent,
-    PaymentComponent
+    PaymentComponent,
+    UserBlockedMenuComponent
   ],
   imports: [
     BrowserModule,

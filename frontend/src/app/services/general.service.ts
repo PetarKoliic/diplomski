@@ -45,7 +45,13 @@ export class GeneralService {
       'firstname': firstname,
       'lastname': lastname,
       'email': email,
-      'type': type
+      'type': type,
+      'payed': 0,
+      'bonus': 0,
+      // 'owned':  ovo dodati unutar servera
+      'date_added': new Date(),
+      'last_payment': new Date(),
+      'valid_until': new Date()
     };
 
     // console.log(data);
