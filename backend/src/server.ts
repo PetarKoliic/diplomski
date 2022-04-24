@@ -85,7 +85,15 @@ const router = express.Router();
 // var ObjectId = require('mongoose').Types.ObjectId;
 // app.post('/', upload.single('image'), (req, res, next) => {
 
+//////////////////////////////////////////////////
 
+
+router.route('/get-monthly-fee').get((req, res) => {
+
+
+    res.json({ "monthly_fee": monthly_fee });
+
+});
 
 
 //////////////////////////////////////////////////
@@ -880,6 +888,88 @@ router.route('/get-all-topics').post((req, res) => {
 //////////////////////////////////////////////////
 
 
+router.route('/update-subscription').post((req, res) => {
+
+    let username = req.body.username;
+
+    console.log("pocetak");
+
+    User.findOne({ "username": username }, (err, user_doc) => {
+        if (!err) {
+
+            let user_obj = user_doc.toObject();
+
+
+
+            let valid_until = new Date(user_obj.valid_until);
+            valid_until.setMonth(valid_until.getMonth() + 1);
+            
+            console.log("valid until");
+            console.log(valid_until);
+            User.findOneAndUpdate({ "username": username }, { $set: { "valid_until": valid_until } }, (err, data) => {
+
+
+                if (err) {
+                    res.status(400).json({ "msg": "no" });
+                }
+                else {
+
+                    res.json({"msg": "ok"});
+                }
+
+            });
+        }
+        else {
+
+            res.status(400).json({ "msg": "no" });
+        }
+
+    });
+
+
+});
+
+
+//////////////////////////////////////////
+
+
+router.route('/get-subscription-valid-until').post((req, res) => {
+
+    let username = req.body.username;
+
+    console.log("get-subscription-valid-until");
+
+    User.findOne({ "username": username }, (err, user) => {
+        if (!err) {
+            res.json({"valid_until": user.get("valid_until")});
+        }
+        else {
+            res.status(400).json({ "msg": "no" });
+        }
+
+    });
+
+
+});
+
+
+
+
+// col.findOneAndUpdate(
+//     { _id : item._id }
+//     , { $set : { nextRun : new Date(item.nextRun.getTime() + 86400000}}
+
+//     var nextRunDate = new Date(item.nextRun);
+//     nextRunDate.setMonth(nextRunDate.getMonth() + 1);
+//     col.findOneAndUpdate(
+//         { _id : item._id }, 
+//         { $set : { nextRun : nextRunDate } }
+//     );
+
+
+//////////////////////////////////////////////////
+
+
 router.route('/add-topic').post((req, res) => {
 
     let username = req.body.username;
@@ -981,7 +1071,7 @@ app.get('/auth/success', (req, res) => {
 
 
 
-    res.redirect('http://localhost:4200/redirect' + '/?email=' + email + "&username=" + username+ "&firstname="+ firstname + "&lastname=" + lastname);
+    res.redirect('http://localhost:4200/redirect' + '/?email=' + email + "&username=" + username + "&firstname=" + firstname + "&lastname=" + lastname);
 
     // res.redirect('http://localhost:4200/redirect/'+ email + "/"+ username);
 
@@ -994,8 +1084,10 @@ app.get('/redirect', (req, res) => {
 
 var usr_obj: any = {};
 export function save_info(firstname: string, lastname: string, username: string, email: string) {
-    usr_obj = { "username": username, "email": email, "firstname": firstname,
-"lastname": lastname };
+    usr_obj = {
+        "username": username, "email": email, "firstname": firstname,
+        "lastname": lastname
+    };
     console.log("***********************************");
 }
 
@@ -1008,7 +1100,7 @@ router.route('/login-register').post((req, res) => {
     let username = req.body.username;
     let email = req.body.email;
     let firstname = req.body.firstname;
-    let lastname = req.body.lastname; 
+    let lastname = req.body.lastname;
 
     console.log("username");
     console.log(username);
@@ -1023,9 +1115,11 @@ router.route('/login-register').post((req, res) => {
             res.json(user);
         }
         else {
-            let user = new User({"username": username,
-            "firstname": firstname, "lastname": lastname, 
-            "email": email, "type": "user", "rating": 5});
+            let user = new User({
+                "username": username,
+                "firstname": firstname, "lastname": lastname,
+                "email": email, "type": "user", "rating": 5
+            });
             user.save().then(u => {
                 res.json(u);
             });
@@ -1038,7 +1132,7 @@ const stripe = require('stripe')("sk_test_51KpTkCKC9d8RyJ0Ejxlyv3LhgX52fExbMMUyz
 
 
 router.route('/pay').post((req, res) => {
-  
+
     console.log("token");
     console.log("*********************");
     // console.log(req.body);
@@ -1050,36 +1144,36 @@ router.route('/pay').post((req, res) => {
     try {
         console.log(req.body);
         token = req.body.token;
-        let email= token.email;
+        let email = token.email;
 
-      const customer = stripe.customers
-        .create({
-          email: email,
-          source: token.id
-        })
-        .then((customer: any) => {
-          console.log(customer);
-          return stripe.charges.create({
-            amount: monthly_fee* 100,
-            description: "Test Purchase using express and Node",
-            currency: "EUR",
-            customer: customer.id,
-          });
-        })
-        .then((charge: any) => {
-          console.log(charge);
-            res.json({
-              data:"success"
-          })
-        })
-        .catch((err: any) => {
-            res.json({
-              data: "failure",
+        const customer = stripe.customers
+            .create({
+                email: email,
+                source: token.id
+            })
+            .then((customer: any) => {
+                console.log(customer);
+                return stripe.charges.create({
+                    amount: monthly_fee * 100,
+                    description: "Test Purchase using express and Node",
+                    currency: "EUR",
+                    customer: customer.id,
+                });
+            })
+            .then((charge: any) => {
+                console.log(charge);
+                res.json({
+                    data: "success"
+                })
+            })
+            .catch((err: any) => {
+                res.json({
+                    data: "failure",
+                });
             });
-        });
-      return true;
+        return true;
     } catch (error) {
-      return false;
+        return false;
     }
 });
 

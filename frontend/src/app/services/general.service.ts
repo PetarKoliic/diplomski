@@ -331,6 +331,26 @@ export class GeneralService {
     return this.http.post(`${this.uri}/pay`, {"token": stripeToken});
   }
 
+  get_monthly_fee(){
+    return this.http.get(`${this.uri}/get-monthly-fee`);
+  }
+
+  update_subscription(username: string)
+  {
+    const data = {
+      "username": username
+    }
+    return this.http.post(`${this.uri}/update-subscription`, data);
+  }
+
+  get_subscription_valid_until(username: string)
+  {
+    const data = {
+      "username": username
+    }
+    return this.http.post(`${this.uri}/get-subscription-valid-until`, data);
+
+  }
 
 }
 

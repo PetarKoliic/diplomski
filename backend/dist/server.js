@@ -66,6 +66,10 @@ const router = express_1.default.Router();
 // var ObjectId = require('mongoose').Types.ObjectId;
 // app.post('/', upload.single('image'), (req, res, next) => {
 //////////////////////////////////////////////////
+router.route('/get-monthly-fee').get((req, res) => {
+    res.json({ "monthly_fee": monthly_fee });
+});
+//////////////////////////////////////////////////
 router.route('/login').post((req, res) => {
     console.log("inside login");
     let username = req.body.username;
@@ -543,6 +547,53 @@ router.route('/get-all-topics').post((req, res) => {
     });
 });
 //////////////////////////////////////////////////
+router.route('/update-subscription').post((req, res) => {
+    let username = req.body.username;
+    console.log("pocetak");
+    user_1.default.findOne({ "username": username }, (err, user_doc) => {
+        if (!err) {
+            let user_obj = user_doc.toObject();
+            let valid_until = new Date(user_obj.valid_until);
+            valid_until.setMonth(valid_until.getMonth() + 1);
+            console.log("valid until");
+            console.log(valid_until);
+            user_1.default.findOneAndUpdate({ "username": username }, { $set: { "valid_until": valid_until } }, (err, data) => {
+                if (err) {
+                    res.status(400).json({ "msg": "no" });
+                }
+                else {
+                    res.json({ "msg": "ok" });
+                }
+            });
+        }
+        else {
+            res.status(400).json({ "msg": "no" });
+        }
+    });
+});
+//////////////////////////////////////////
+router.route('/get-subscription-valid-until').post((req, res) => {
+    let username = req.body.username;
+    console.log("get-subscription-valid-until");
+    user_1.default.findOne({ "username": username }, (err, user) => {
+        if (!err) {
+            res.json({ "valid_until": user.get("valid_until") });
+        }
+        else {
+            res.status(400).json({ "msg": "no" });
+        }
+    });
+});
+// col.findOneAndUpdate(
+//     { _id : item._id }
+//     , { $set : { nextRun : new Date(item.nextRun.getTime() + 86400000}}
+//     var nextRunDate = new Date(item.nextRun);
+//     nextRunDate.setMonth(nextRunDate.getMonth() + 1);
+//     col.findOneAndUpdate(
+//         { _id : item._id }, 
+//         { $set : { nextRun : nextRunDate } }
+//     );
+//////////////////////////////////////////////////
 router.route('/add-topic').post((req, res) => {
     let username = req.body.username;
     let title = req.body.title;
@@ -609,8 +660,10 @@ app.get('/redirect', (req, res) => {
 });
 var usr_obj = {};
 function save_info(firstname, lastname, username, email) {
-    usr_obj = { "username": username, "email": email, "firstname": firstname,
-        "lastname": lastname };
+    usr_obj = {
+        "username": username, "email": email, "firstname": firstname,
+        "lastname": lastname
+    };
     console.log("***********************************");
 }
 exports.save_info = save_info;
@@ -629,9 +682,11 @@ router.route('/login-register').post((req, res) => {
             res.json(user);
         }
         else {
-            let user = new user_1.default({ "username": username,
+            let user = new user_1.default({
+                "username": username,
                 "firstname": firstname, "lastname": lastname,
-                "email": email, "type": "user", "rating": 5 });
+                "email": email, "type": "user", "rating": 5
+            });
             user.save().then(u => {
                 res.json(u);
             });

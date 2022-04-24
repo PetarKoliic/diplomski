@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { GeneralService } from '../services/general.service';
 import { NotificationService } from '../services/notification.service';
@@ -14,7 +15,80 @@ export class PaymentComponent implements OnInit {
   constructor(private router: Router, private service: GeneralService, private notificationService: NotificationService) { }
 
   ngOnInit() {
+
+    this.username = JSON.parse(localStorage.getItem("user")).username;
     this.invoke_stripe();
+    this.payment();
+  }
+
+
+  monthly_fee: number;
+  username: string;
+  
+  payment()
+  {
+    this.service.get_monthly_fee().subscribe((data: any) => {
+
+
+      console.log(data);
+      this.monthly_fee = data["monthly_fee"];
+
+      const paymentHandler = (<any>window).StripeCheckout.configure({
+        key: 'pk_test_51KpTkCKC9d8RyJ0E2l8VGCG5JJg2RtBDDUFyFS0NBQNLu3I47cg0MSCODuxNwEnjuGGVlEazilmshjzRb7oIftTK00onUGPqeN',
+        locale: 'auto',
+        currency: "eur",
+        // token koji ce biti vracen sa klijentske strane
+        token: (stripeToken: any) => {
+          console.log("stripeToken");
+          console.log(stripeToken);
+  
+          this.service.pay(stripeToken).subscribe((data: any) => {
+  
+            console.log(data);
+            console.log(data["data"] + " = " + "success");            
+            if(data["data"] === "success")
+            {
+              this.service.update_subscription(this.username).subscribe((data: any) => {
+
+                if(data["msg"] === "ok")
+                {
+                  // Promise p = async (this.notificationService.alert("Uspesno produzena clanarina, hvala !"));
+            
+                  this.notificationService.alert("Uspesno produzena clanarina, hvala !")
+                }
+                else
+                {
+                  this.notificationService.alert("Internal error from server side");
+                  this.router.navigate(['/user']);
+                }
+
+                setTimeout(() => {
+                  
+                  this.router.navigate(['/user']);
+
+              }, 3500);
+
+              });
+            }
+            else
+            {
+              this.notificationService.alert("Niste uspesno platili karticom")
+            }
+
+        
+    
+          });
+  
+        }
+      });
+  
+      paymentHandler.open({
+        name: "Placanje",
+        description: "Uplata mesecne clanarine",
+        amount: this.monthly_fee * 100
+      })
+
+    });
   }
 
 
@@ -43,32 +117,32 @@ export class PaymentComponent implements OnInit {
 
   paymentHandler: any = null;
   make_payment(amount: number) {
-    const paymentHandler = (<any>window).StripeCheckout.configure({
-      key: 'pk_test_51KpTkCKC9d8RyJ0E2l8VGCG5JJg2RtBDDUFyFS0NBQNLu3I47cg0MSCODuxNwEnjuGGVlEazilmshjzRb7oIftTK00onUGPqeN',
-      locale: 'auto',
-      currency: "eur",
-      // token koji ce biti vracen sa klijentske strane
-      token: (stripeToken: any) => {
-        console.log("stripeToken");
-        console.log(stripeToken);
+    // const paymentHandler = (<any>window).StripeCheckout.configure({
+    //   key: 'pk_test_51KpTkCKC9d8RyJ0E2l8VGCG5JJg2RtBDDUFyFS0NBQNLu3I47cg0MSCODuxNwEnjuGGVlEazilmshjzRb7oIftTK00onUGPqeN',
+    //   locale: 'auto',
+    //   currency: "eur",
+    //   // token koji ce biti vracen sa klijentske strane
+    //   token: (stripeToken: any) => {
+    //     console.log("stripeToken");
+    //     console.log(stripeToken);
 
-        this.service.pay(stripeToken).subscribe((data: any) => {
+    //     this.service.pay(stripeToken).subscribe((data: any) => {
 
 
-          console.log(data);
+    //       console.log(data);
   
       
   
-        });
+    //     });
 
-      }
-    });
+    //   }
+    // });
 
-    paymentHandler.open({
-      name: "Placanje",
-      description: "Uplata mesecne clanarine",
-      amount: amount * 100
-    })
+    // paymentHandler.open({
+    //   name: "Placanje",
+    //   description: "Uplata mesecne clanarine",
+    //   amount: this.monthly_fee * 100
+    // })
   }
 
 }

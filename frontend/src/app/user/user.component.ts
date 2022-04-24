@@ -15,12 +15,15 @@ export class UserComponent implements OnInit {
     private notificationService: NotificationService) { }
 
     user_payed: boolean = true;
+    username: string;
 
   ngOnInit(): void {
 
 
+
     let user: User = JSON.parse(localStorage.getItem("user"));
 
+    this.username = user.username;
 
     // let extra_date = new Date((new Date).getTime() + 10 * (1000 * 60 * 60 * 24));
     let curr_date = new Date((new Date).getTime());
@@ -30,13 +33,16 @@ export class UserComponent implements OnInit {
 
     // console.log(user.valid_until);
     // console.log(new Date());
-    const valid_until = new Date(user.valid_until);
+    this.service.get_subscription_valid_until(this.username).subscribe((res: any) => {
+
+      const valid_until = new Date(res["valid_until"]);
     // console.log("valid until");
     // console.log(valid_until);
 
     let extra_valid_date = new Date(valid_until.getTime() + 10 * (1000 * 60 * 60 * 24));
 
-    console.log("extra_valid_date, curr_date");
+    console.log("valid_until, extra_valid_date, curr_date");
+    console.log(valid_until);
     console.log(extra_valid_date);
     console.log(curr_date);
 
@@ -65,6 +71,9 @@ export class UserComponent implements OnInit {
 
       this.notificationService.alert("istekao je rok zakasnelog placanja uplatite mesecnu clanarinu kako biste odblokirali sve funkcionalnosti");
     }
+
+    });
+    
 
   }
 
