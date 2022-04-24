@@ -26,6 +26,21 @@ let User = new Schema({
     },
     rating: {
         type: Number
+    },
+    date_added: {
+        type: Date
+    },
+    valid_until: {
+        type: Date
+    },
+    payed: {
+        type: Number
+    },
+    owned: {
+        type: Number
+    },
+    bonus: {
+        type: Number
     }
 });
 exports.default = mongoose_1.default.model('user', User, 'users');

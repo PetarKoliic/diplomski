@@ -33,6 +33,7 @@ export class PaymentComponent implements OnInit {
           token: function (stripeToken: any) {
             console.log(stripeToken);
           },
+          currency: "eur",
         });
       };
 
@@ -45,6 +46,7 @@ export class PaymentComponent implements OnInit {
     const paymentHandler = (<any>window).StripeCheckout.configure({
       key: 'pk_test_51KpTkCKC9d8RyJ0E2l8VGCG5JJg2RtBDDUFyFS0NBQNLu3I47cg0MSCODuxNwEnjuGGVlEazilmshjzRb7oIftTK00onUGPqeN',
       locale: 'auto',
+      currency: "eur",
       // token koji ce biti vracen sa klijentske strane
       token: (stripeToken: any) => {
         console.log("stripeToken");

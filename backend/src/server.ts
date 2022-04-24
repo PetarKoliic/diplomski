@@ -37,6 +37,8 @@ app.use(bodyParser.json());
 const multer = require("multer");
 const DIR = './uploads/';
 
+const monthly_fee = 10;
+
 const storage = multer.diskStorage({
     destination: (req: any, file: any, cb: any) => {
         cb(null, DIR);
@@ -113,8 +115,6 @@ router.route('/login').post(
                     console.log(user);
                     res.json(user);
                 }
-
-
             });
     }
 );
@@ -123,6 +123,12 @@ router.route('/login').post(
 router.route('/register').post((req, res) => {
 
     let user = new User(req.body);
+
+    console.log("user");
+
+    user.set("owned", monthly_fee);
+
+    console.log(user);
 
     if (req.body.type === "appraiser") {
         user.set("rating", 5);
@@ -1033,23 +1039,30 @@ const stripe = require('stripe')("sk_test_51KpTkCKC9d8RyJ0Ejxlyv3LhgX52fExbMMUyz
 
 router.route('/pay').post((req, res) => {
   
-    console.log(req.body);
+    console.log("token");
+    console.log("*********************");
+    // console.log(req.body);
+    console.log("email");
     let token;
+    // let email = req.body.card.name;
+    // console.log(email);
 
     try {
         console.log(req.body);
         token = req.body.token;
+        let email= token.email;
+
       const customer = stripe.customers
         .create({
-          email: "geekygautam1997@gmail.com",
+          email: email,
           source: token.id
         })
         .then((customer: any) => {
           console.log(customer);
           return stripe.charges.create({
-            amount: 1000,
+            amount: monthly_fee* 100,
             description: "Test Purchase using express and Node",
-            currency: "USD",
+            currency: "EUR",
             customer: customer.id,
           });
         })

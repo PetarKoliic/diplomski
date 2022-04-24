@@ -22,28 +22,39 @@ export class UserComponent implements OnInit {
     let user: User = JSON.parse(localStorage.getItem("user"));
 
 
-    let extra_date = new Date((new Date).getTime() + 10 * (1000 * 60 * 60 * 24));
+    // let extra_date = new Date((new Date).getTime() + 10 * (1000 * 60 * 60 * 24));
+    let curr_date = new Date((new Date).getTime());
 
+    // console.log(user);
+    // console.log(extra_date);
 
-    console.log(user);
-
-    console.log(user.valid_until);
-    console.log(new Date());
+    // console.log(user.valid_until);
+    // console.log(new Date());
     const valid_until = new Date(user.valid_until);
+    // console.log("valid until");
+    // console.log(valid_until);
 
-    
-    if (valid_until >= new Date()) {
+    let extra_valid_date = new Date(valid_until.getTime() + 10 * (1000 * 60 * 60 * 24));
+
+    console.log("extra_valid_date, curr_date");
+    console.log(extra_valid_date);
+    console.log(curr_date);
+
+    if (valid_until >= curr_date) {
       console.log("i dalje sam validan");
 
     }
-    else if (valid_until <= extra_date) {
-      console.log("samo upozoravaj");
+    else if (extra_valid_date >= curr_date) {
+
+
       // let diffDays = extra_date.getDate() - valid_until.getDate();
 
       var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
 
-      var diffDays = Math.round(Math.abs((extra_date.getTime() - valid_until.getTime()) / (oneDay)))
+      var diffDays = Math.round(Math.abs((extra_valid_date.getTime() - curr_date.getTime()) / (oneDay)))
+
+      console.log("diffDays : " + diffDays);
 
       this.notificationService.alert("Upozoronje niste platili za ovaj mesec istice vam clanarina imate rok placanja jos " + diffDays + " dana.");
     }
