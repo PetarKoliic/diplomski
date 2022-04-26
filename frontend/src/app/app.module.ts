@@ -90,6 +90,7 @@ import { GoogleSignInComponent } from './google-sign-in/google-sign-in.component
 import { RedirectComponent } from './redirect/redirect.component';
 import { PaymentComponent } from './payment/payment.component';
 import { UserBlockedMenuComponent } from './user-blocked-menu/user-blocked-menu.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } as 'highcharts-angular';
 
@@ -131,6 +132,7 @@ import { UserBlockedMenuComponent } from './user-blocked-menu/user-blocked-menu.
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
 
 
 

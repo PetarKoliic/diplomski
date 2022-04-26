@@ -19,14 +19,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .backgroundPicture{
-        /* background-image: url('assets/olimpijada.png');
+        background-image: url('C:\Users\Petar\Desktop\background.jpg');
         min-height: 100%;
-      
-        background-position: center center;
+        /* background-repeat: no-repeat; */
+        /* background-size: cover; */
+
+        /* background-position: center center;
         background-repeat: no-repeat;
-        background-size: cover; */
-        background-color: #daf0ff;
-        height: 110%;
+        background-size: cover;
+        background-color: #daf0ff; */
+        height: 100%;
       }
  .navbar{
         justify-content: space-between;
