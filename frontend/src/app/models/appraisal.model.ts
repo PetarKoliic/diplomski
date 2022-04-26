@@ -12,6 +12,6 @@ export class Appraisal {
     date: Date;
     author: string;
     value: number;
-    date_created;
+    date_created: Date;
     
 }

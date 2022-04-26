@@ -2,44 +2,62 @@
 <app-appraiser-menu></app-appraiser-menu>
 
 
-<mat-card *ngFor="let appraisal of appraisals" class="example-card">
-    <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <!-- <mat-card-title>Procena</mat-card-title> -->
-        <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
-    </mat-card-header>
-    <!-- <img mat-card-image style="width: 400px; height: 300px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+<div class="background_img_van_gogh" style="padding-left: 30%; padding-right: 30%;" >
+    <mat-card *ngFor="let appraisal of appraisals" class="example-card" fxLayout="column" fxLayoutAlign="space-around center">
+        <mat-card-header style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="align-items: center; justify-self: center;">
+            Name: {{appraisal.name}}
+        </div>
+            <!-- <div mat-card-avatar class="example-header-image"></div> -->
+            <!-- <mat-card-title>Procena</mat-card-title> -->
+            <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+        </mat-card-header>
+        <!-- <img mat-card-image style="width: 400px; height: 300px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
 
-    <!-- <img mat-card-image style="width: 400px; height: 300px;" *ngFor='let preview of appraisal.img_names' [src]="'http://localhost:4000/uploads/' + preview" class="preview">
+        <!-- <img mat-card-image style="width: 400px; height: 300px;" *ngFor='let preview of appraisal.img_names' [src]="'http://localhost:4000/uploads/' + preview" class="preview">
     <mat-card-content> -->
 
-    <img mat-card-image style="width: 400px; height: 300px;" *ngFor='let img of show_img(appraisal)'
-        [src]="'http://localhost:4000/uploads/' + img" class="preview">
+        <img mat-card-image style="width: 400px; height: 300px;" *ngFor='let img of show_img(appraisal)'
+            [src]="'http://localhost:4000/uploads/' + img" class="preview">
 
 
-    <!-- <img mat-card-image style="width: 400px; height: 300px;"
+        <!-- <img mat-card-image style="width: 400px; height: 300px;"
         [src]="'http://localhost:4000/uploads/' + img_name(appraisal)" class="preview"> -->
 
-    <mat-paginator #paginator [length]="appraisal.img_names.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]" aria-label="Select page" (page)="pageEvent($event, appraisal)">
-    </mat-paginator>
+        <mat-paginator #paginator [length]="appraisal.img_names.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]"
+            aria-label="Select page" (page)="pageEvent($event, appraisal)">
+        </mat-paginator>
 
 
-    <mat-card-content>
-        <p>
-            Opis: <br> {{appraisal.description}}
-        </p>
+        <mat-card-content>
+            <p>
+                Datum stvaranja: {{global_functions.format_date_only(appraisal.date_created)}}
+            </p>
+            <p>
+                Zemlja porekla: {{appraisal.country}}
+            </p>
+            <p>
+                Opis: <br> {{appraisal.description}}
+            </p>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Unesite vasu procenu ovde u evrima</mat-label>
-            <input matInput  [ngModel]="estimated_values.get(appraisal._id)" (ngModelChange)="estimated_values.set(appraisal._id, $event)">
-        </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Unesite vasu procenu ovde u evrima</mat-label>
+                <input matInput [ngModel]="estimated_values.get(appraisal._id)"
+                    (ngModelChange)="estimated_values.set(appraisal._id, $event)">
+            </mat-form-field>
 
 
 
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-button onclick (click)='appraise(appraisal)'>Proceni</button>
-        <!-- <button (click)='backward_image(appraisal)' mat-button>Nazad</button>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button onclick (click)='appraise(appraisal)'>Proceni</button>
+            <!-- <button (click)='backward_image(appraisal)' mat-button>Nazad</button>
         <button (click)='forward_image(appraisal)' mat-button>Napred</button> -->
-    </mat-card-actions>
-</mat-card>
+        </mat-card-actions>
+    </mat-card>
+
+</div>
+
+
+
+

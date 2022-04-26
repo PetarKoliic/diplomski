@@ -5,6 +5,7 @@ import { Appraisal } from '../models/appraisal.model';
 import { PageEvent } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { NotificationService } from '../services/notification.service';
+import { FunctionService } from '../services/function.service';
 
 @Component({
   selector: 'app-appraiser-change-mind',
@@ -14,7 +15,7 @@ import { NotificationService } from '../services/notification.service';
 export class AppraiserChangeMindComponent implements OnInit {
 
   constructor(private router: Router, private service: GeneralService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService, public global_functions: FunctionService) { }
 
   ngOnInit(): void {
     this.username = localStorage.getItem("username")
