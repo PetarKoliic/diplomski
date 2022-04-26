@@ -21,10 +21,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   
         width: 340px;
         padding : 40px;
-        position : absolute;
-        top: 5%;
-        left : 50%;
-        transform:  translate(-50%,50%);
+        /* position : absolute; */
+        /* top: 5%; */
+        /* left : 50%; */
+        /* transform:  translate(-50%,50%); */
         background-color: #FBEEC1;
         
       
