@@ -5,6 +5,7 @@ import { Appraisal } from '../models/appraisal.model';
 import { PageEvent } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { NotificationService } from '../services/notification.service';
+import { FunctionService } from '../services/function.service';
 
 @Component({
   selector: 'app-art-for-appraisal',
@@ -16,7 +17,7 @@ import { NotificationService } from '../services/notification.service';
 export class ArtForAppraisalComponent implements OnInit {
 
   constructor(private router: Router, private service: GeneralService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService, public global_functions: FunctionService) { }
 
   ngOnInit(): void {
 

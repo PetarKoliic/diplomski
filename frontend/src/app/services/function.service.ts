@@ -14,6 +14,12 @@ export class FunctionService {
     return appraisal.evaluations.length;
   }
 
+  format_date_only(date_d: Date): string {
+    let date = new Date(date_d);
+    // console.log(date);
+    return  date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ".";
+  }
+
   current_evaluation(appraisal: Appraisal): String {
 
 

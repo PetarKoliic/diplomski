@@ -1,8 +1,12 @@
-<div *ngIf="user_payed==true">
-    <app-user-menu></app-user-menu>
-</div>
+<div class="backgroundPicture">
+
+    <div *ngIf="user_payed==true">
+        <app-user-menu></app-user-menu>
+    </div>
 
 
-<div *ngIf="user_payed==false">
-    <app-user-blocked-menu></app-user-blocked-menu>
+    <div *ngIf="user_payed==false">
+        <app-user-blocked-menu></app-user-blocked-menu>
+    </div>
+
 </div>

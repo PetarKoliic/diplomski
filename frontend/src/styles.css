@@ -30,8 +30,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         height: 30px;
 }
 
+.background_img_van_gogh
+{
+        background-image: url('assets/starry_night.jpg');
+        min-height: 100%;
+        height: 100%;        
+}
+
 .backgroundPicture{
-        background-image: url('C:\Users\Petar\Desktop\background.jpg');
+        background-image: url('assets/background.jpg');
         min-height: 100%;
         /* background-repeat: no-repeat; */
         /* background-size: cover; */
