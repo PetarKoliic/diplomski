@@ -4,6 +4,9 @@ import { GeneralService } from '../services/general.service';
 import { Appraisal } from '../models/appraisal.model';
 import { NotificationService } from '../services/notification.service';
 import { FunctionService } from '../services/function.service';
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+
 
 
 @Component({
@@ -26,6 +29,8 @@ export class CurrentAppraisalsComponent implements OnInit {
 
   username: string;
   appraisals: Appraisal[] = null;
+  img_map: Map<string, number> = new Map<string, number>();
+  img_pagination: Map<string, Object> = new Map<string, Object>();
 
 
   init(): void {
@@ -36,6 +41,13 @@ export class CurrentAppraisalsComponent implements OnInit {
         console.log("vratio se iz appraisala");
 
         this.appraisals = appraisals;
+
+        for (let i in appraisals) {
+          this.img_map.set(appraisals[i]._id, 0);
+          this.img_pagination.set(appraisals[i]._id, { "start_index": 0, "end_index": 1 });
+
+          // this.estimated_values.set(appraisals[i]._id, 0)
+        }
 
 
 
@@ -49,6 +61,35 @@ export class CurrentAppraisalsComponent implements OnInit {
   //   return appraisal.evaluations.length;
   // }
 
+
+  paginator_images: Array<String[]>;
+  pageEvent(event: PageEvent, appraisal: Appraisal) {
+    const startIndex = event.pageIndex * event.pageSize;
+    let endIndex = startIndex + event.pageSize;
+
+    if (endIndex > appraisal.img_names.length)
+      endIndex = appraisal.img_names.length;
+
+    // ovo izmeni
+    // this.paginator_images=this.all_countries.slice(startIndex,endIndex);
+
+    // this.img_pagination.set(appraisal._id, { "start_index": startIndex, "end_index": endIndex });
+
+    this.img_pagination.set(appraisal._id, { "start_index": startIndex, "end_index": endIndex });
+
+
+  }
+
+  show_img(appraisal: Appraisal): string[] {
+    // this.all_countries.slice(0, this.page_size);
+
+    // console.log("pagination");
+    // console.log(this.img_pagination.get(appraisal._id)["start_index"]);
+    // console.log(this.img_pagination.get(appraisal._id)["end_index"]);
+
+    return appraisal.img_names.slice(this.img_pagination.get(appraisal._id)["start_index"],
+      this.img_pagination.get(appraisal._id)["end_index"]);
+  }
 
 
   finish_appraisal(appraisal: Appraisal)

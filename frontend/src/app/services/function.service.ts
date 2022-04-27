@@ -20,6 +20,12 @@ export class FunctionService {
     return  date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ".";
   }
 
+  format_date(date_d: Date): string {
+    let date = new Date(date_d);
+    // console.log(date);
+    return date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ".";
+  }
+
   current_evaluation(appraisal: Appraisal): String {
 
 

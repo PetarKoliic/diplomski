@@ -51,6 +51,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         height: 100%;        
 }
 
+.appraisals_background_list
+{
+        padding-left: 30%; padding-right: 30%;
+}
+
 .backgroundPicture{
         background-image: url('assets/background.jpg');
         min-height: 100%;

@@ -1,6 +1,8 @@
 <app-user-menu></app-user-menu>
 
-<mat-card *ngFor="let appraisal of appraisals" class="example-card">
+<div class="background_img_van_gogh appraisals_background_list" >
+
+<mat-card *ngFor="let appraisal of appraisals" fxLayout="column" fxLayoutAlign="center center" class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <!-- <mat-card-title>Procena</mat-card-title> -->
@@ -8,16 +10,31 @@
     </mat-card-header>
     <!-- <img mat-card-image style="width: 400px; height: 300px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
   
-    <img mat-card-image style="width: 400px; height: 300px;" *ngFor='let preview of appraisal.img_names'
+    <img mat-card-image style="width: 400px; height: 300px;" *ngFor='let preview of show_img(appraisal)'
       [src]="'http://localhost:4000/uploads/' + preview" class="preview">
+
+      <mat-paginator #paginator [length]="appraisal.img_names.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]"
+      aria-label="Select page" (page)="pageEvent($event, appraisal)">
+  </mat-paginator>
     <mat-card-content>
       <p *ngIf="appraisal.name != ''">
         Ime: {{appraisal.name}} </p>
       <p *ngIf="appraisal.country!= ''"> Zemlja porekla: {{appraisal.country}} </p>
   
-      <p *ngIf="appraisal.date != null">
-        Datum pravljenja: {{appraisal.date}}
+      <!-- <p *ngIf="appraisal.date_created != null">
+        Datum pravljenja: {{appraisal.date_created}}
+      </p> -->
+
+      <p>
+        Datum pravljenja dela: 
+        <span *ngIf="appraisal.date_created != null"> {{functions.format_date_only(appraisal.date_created)}} </span>
       </p>
+      <p>
+        Datum stavljanja na procenu: 
+        <span *ngIf="appraisal.date_created != null">{{functions.format_date(appraisal.date_added)}} </span>
+      </p>
+      <p>
+
       <p *ngIf="appraisal.author != ''">
         Autor: {{appraisal.author}}
       </p>
@@ -30,9 +47,14 @@
         {{functions.number_of_evaluations(appraisal)}}
       </p>
   
-      <p>
+      <p *ngIf="functions.number_of_evaluations(appraisal) > 0">
         Zavrsna prrocena:
         {{functions.toFixed(functions.current_evaluation(appraisal), 2)}}
+      </p>
+
+      <p *ngIf="functions.number_of_evaluations(appraisal) == 0">
+        Zavrsna prrocena:
+        Niko nije dao procenu umetnini pre njenog zavrsetka
       </p>
 
       <p *ngIf="appraisal.value != 0">
@@ -49,3 +71,5 @@
       <button (click)="finish_appraisal(appraisal)" mat-button>Zavrsi procenu odmah</button>
     </mat-card-actions> -->
   </mat-card>
+
+</div>
