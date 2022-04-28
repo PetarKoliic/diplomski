@@ -1,9 +1,9 @@
 <app-admin-menu></app-admin-menu>
 
 
+<div class="background_img_van_gogh appraisals_background_list" >
 
-
-<mat-card *ngFor="let appraisal of appraisals" class="example-card">
+<mat-card *ngFor="let appraisal of appraisals" fxLayout="column" fxLayoutAlign="center center" class="example-card">
     <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
         <!-- <mat-card-title>Procena</mat-card-title> -->
@@ -26,9 +26,31 @@
 
 
     <mat-card-content>
+        <p *ngIf="appraisal.name != ''">
+            Ime: {{appraisal.name}} </p>
+          <p *ngIf="appraisal.country!= ''"> Zemlja porekla: {{appraisal.country}} </p>
+    
+          <p *ngIf="appraisal.date != null">
+            Datum pravljenja: {{appraisal.date}}
+          </p>
+          <p *ngIf="appraisal.author != ''">
+            Autor: {{appraisal.author}}
+          </p>
         <p>
             Opis: <br> {{appraisal.description}}
         </p>
+        <p>
+            Korisnik: {{appraisal.username}}
+        </p>
+        <p>
+        Datum pravljenja dela: 
+        <span *ngIf="appraisal.date_created != null"> {{functions.format_date_only(appraisal.date_created)}} </span>
+      </p>
+      <p>
+        Datum stavljanja na procenu: 
+        <span *ngIf="appraisal.date_created != null">{{functions.format_date(appraisal.date_added)}} </span>
+      </p>
+
 
         <mat-form-field appearance="fill">
             <mat-label>Unos prodate cene</mat-label>
@@ -45,3 +67,5 @@
         <button mat-button onclick (click)='delete_appraisal(appraisal)'>Obrisi umetninu</button>
     </mat-card-actions>
 </mat-card>
+
+</div>

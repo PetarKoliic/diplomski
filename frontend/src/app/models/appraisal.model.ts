@@ -13,5 +13,6 @@ export class Appraisal {
     author: string;
     value: number;
     date_created: Date;
+    username: string;
     
 }

@@ -17,6 +17,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
       
 }
 
+#menu_color
+{
+        background-color: #BC986A;
+}
+
 .center {
   
         width: 340px;
