@@ -1,19 +1,29 @@
 <app-admin-menu></app-admin-menu>
 
-<div>
-  <mat-form-field class="full-width" appearance='legacy'>
-    <mat-label>Unesite ime korisnika za statistiku</mat-label>
-    <input matInput required placeholder="Username" [(ngModel)]="username">
-  </mat-form-field>
+<div class="background_img_van_gogh appraisals_background_list">
+<div class="example-card" style="background-color: white; padding-top: 3%;">
+
+  <div fxLayout="column" fxLayoutAlign="center center">
+
+    <div>
+      <mat-form-field class="full-width" appearance='legacy'>
+        <mat-label>Unesite ime procenitelja za statistiku</mat-label>
+        <input matInput required placeholder="Username" [(ngModel)]="username">
+      </mat-form-field>
+    </div>
+
+
+    <div id="container"></div>
+
+    <button mat-raised-button color="primary" (click)='login()'>Pretrazi</button>
+
+    <!-- <div style="display: flex;"> -->
+    <div id="container_1"></div>
+
+    <div id="container_2"></div>
+    <!-- </div> -->
+
+  </div>
+
 </div>
-
-
-<div id="container"></div>
-
-<button mat-raised-button color="primary" (click)='login()'>Pretrazi</button>
-
-<div style="display: flex;">
-  <div id="container_1" style="height:600px; width:800px"></div>
-
-  <div id="container_2" style="height:600px; width:800px"></div>
 </div>

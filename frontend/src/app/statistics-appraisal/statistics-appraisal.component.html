@@ -1,31 +1,37 @@
 <app-admin-menu></app-admin-menu>
 
+<div class="background_img_van_gogh appraisals_background_list">
 
-<div>
-    <mat-form-field class="full-width" appearance='legacy'>
+  <div fxLayout="column" fxLayoutAlign="center center" style="background-color: white; padding-top: 3%;">
+
+    <div>
+      <mat-form-field class="full-width" appearance='legacy'>
         <mat-label>Unesite ime korisnika za statistiku artikla</mat-label>
         <input matInput required placeholder="Username" [(ngModel)]="username_search">
-    </mat-form-field>
-</div>
+      </mat-form-field>
+    </div>
 
-<button mat-raised-button color="primary" (click)='search_user()'>Pretrazi</button>
+    <button mat-raised-button color="primary" (click)='search_user()'>Pretrazi</button>
 
-<br>
+    <br>
 
-<mat-form-field *ngIf='username_search!= null' class='full-width' appearance="fill">
-    <mat-label>Ime umetnine</mat-label>
-    <mat-select (selectionChange)="fun_change($event)" [(ngModel)]="appraisal_selected">
+    <mat-form-field *ngIf='username_search!= null' class='full-width' appearance="fill">
+      <mat-label>Ime umetnine</mat-label>
+      <mat-select (selectionChange)="fun_change($event)" [(ngModel)]="appraisal_selected">
         <mat-option *ngFor="let appraisal of  appraisals" [value]="appraisal">
-            {{appraisal.name}}
+          {{appraisal.name}}
 
         </mat-option>
-    </mat-select>
-</mat-form-field>
+      </mat-select>
+    </mat-form-field>
 
-<div style="display: flex;">
-    <div id="container_1" style="height:600px; width:800px"></div>
+    <!-- <div style="display: flex;"> -->
+    <div id="container_1"></div>
+    <!-- </div> -->
+
+  </div>
+
 </div>
-
 <!-- <div>
     <mat-form-field class="full-width" appearance='legacy'>
       <mat-label>Sport</mat-label>
