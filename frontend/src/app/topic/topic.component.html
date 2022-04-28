@@ -1,51 +1,57 @@
 
-<mat-toolbar color='primary' class='navbar'>
-    <div>
-      {{username}}
+<div style="background-color: white;">
+
+<mat-toolbar color='primary' class='navbar' style="background-color: #BC986A;">
+  <div>
+    {{username}}
   </div>
-    <div>
-  
-        <!-- <button mat-button (click)="open_new_topic()">Nova tema</button> -->
-      <a mat-button href="/forum">Forum</a>
+  <div>
+
+    <a mat-button href="/forum">Forum</a>
 
 
 
-      <button mat-button (click)='logout()'>logout</button>
-    </div>
-  </mat-toolbar>
-
-<div *ngIf="topic != null">
-  <mat-list >
-    <h3 mat-subheader>{{topic_title}}</h3>
-    <mat-list-item *ngFor="let comment of show_comments">
-       <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
-       <!-- (click)="open_topic(topic.title)" -->
-       <!-- {{comment.comment} -->
-       <h4 mat-line >{{comment.username}} </h4>
-       <p mat-line class="demo-2"> {{comment.comment}} </p>
-       <p mat-line class="demo-2">Dodato: {{format_date(comment.date_added)}} </p>
-
-       
-       <button mat-button *ngIf="this.username === 'admin'"
-            (click)='delete_comment(comment)'>Obrisi</button>
-
-       <mat-divider [inset]="true"></mat-divider>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <!-- <h3 mat-subheader>Notes</h3> -->
- </mat-list>
-
- <mat-form-field class="example-full-width" appearance="fill">
-  <mat-label>Nov komentar</mat-label>
-  <textarea class="example-full-width" matInput placeholder="Nov komentar" name="description"
-      [(ngModel)]="new_comment"></textarea>
-</mat-form-field>
+    <button mat-button (click)='logout()'>logout</button>
+  </div>
+</mat-toolbar>
 
 
-<mat-paginator #paginator [length]="topic.comments.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]" aria-label="Select page" (page)="pageEvent($event)">
-</mat-paginator>
+
+  <div *ngIf="topic != null">
+    <mat-list>
+      <h3 mat-subheader>{{topic_title}}</h3>
+      <mat-list-item *ngFor="let comment of show_comments">
+        <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
+        <!-- (click)="open_topic(topic.title)" -->
+        <!-- {{comment.comment} -->
+        <h4 mat-line>{{comment.username}} </h4>
+        <p mat-line class="demo-2"> {{comment.comment}} </p>
+        <p mat-line class="demo-2">Dodato: {{format_date(comment.date_added)}} </p>
 
 
- <button mat-raised-button color="primary" (click)='add_comment()'>Dodaj komentar</button>
+        <button mat-button *ngIf="this.username === 'admin'" (click)='delete_comment(comment)'>Obrisi</button>
 
-</div> 
+        <mat-divider [inset]="true"></mat-divider>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <!-- <h3 mat-subheader>Notes</h3> -->
+    </mat-list>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Nov komentar</mat-label>
+      <textarea class="example-full-width" matInput placeholder="Nov komentar" name="description"
+        [(ngModel)]="new_comment"></textarea>
+    </mat-form-field>
+
+
+    <mat-paginator #paginator [length]="topic.comments.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]"
+      aria-label="Select page" (page)="pageEvent($event)">
+    </mat-paginator>
+
+
+    <div fxLayout="column" fxLayoutAlign="center center">
+    <button  mat-raised-button color="primary" (click)='add_comment()'>Dodaj komentar</button>
+      </div>
+  </div>
+
+</div>

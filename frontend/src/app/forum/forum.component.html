@@ -1,50 +1,52 @@
-neke izmene
-
 <app-forum-menu (load_topics)="load_topics()"></app-forum-menu>
 
-<mat-form-field class='half-width' appearance="fill">
-   <mat-label>Sortiraj po</mat-label>
-   <mat-select (selectionChange)="sort()" [(ngModel)]="sort_choosen">
 
-      <mat-option [value]="'date_created'">Datumu objave</mat-option>
-      <mat-option [value]="'title'">Imenu</mat-option>
-      <mat-option [value]="'last_comment'">Zadnjem komentaru</mat-option>
-      <mat-option [value]="'comments_count'">Broju komentara</mat-option>
-      <mat-option [value]="'views'">Broju pregleda</mat-option>
+<div class="background_img_van_gogh " style="padding-left: 15%; padding-right: 15%">
+   <div fxLayout="column" fxLayoutAlign="center center" style="background-color: white; padding-top: 3%;">
+      <mat-form-field class='half-width' appearance="fill">
+         <mat-label>Sortiraj po</mat-label>
+         <mat-select (selectionChange)="sort()" [(ngModel)]="sort_choosen">
 
-   </mat-select>
-</mat-form-field>
+            <mat-option [value]="'date_created'">Datumu objave</mat-option>
+            <mat-option [value]="'title'">Imenu</mat-option>
+            <mat-option [value]="'last_comment'">Zadnjem komentaru</mat-option>
+            <mat-option [value]="'comments_count'">Broju komentara</mat-option>
+            <mat-option [value]="'views'">Broju pregleda</mat-option>
 
-<mat-form-field class='half-width' appearance="fill">
-   <mat-label>Poredak</mat-label>
-   <mat-select (selectionChange)="sort()" [(ngModel)]="up_down_flag">
+         </mat-select>
+      </mat-form-field>
 
-      <mat-option [value]="'up'">Rastucem poretku</mat-option>
-      <mat-option [value]="'down'">Silaznom poretku</mat-option>
+      <mat-form-field class='half-width' appearance="fill">
+         <mat-label>Poredak</mat-label>
+         <mat-select (selectionChange)="sort()" [(ngModel)]="up_down_flag">
 
-   </mat-select>
-</mat-form-field>
+            <mat-option [value]="'up'">Rastucem poretku</mat-option>
+            <mat-option [value]="'down'">Silaznom poretku</mat-option>
 
-
-<mat-card-header>
-   <mat-card-title>
-      Pretraga
-   </mat-card-title>
-</mat-card-header>
-<mat-card-content>
-   <mat-form-field class="half-width" appearance="fill">
-      <mat-label>Tema</mat-label>
-      <input matInput type="text" [(ngModel)]="search_topic">
-      <button *ngIf="search_topic" matSuffix mat-icon-button aria-label="Clear" (click)="search_topic=''">
-         <mat-icon>close</mat-icon>
-      </button>
-   </mat-form-field>
-
-   <div >
-      <button mat-raised-button color="primary" (click)='search()'>Pretraga</button>
+         </mat-select>
+      </mat-form-field>
    </div>
 
-   <!-- <mat-form-field  *ngIf='temp_sport_selected != null' class='half-width' appearance="fill">
+   <div  style="background-color: white; padding-top: 3%;">
+      <mat-card-header fxLayoutAlign="center center">
+         <mat-card-title>
+            Pretraga
+         </mat-card-title>
+      </mat-card-header>
+
+      <mat-form-field fxLayout=" column" fxLayoutAlign="center center" class="half-width" appearance="fill">
+         <mat-label>Tema</mat-label>
+         <input matInput type="text" [(ngModel)]="search_topic">
+         <button *ngIf="search_topic" matSuffix mat-icon-button aria-label="Clear" (click)="search_topic=''">
+            <mat-icon>close</mat-icon>
+         </button>
+      </mat-form-field>
+
+      <div fxLayoutAlign="center center">
+      <button  mat-raised-button color="primary" (click)='search()'>Pretraga</button>
+
+   </div>
+      <!-- <mat-form-field  *ngIf='temp_sport_selected != null' class='half-width' appearance="fill">
    <mat-label>Disciplina</mat-label>
    <mat-select (selectionChange)="fun_change($event)" [(ngModel)]="temp_discipline_selected">
      <mat-option *ngFor="let discipline of  temp_sport_selected.disciplines" [value]="discipline.discipline">
@@ -54,69 +56,74 @@ neke izmene
    </mat-select>
  </mat-form-field> -->
 
-   <mat-list >
-      <h3 mat-subheader>Umetnine diskusija</h3>
-      <mat-list-item *ngFor="let topic of arts.show_topics; last as last">
-         <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
-         <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
-         <p mat-line class="demo-2"  > {{topic.username}} </p>
-         <div>
-            <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
-            <div>Napravljeno: {{format_date(topic.date_added)}}</div>
-            <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
-         </div>
-         <mat-divider [inset]="true"></mat-divider>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <!-- <h3 mat-subheader>Notes</h3> -->
-   </mat-list>
+      <mat-list>
+         <h3 mat-subheader>Umetnine diskusija</h3>
+         <mat-list-item *ngFor="let topic of arts.show_topics; last as last">
+            <mat-icon matListAvatar iconAvatar color="primary">description</mat-icon>
+            <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
+            <p mat-line class="demo-2"> {{topic.username}} </p>
+            <div>
+               <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
+               <div>Napravljeno: {{format_date(topic.date_added)}}</div>
+               <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
+            </div>
+            <mat-divider [inset]="true"></mat-divider>
+         </mat-list-item>
+         <mat-divider></mat-divider>
+         <!-- <h3 mat-subheader>Notes</h3> -->
+      </mat-list>
 
-   <mat-paginator #paginator [length]="arts.topics.length" [pageSize]="page_size_options[0]" [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, arts)">
-   </mat-paginator>
-
-
-
-
-   <mat-list >
-      <h3 mat-subheader>Druzenje</h3>
-      <mat-list-item *ngFor="let topic of socials.show_topics; last as last">
-         <mat-icon mat-list-icon>folder</mat-icon>
-         <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
-         <p mat-line class="demo-2"  > {{topic.username}} </p>
-         <div>
-            <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
-            <div>Napravljeno: {{format_date(topic.date_added)}}</div>
-            <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
-         </div>
-         <mat-divider [inset]="true"></mat-divider>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <!-- <h3 mat-subheader>Notes</h3> -->
-   </mat-list>
-
-   <mat-paginator #paginator [length]="socials.topics.length" [pageSize]="page_size_options[0]" [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, socials)">
-   </mat-paginator>
+      <mat-paginator #paginator [length]="arts.topics.length" [pageSize]="page_size_options[0]"
+         [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, arts)">
+      </mat-paginator>
 
 
 
-   <mat-list >
-      <h3 mat-subheader>Sajmovi</h3>
-      <mat-list-item *ngFor="let topic of fairs.show_topics; last as last">
-         <mat-icon mat-list-icon>folder</mat-icon>
-         <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
-         <p mat-line class="demo-2"  > {{topic.username}} </p>
-         <div>
-            <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
-            <div>Napravljeno: {{format_date(topic.date_added)}}</div>
-            <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
-         </div>
-         <mat-divider [inset]="true"></mat-divider>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <!-- <h3 mat-subheader>Notes</h3> -->
-   </mat-list>
 
-   <mat-paginator #paginator [length]="fairs.topics.length" [pageSize]="page_size_options[0]" [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, fairs)">
-   </mat-paginator>
+      <mat-list>
+         <h3 mat-subheader>Druzenje</h3>
+         <mat-list-item *ngFor="let topic of socials.show_topics; last as last">
+            <mat-icon mat-list-icon>folder</mat-icon>
+            <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
+            <p mat-line class="demo-2"> {{topic.username}} </p>
+            <div>
+               <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
+               <div>Napravljeno: {{format_date(topic.date_added)}}</div>
+               <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
+            </div>
+            <mat-divider [inset]="true"></mat-divider>
+         </mat-list-item>
+         <mat-divider></mat-divider>
+         <!-- <h3 mat-subheader>Notes</h3> -->
+      </mat-list>
+
+      <mat-paginator #paginator [length]="socials.topics.length" [pageSize]="page_size_options[0]"
+         [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, socials)">
+      </mat-paginator>
 
 
+
+      <mat-list>
+         <h3 mat-subheader>Sajmovi</h3>
+         <mat-list-item *ngFor="let topic of fairs.show_topics; last as last">
+            <mat-icon mat-list-icon>folder</mat-icon>
+            <h4 mat-line (click)="open_topic(topic.title)">{{topic.title}}</h4>
+            <p mat-line class="demo-2"> {{topic.username}} </p>
+            <div>
+               <div>broj komentara: {{topic.comments.length}} broj pregleda: {{topic.views}} </div>
+               <div>Napravljeno: {{format_date(topic.date_added)}}</div>
+               <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
+            </div>
+            <mat-divider [inset]="true"></mat-divider>
+         </mat-list-item>
+         <mat-divider></mat-divider>
+         <!-- <h3 mat-subheader>Notes</h3> -->
+      </mat-list>
+
+      <mat-paginator #paginator [length]="fairs.topics.length" [pageSize]="page_size_options[0]"
+         [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, fairs)">
+      </mat-paginator>
+      <!-- </mat-card-content> -->
+
+   </div>
+</div>
