@@ -20,6 +20,8 @@ export class ChangePasswordComponent implements OnInit {
     this.type = localStorage.getItem("type");
 
     console.log("type: " + this.type);
+    this.old_password = "";
+
   }
 
   username: string = "";
@@ -56,9 +58,9 @@ export class ChangePasswordComponent implements OnInit {
 
             if (data["msg"] === "ok") {
               // this.message = "Uspesno promenjena lozinka";
-      this.notificationService.success("Uspesno promenjena lozinka");
+              this.notificationService.success("Uspesno promenjena lozinka");
 
-              
+
             }
 
           }
@@ -66,7 +68,7 @@ export class ChangePasswordComponent implements OnInit {
         }
         else
           // this.message = "Originalna lozinka ne odgovara";
-          this.notificationService.success("Originalna lozinka ne odgovara");
+          this.notificationService.error("Originalna lozinka ne odgovara");
 
       });
     }

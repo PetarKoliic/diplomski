@@ -52,7 +52,7 @@ export class NewAppraisalComponent implements OnInit {
           this.previews.push(e.target.result);
         };
 
-        reader.readAsDataURL(this.pic);
+        reader.readAsDataURL(event.target.files[i]);
 
         // this.selectedFileNames.push(this.pic.name);
 

@@ -44,4 +44,4 @@ let Appraisal = new Schema({
 
 });
 
-export default mongoose.model('appraisal', Appraisal, 'appraisals');
+export default mongoose.model('Appraisal', Appraisal, 'appraisals');

@@ -43,5 +43,5 @@ let Appraisal = new Schema({
         type: Number
     }
 });
-exports.default = mongoose_1.default.model('appraisal', Appraisal, 'appraisals');
+exports.default = mongoose_1.default.model('Appraisal', Appraisal, 'appraisals');
 //# sourceMappingURL=appraisal.js.map
