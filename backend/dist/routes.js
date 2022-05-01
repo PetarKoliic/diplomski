@@ -454,43 +454,47 @@ router.route('/get-all-topics').post((req, res) => {
     });
 });
 //////////////////////////////////////////////////
-router.route('/update-subscription').post((req, res) => {
+router.route('/update-subscription').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     console.log("pocetak");
-    user_1.default.findOne({ "username": username }, (err, user_doc) => {
-        if (!err) {
-            let user_obj = user_doc.toObject();
-            let valid_until = new Date(user_obj.valid_until);
-            valid_until.setMonth(valid_until.getMonth() + 1);
-            console.log("valid until");
-            console.log(valid_until);
-            user_1.default.findOneAndUpdate({ "username": username }, { $set: { "valid_until": valid_until } }, (err, data) => {
-                if (err) {
-                    res.status(400).json({ "msg": "no" });
-                }
-                else {
-                    res.json({ "msg": "ok" });
-                }
-            });
-        }
-        else {
-            res.status(400).json({ "msg": "no" });
-        }
-    });
-});
+    // User.findOne({ "username": username }, (err, user_doc) => {
+    //     if (!err) {
+    //         let user_obj = user_doc.toObject();
+    //         let valid_until = new Date(user_obj.valid_until);
+    //         valid_until.setMonth(valid_until.getMonth() + 1);
+    //         console.log("valid until");
+    //         console.log(valid_until);
+    //         User.findOneAndUpdate({ "username": username }, { $set: { "valid_until": valid_until } }, (err, data) => {
+    //             if (err) {
+    //                 res.status(400).json({ "msg": "no" });
+    //             }
+    //             else {
+    //                 res.json({ "msg": "ok" });
+    //             }
+    //         });
+    //     }
+    //     else {
+    //         res.status(400).json({ "msg": "no" });
+    //     }
+    // });
+    let msg = yield services.update_subscription(username);
+    res.json(msg);
+}));
 //////////////////////////////////////////
-router.route('/get-subscription-valid-until').post((req, res) => {
+router.route('/get-subscription-valid-until').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     console.log("get-subscription-valid-until");
-    user_1.default.findOne({ "username": username }, (err, user) => {
-        if (!err) {
-            res.json({ "valid_until": user.get("valid_until") });
-        }
-        else {
-            res.status(400).json({ "msg": "no" });
-        }
-    });
-});
+    // User.findOne({ "username": username }, (err, user) => {
+    //     if (!err) {
+    //         res.json({ "valid_until": user.get("valid_until") });
+    //     }
+    //     else {
+    //         res.status(400).json({ "msg": "no" });
+    //     }
+    // });
+    let msg = yield services.get_subscription_valid_until(username);
+    res.json(msg);
+}));
 // col.findOneAndUpdate(
 //     { _id : item._id }
 //     , { $set : { nextRun : new Date(item.nextRun.getTime() + 86400000}}
@@ -501,7 +505,7 @@ router.route('/get-subscription-valid-until').post((req, res) => {
 //         { $set : { nextRun : nextRunDate } }
 //     );
 //////////////////////////////////////////////////
-router.route('/add-topic').post((req, res) => {
+router.route('/add-topic').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let title = req.body.title;
     let category = req.body.category;
@@ -512,25 +516,27 @@ router.route('/add-topic').post((req, res) => {
     let comment = {
         "comment": comment_description, "date_added": date, "username": username,
     };
-    topic_1.default.findOne({ "title": title }, (err, topic_found) => {
-        if (topic_found) {
-            res.json({ "msg": "postoji vec ista tema" });
-        }
-        else {
-            let topic = new topic_1.default({
-                "_id": _id,
-                "username": username, "title": title,
-                "date_added": date, "comments": [comment],
-                "category": category, "views": 0
-            });
-            topic.save().then(u => {
-                res.json({ "msg": "ok" });
-            }).catch(err => {
-                res.json({ "msg": "greska unutar servera" });
-            });
-        }
-    });
-});
+    // Topic.findOne({ "title": title }, (err, topic_found) => {
+    //     if (topic_found) {
+    //         res.json({ "msg": "postoji vec ista tema" });
+    //     }
+    //     else {
+    //         let topic = new Topic({
+    //             "_id": _id,
+    //             "username": username, "title": title,
+    //             "date_added": date, "comments": [comment],
+    //             "category": category, "views": 0
+    //         });
+    //         topic.save().then(u => {
+    //             res.json({ "msg": "ok" });
+    //         }).catch(err => {
+    //             res.json({ "msg": "greska unutar servera" });
+    //         });
+    //     }
+    // });
+    let msg = yield services.add_topic(_id, username, title, category, date, comment);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////////
 // C:\Users\Petar\Desktop\diplomski\backend\uploads\1644117757163-slika.PNG
 //////////////////////////////////////////////////

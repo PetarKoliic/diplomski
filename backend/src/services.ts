@@ -10,6 +10,7 @@ import { update_ratings } from './routes';
 import rating from './models/rating';
 import { calculate_individual_rating } from './util';
 import { calculate_new_rating } from './util';
+import { promiseImpl } from 'ejs';
 
 
 
@@ -502,7 +503,7 @@ async function load_all_users() {
 async function delete_user(username: string) {
     let res: Object;
     var error: any;
-    await User.deleteOne({ 'username': username },  async (err) => {
+    await User.deleteOne({ 'username': username }, async (err) => {
 
         error = err;
         if (err)
@@ -515,28 +516,28 @@ async function delete_user(username: string) {
 
 
     });
-    let promise= new Promise(async(resolve, reject) => {
-
-    
-    if (!error) {
-        await Appraisal.deleteMany({ "username": username, "finished": false }, async (err) => {
-            if (err)
-                console.log(err);
-            else {
-                console.log('obrisali smo appraisale');
-                res = { 'msg': 'ok' };
-            }
-            resolve("success");
-
-        })
-    }
-    else {
-        console.log(error);
-        res = { "msg": "no" };
-    }
+    let promise = new Promise(async (resolve, reject) => {
 
 
-});
+        if (!error) {
+            await Appraisal.deleteMany({ "username": username, "finished": false }, async (err) => {
+                if (err)
+                    console.log(err);
+                else {
+                    console.log('obrisali smo appraisale');
+                    res = { 'msg': 'ok' };
+                }
+                resolve("success");
+
+            })
+        }
+        else {
+            console.log(error);
+            res = { "msg": "no" };
+        }
+
+
+    });
 
     await promise;
     return res;
@@ -547,7 +548,7 @@ async function delete_user(username: string) {
 async function delete_comment(_id: any, username: string, comment: string, date_added: Date) {
     let res: Object;
 
-    await Topic.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "comment": comment} } }, (err) => {
+    await Topic.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "comment": comment } } }, (err) => {
 
         if (err)
             console.log(err);
@@ -570,11 +571,10 @@ async function delete_appraisal(id: any) {
 
     await Appraisal.deleteOne({ '_id': id }, (err) => {
 
-        if (err)
-            {
-                // console.log(err);
-                console.log("ERROR");
-            }
+        if (err) {
+            // console.log(err);
+            console.log("ERROR");
+        }
         else {
             console.log('obrisali smo umetninu');
             // res.json({ 'msg': 'ok' });
@@ -583,6 +583,112 @@ async function delete_appraisal(id: any) {
         }
 
     });
+
+    return res;
+
+}
+
+
+async function update_subscription(username: string) {
+    let res: Object;
+
+
+    let promise = new Promise(async (resolve, reject) => {
+        await User.findOne({ "username": username }, (err, user_doc) => {
+            if (!err) {
+
+                let user_obj = user_doc.toObject();
+
+
+
+                let valid_until = new Date(user_obj.valid_until);
+                valid_until.setMonth(valid_until.getMonth() + 1);
+
+                console.log("valid until");
+                console.log(valid_until);
+                User.findOneAndUpdate({ "username": username }, { $set: { "valid_until": valid_until } }, (err, data) => {
+
+
+                    if (err) {
+                        res = { "msg": "no" };
+                    }
+                    else {
+
+                        res = { "msg": "ok" };
+                    }
+                    resolve("success");
+                });
+            }
+            else {
+
+                res = { "msg": "no" };
+                resolve("success");
+
+            }
+        });
+    });
+
+    await promise;
+
+    return res;
+
+}
+
+async function get_subscription_valid_until(username: string) {
+
+    let res: Object;
+
+    await User.findOne({ "username": username }, (err, user) => {
+        if (!err) {
+            res = { "valid_until": user.get("valid_until") };
+        }
+        else {
+            res = { "msg": "no" };
+        }
+
+    });
+
+
+    return res;
+
+}
+
+
+async function add_topic(_id: string, username: string, title: string, category: string,
+    date: Date, comment: any) {
+
+    let res: Object;
+
+    let promise = new Promise(async (resolve, reject) => {
+
+        await Topic.findOne({ "title": title }, (err, topic_found) => {
+
+            if (topic_found) {
+                res = { "msg": "postoji vec ista tema" };
+            }
+
+            else {
+
+                let topic = new Topic({
+                    "_id": _id,
+                    "username": username, "title": title,
+                    "date_added": date, "comments": [comment],
+                    "category": category, "views": 0
+                });
+
+
+                topic.save().then(u => {
+                    res = { "msg": "ok" };
+                    resolve("sucess");
+                }).catch(err => {
+                    res = { "msg": "greska unutar servera" };
+                    resolve("sucess");
+                });
+            }
+        });
+    });
+
+    await promise;
 
     return res;
 
@@ -616,6 +722,9 @@ module.exports = {
     load_all_users,
     delete_user,
     delete_comment,
-    delete_appraisal
+    delete_appraisal,
+    update_subscription,
+    get_subscription_valid_until,
+    add_topic
 
 }

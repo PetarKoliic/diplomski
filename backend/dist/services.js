@@ -441,6 +441,80 @@ function delete_appraisal(id) {
         return res;
     });
 }
+function update_subscription(username) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let res;
+        let promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            yield user_1.default.findOne({ "username": username }, (err, user_doc) => {
+                if (!err) {
+                    let user_obj = user_doc.toObject();
+                    let valid_until = new Date(user_obj.valid_until);
+                    valid_until.setMonth(valid_until.getMonth() + 1);
+                    console.log("valid until");
+                    console.log(valid_until);
+                    user_1.default.findOneAndUpdate({ "username": username }, { $set: { "valid_until": valid_until } }, (err, data) => {
+                        if (err) {
+                            res = { "msg": "no" };
+                        }
+                        else {
+                            res = { "msg": "ok" };
+                        }
+                        resolve("success");
+                    });
+                }
+                else {
+                    res = { "msg": "no" };
+                    resolve("success");
+                }
+            });
+        }));
+        yield promise;
+        return res;
+    });
+}
+function get_subscription_valid_until(username) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let res;
+        yield user_1.default.findOne({ "username": username }, (err, user) => {
+            if (!err) {
+                res = { "valid_until": user.get("valid_until") };
+            }
+            else {
+                res = { "msg": "no" };
+            }
+        });
+        return res;
+    });
+}
+function add_topic(_id, username, title, category, date, comment) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let res;
+        let promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            yield topic_1.default.findOne({ "title": title }, (err, topic_found) => {
+                if (topic_found) {
+                    res = { "msg": "postoji vec ista tema" };
+                }
+                else {
+                    let topic = new topic_1.default({
+                        "_id": _id,
+                        "username": username, "title": title,
+                        "date_added": date, "comments": [comment],
+                        "category": category, "views": 0
+                    });
+                    topic.save().then(u => {
+                        res = { "msg": "ok" };
+                        resolve("sucess");
+                    }).catch(err => {
+                        res = { "msg": "greska unutar servera" };
+                        resolve("sucess");
+                    });
+                }
+            });
+        }));
+        yield promise;
+        return res;
+    });
+}
 module.exports = {
     login,
     register,
@@ -463,6 +537,9 @@ module.exports = {
     load_all_users,
     delete_user,
     delete_comment,
-    delete_appraisal
+    delete_appraisal,
+    update_subscription,
+    get_subscription_valid_until,
+    add_topic
 };
 //# sourceMappingURL=services.js.map
