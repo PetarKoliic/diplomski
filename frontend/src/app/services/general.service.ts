@@ -282,11 +282,12 @@ export class GeneralService {
     return this.http.post(`${this.uri}/add-comment`, data);
   }
 
-  delete_comment(username: string,topic_id: string, date_added:Date)
+  delete_comment(username: string,topic_id: string, comment: string, date_added:Date)
   {
     const data = {
       'username': username,
       "date_added": date_added,
+      "comment": comment,
       "_id": topic_id,
     }
 

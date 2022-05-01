@@ -29,9 +29,19 @@ export class HistoryComponent implements OnInit {
   appraisals: Appraisal[] = null;
   img_map: Map<string, number> = new Map<string, number>();
   img_pagination: Map<string, Object> = new Map<string, Object>();
+  user_payed: boolean = true;
+  // user_type: string;
 
 
   init(): void {
+
+    // this.user_type = localStorage.getItem("type");
+
+    // if (this.user_type == "user") {
+      if (JSON.parse(localStorage.getItem("user_payed")) == "true")
+        this.user_payed = true;
+      else this.user_payed = false;
+    // }
 
     this.service.get_history_appraisals_user(this.username).subscribe(
       (appraisals: Array<Appraisal>) => {
@@ -91,24 +101,24 @@ export class HistoryComponent implements OnInit {
 
   // finish_appraisal(appraisal: Appraisal)
   // {
-    // this.service.user_finish_appraisal(appraisal._id).subscribe(
-      // (res: Object) => {
-// 
-// 
-        // console.log(res["msg"]);
-        // if (res["msg"] == "ok") {
-          // for (let i in this.appraisals) {
-            // if (this.appraisals[i]._id === appraisal._id) {
-// 
-              // this.appraisals.splice(Number(i), 1);
-            // }
-          // }
-        // }
-// 
-        // this.notificationService.alert("Nasilno zavrsena procena");
-        // console.log("response : " + res["msg"]);
-// 
-      // });
+  // this.service.user_finish_appraisal(appraisal._id).subscribe(
+  // (res: Object) => {
+  // 
+  // 
+  // console.log(res["msg"]);
+  // if (res["msg"] == "ok") {
+  // for (let i in this.appraisals) {
+  // if (this.appraisals[i]._id === appraisal._id) {
+  // 
+  // this.appraisals.splice(Number(i), 1);
+  // }
+  // }
+  // }
+  // 
+  // this.notificationService.alert("Nasilno zavrsena procena");
+  // console.log("response : " + res["msg"]);
+  // 
+  // });
   // }
 
 

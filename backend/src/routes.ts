@@ -202,7 +202,7 @@ router.post('/add-appraisal', upload.array("images"), async(req: any, res: any) 
 /////////////////////////////////////////////////
 
 
-router.post('/get-appraisals-user', upload.array("images"), (req: any, res: any) => {
+router.post('/get-appraisals-user', upload.array("images"), async (req: any, res: any) => {
 
 
     let id = ObjectId(req.body.id);
@@ -225,63 +225,61 @@ router.post('/get-appraisals-user', upload.array("images"), (req: any, res: any)
     });
 
 
-    appraisal.save().then(u => {
-        res.json({ "msg": "ok" });
-    }).catch(err => {
-        res.json({ "msg": "error" });
-    })
+    let msg = await services.get_appraisals_user(appraisal);
+    
+    res.json(msg);
+
+
 });
 
 ////////////////////////////////////////////////
 
-router.route('/get-current-appraisals-user').post((req: any, res: any) => {
+router.route('/get-current-appraisals-user').post(async(req: any, res: any) => {
 
     let username = req.body.username;
 
     console.log("usao u get current appraisal");
 
-    Appraisal.find({ "username": username, "finished": false }, (err, appraisals) => {
-
-        console.log(appraisals);
-
-        res.json(appraisals);
-    })
+    let msg = await services.get_current_appraisals_user(username);
+    
+    res.json(msg);
 });
 
 
 ////////////////////////////////////////////////
 
-router.route('/get-history-appraisals-user').post((req: any, res: any) => {
+router.route('/get-history-appraisals-user').post(async(req: any, res: any) => {
 
     let username = req.body.username;
 
     console.log("usao u get current appraisal");
 
-    Appraisal.find({ "username": username, "finished": true }, (err, appraisals) => {
-
-        console.log(appraisals);
-
-        res.json(appraisals);
-    })
+    let msg = await services.get_history_appraisals_user(username);
+    
+    res.json(msg);
 });
 
 
 /////////////////////////////////////////////////
 
-router.route('/get-current-appraisals-appraiser-history').post((req: any, res: any) => {
+router.route('/get-current-appraisals-appraiser-history').post(async(req: any, res: any) => {
 
     let username = req.body.username;
 
-    Appraisal.find({ "finished": false, "evaluations.username": username }, (err, appraisals) => {
-        if (err) console.log(err);
-        else {
+    // Appraisal.find({ "finished": false, "evaluations.username": username }, (err, appraisals) => {
+    //     if (err) console.log(err);
+    //     else {
 
-            console.log("appraisals");
-            console.log(appraisals);
+    //         console.log("appraisals");
+    //         console.log(appraisals);
 
-            res.json(appraisals);
-        }
-    })
+    //         res.json(appraisals);
+    //     }
+    // });
+
+    let msg = await services.get_current_appraisals_appraiser_history(username);
+    
+    res.json(msg);
 });
 
 // Person.find({ 
@@ -292,7 +290,7 @@ router.route('/get-current-appraisals-appraiser-history').post((req: any, res: a
 // db.inventory.find( { quantity: { $nin: [ 5, 15 ] } }, { _id: 0 } )
 
 
-router.route('/get-current-appraisals-appraiser').post((req: any, res: any) => {
+router.route('/get-current-appraisals-appraiser').post(async(req: any, res: any) => {
 
     console.log("username");
     let username = req.body.username;
@@ -302,40 +300,43 @@ router.route('/get-current-appraisals-appraiser').post((req: any, res: any) => {
     // M.findOne({list: {$ne: 'A'}}
 
 
-    Appraisal.find({ "finished": false }, (err, appraisals) => {
-        if (err) console.log(err);
-        else {
+    // Appraisal.find({ "finished": false }, (err, appraisals) => {
+    //     if (err) console.log(err);
+    //     else {
 
 
-            console.log(appraisals);
+    //         console.log(appraisals);
 
 
 
-            let a2 = [];
+    //         let a2 = [];
 
-            for (let i = 0; i < appraisals.length; i++) {
-                console.log("i : " + i + " duzina: " + appraisals.length);
-                let appraisal = appraisals[i].toObject();
-                let flag: boolean = false;
-                for (let j = 0; j < appraisal.evaluations; j++) {
-                    console.log("usao a nije trebalo");
-                    console.log("j : " + j + " duzina: " + appraisals.length);
-                    console.log(appraisal.evaluations[j].username);
-                    if (appraisal.evaluations[j].username === username)
-                        flag = true;
-                }
+    //         for (let i = 0; i < appraisals.length; i++) {
+    //             console.log("i : " + i + " duzina: " + appraisals.length);
+    //             let appraisal = appraisals[i].toObject();
+    //             let flag: boolean = false;
+    //             for (let j = 0; j < appraisal.evaluations.length; j++) {
+    //                 console.log("usao a nije trebalo");
+    //                 console.log("j : " + j + " duzina: " + appraisals.length);
+    //                 console.log(appraisal.evaluations[j].username);
+    //                 if (appraisal.evaluations[j].username === username)
+    //                     flag = true;
+    //             }
 
-                if (!flag)
-                    a2.push(appraisal);
-            }
+    //             if (!flag)
+    //                 a2.push(appraisal);
+    //         }
 
-            console.log("prazno");
-            console.log(a2);
+    //         console.log("prazno");
+    //         console.log(a2);
 
-            res.json(a2);
-        }
-    })
-
+    //         res.json(a2);
+    //     }
+    // })
+    
+    let msg = await services.get_current_appraisals_appraiser(username);
+    
+    res.json(msg);
 
 });
 
@@ -346,7 +347,7 @@ router.route('/get-current-appraisals-appraiser').post((req: any, res: any) => {
 
 /////////////////////////////////////////////////
 
-router.route('/give-appraisal').post((req: any, res: any) => {
+router.route('/give-appraisal').post(async(req: any, res: any) => {
 
     let username = req.body.username;
     let value = req.body.value;
@@ -355,34 +356,38 @@ router.route('/give-appraisal').post((req: any, res: any) => {
 
     console.log("username: " + username + " value: " + value + " _id" + _id);
 
-    console.log("usao u current appraisals");
+    console.log("usao u give appraisals");
 
-    User.findOne({ "username": username }, (err, user: any) => {
-        if (err) console.log(err);
-        else {
+    // User.findOne({ "username": username }, (err, user: any) => {
+    //     if (err) console.log(err);
+    //     else {
 
-            let rating = user["rating"];
-            console.log(user);
-            console.log("rating : " + rating);
+    //         let rating = user["rating"];
+    //         console.log(user);
+    //         console.log("rating : " + rating);
 
-            let evaluation = { "username": username, "rating": rating, "value": value };
+    //         let evaluation = { "username": username, "rating": rating, "value": value };
 
 
-            Appraisal.updateOne({ "_id": _id }, { $push: { "evaluations": evaluation } }).
-                then(user => {
-                    res.status(200).json({ "msg": "ok" });
-                }).catch(err => {
-                    res.status(400).json({ 'msg': 'no' });
-                });;
+    //         Appraisal.updateOne({ "_id": _id }, { $push: { "evaluations": evaluation } }).
+    //             then(user => {
+    //                 res.status(200).json({ "msg": "ok" });
+    //             }).catch(err => {
+    //                 res.status(400).json({ 'msg': 'no' });
+    //             });;
 
-        }
-    })
+    //     }
+    // })
+    let msg = await services.give_appraisal(username, value, _id, res);
+
+    res.json(msg);
+
 });
 
 
 /////////////////////////////////////////////////
 
-router.route('/add-comment').post((req: any, res: any) => {
+router.route('/add-comment').post(async(req: any, res: any) => {
 
     let username = req.body.username;
     let date_added = req.body.date_added;
@@ -397,13 +402,16 @@ router.route('/add-comment').post((req: any, res: any) => {
 
 
 
-    Topic.updateOne({ "_id": _id }, { $push: { "comments": { "username": username, "comment": comment, "date_added": date_added } } }).
-        then(user => {
-            res.status(200).json({ "msg": "ok" });
-        }).catch(err => {
-            res.status(400).json({ 'msg': 'no' });
-        });;
+    // Topic.updateOne({ "_id": _id }, { $push: { "comments": { "username": username, "comment": comment, "date_added": date_added } } }).
+    //     then(user => {
+    //         res.status(200).json({ "msg": "ok" });
+    //     }).catch(err => {
+    //         res.status(400).json({ 'msg': 'no' });
+    //     });;
 
+    let msg = await services.add_comment(username, _id, date_added, comment);
+
+    res.json(msg);
 
 
 });
@@ -411,25 +419,26 @@ router.route('/add-comment').post((req: any, res: any) => {
 /////////////////////////////////////////////////
 
 
-router.route('/user-finish-appraisal').post((req: any, res: any) => {
+router.route('/user-finish-appraisal').post(async(req: any, res: any) => {
 
     console.log(req.body.value);
     let _id = ObjectId(req.body._id);
 
 
-    // console.log("value: " + value + " _id : " + _id);
 
 
-    // console.log("11111111111111111111111");
+    // Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then(async (user: any) => {
 
-    Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then(async (user: any) => {
+    //     res.status(200).json({ 'msg': "ok" });
+    // }).catch((err: any) => {
+    //     if (err)
+    //         console.log(err);
+    //     res.status(400).json({ 'msg': 'no' });
+    // });
 
-        res.status(200).json({ 'msg': "ok" });
-    }).catch((err: any) => {
-        if (err)
-            console.log(err);
-        res.status(400).json({ 'msg': 'no' });
-    });
+    let msg = await services.user_finish_appraisal(_id);
+
+    res.json(msg);
 
 
 });
@@ -439,7 +448,7 @@ router.route('/user-finish-appraisal').post((req: any, res: any) => {
 /////////////////////////////////////////////////
 
 
-router.route('/finish-appraisal').post((req: any, res: any) => {
+router.route('/finish-appraisal').post(async(req: any, res: any) => {
 
     console.log(req.body.value);
     let value = req.body.value;
@@ -451,31 +460,34 @@ router.route('/finish-appraisal').post((req: any, res: any) => {
 
     // console.log("11111111111111111111111");
 
-    Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': value, 'finished': true } }).then(async (user: any) => {
+    // Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': value, 'finished': true } }).then(async (user: any) => {
 
-        // console.log(user);
+    //     // console.log(user);
 
-        //////// ovde funkcija koja radi update uppraisala
-        let msg = await update_ratings(res, user.evaluations, value);
-
-
-
-        // console.log("");
+    //     //////// ovde funkcija koja radi update uppraisala
+    //     let msg = await update_ratings(res, user.evaluations, value);
 
 
-        res.status(200).json({ 'msg': msg });
-    }).catch((err: any) => {
-        if (err)
-            console.log(err);
-        res.status(400).json({ 'msg': 'no' });
-    });
+
+    //     // console.log("");
+
+
+    //     res.status(200).json({ 'msg': msg });
+    // }).catch((err: any) => {
+    //     if (err)
+    //         console.log(err);
+    //     res.status(400).json({ 'msg': 'no' });
+    // });
+
+    let msg = await services.finish_appraisal(_id, value);
+    res.json(msg);
 
 
 });
 
 /////////////////////////////////////////////////
 
-async function update_ratings(res: any, evaluations: Evaluation[], sold_value: number) {
+export async function update_ratings(res: any, evaluations: Evaluation[], sold_value: number) {
 
     // console.log("2222222222222222222222222");
 
@@ -533,24 +545,27 @@ async function update_ratings(res: any, evaluations: Evaluation[], sold_value: n
 /////////////////////////////////////////////////
 
 
-router.route('/get-all-current-appraisals').post((req: any, res: any) => {
+router.route('/get-all-current-appraisals').post(async(req: any, res: any) => {
 
 
-    Appraisal.find({ "finished": false }, (err, appraisals) => {
-        if (err) console.log(err);
-        else {
+    // Appraisal.find({ "finished": false }, (err, appraisals) => {
+    //     if (err) console.log(err);
+    //     else {
 
-            console.log("appraisals");
-            console.log(appraisals);
+    //         console.log("appraisals");
+    //         console.log(appraisals);
 
-            res.json(appraisals);
-        }
-    })
+    //         res.json(appraisals);
+    //     }
+    // })
+
+    let msg = await services.get_all_current_appraisals();
+    res.json(msg);
 });
 
 //////////////////////////////////////////////////
 router.route('/get-topic').post(
-    (req: any, res: any) => {
+    async(req: any, res: any) => {
 
 
         console.log("inside login");
@@ -559,24 +574,27 @@ router.route('/get-topic').post(
         console.log(title);
 
 
-        Topic.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
+        // Topic.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
 
 
-            if (err)
-                console.log('error delegate');
-            else {
-                // let retObj = { 'user': user };
-                console.log(topic);
-                res.json(topic);
-            }
-        });
+        //     if (err)
+        //         console.log('error delegate');
+        //     else {
+        //         // let retObj = { 'user': user };
+        //         console.log(topic);
+        //         res.json(topic);
+        //     }
+        // });
+
+        let msg = await services.get_topic(title);
+        res.json(msg);
     }
 );
 
 
 /////////////////////////////////////////////////
 
-router.route('/get-ratings-by-user').post((req: any, res: any) => {
+router.route('/get-ratings-by-user').post(async(req: any, res: any) => {
 
     console.log(req);
 
@@ -584,57 +602,62 @@ router.route('/get-ratings-by-user').post((req: any, res: any) => {
     console.log(username);
 
 
-    rating.findOne({ "username": username }, (err, ratings) => {
-        if (err) console.log(err);
-        else {
+    // rating.findOne({ "username": username }, (err, ratings) => {
+    //     if (err) console.log(err);
+    //     else {
 
 
 
-            res.json(ratings);
-        }
-    })
+    //         res.json(ratings);
+    //     }
+    // })
+    let msg = await services.get_ratings_by_user(username);
+     res.json(msg);
 });
 
 
 /////////////////////////////////////////////////
 
 
-router.route('/get-rating').post((req: any, res: any) => {
+router.route('/get-rating').post(async(req: any, res: any) => {
 
     let username = req.body.username;
 
-    rating.findOne({ "username": username }, (err, ratings) => {
-        if (err) console.log(err);
-        else {
+    // rating.findOne({ "username": username }, (err, ratings) => {
+    //     if (err) console.log(err);
+    //     else {
 
 
-            let rating = calculate_new_rating(ratings != null ? ratings.toObject() : {});
+    //         let rating = calculate_new_rating(ratings != null ? ratings.toObject() : {});
 
-            res.json({ "rating": rating });
-        }
-    })
+    //         res.json({ "rating": rating });
+    //     }
+    // })
 
-
+    let msg = await services.get_rating(username);
+    res.json(msg);
 
 });
 
 ////////////////////////////////////////////////
 
-router.route('/load-all-users').get((req: any, res: any) => {
+router.route('/load-all-users').get(async(req: any, res: any) => {
 
-    User.find({ "type": { $ne: "admin" } }, (err, users) => {
-        if (err)
-            console.log(err);
-        else
-            res.json(users);
-    });
+    // User.find({ "type": { $ne: "admin" } }, (err, users) => {
+    //     if (err)
+    //         console.log(err);
+    //     else
+    //         res.json(users);
+    // });
 
+    let msg = await services.load_all_users()
+    res.json(msg);
 
 });
 
 //////////////////////////////////////////////////
 
-router.route('/delete-user').post((req: any, res: any) => {
+router.route('/delete-user').post(async(req: any, res: any) => {
 
     console.log(req);
 
@@ -642,82 +665,95 @@ router.route('/delete-user').post((req: any, res: any) => {
     console.log(username);
 
 
-    User.deleteOne({ 'username': username }, (err) => {
+    // User.deleteOne({ 'username': username }, (err) => {
 
-        if (err)
-            console.log(err);
-        else {
-            console.log('obrisali smo korisnika');
-            // res.json({ 'msg': 'ok' });
+    //     if (err)
+    //         console.log(err);
+    //     else {
+    //         console.log('obrisali smo korisnika');
+    //         // res.json({ 'msg': 'ok' });
 
-            Appraisal.deleteMany({ "username": username, "finished": false }, (err) => {
-                if (err)
-                    console.log(err);
-                else {
-                    console.log('obrisali smo appraisale');
-                    res.json({ 'msg': 'ok' });
-                }
-            })
-        }
+    //         Appraisal.deleteMany({ "username": username, "finished": false }, (err) => {
+    //             if (err)
+    //                 console.log(err);
+    //             else {
+    //                 console.log('obrisali smo appraisale');
+    //                 res.json({ 'msg': 'ok' });
+    //             }
+    //         })
+    //     }
 
 
-    });
+    // });
+
+    let msg = await services.delete_user(username);
+    res.json(msg);
 
 });
 
 
 //////////////////////////////////////////////////
 // TODO
-router.route('/delete-comment').post((req: any, res: any) => {
+router.route('/delete-comment').post( async(req: any, res: any) => {
 
     console.log("usao u delete comment");
 
     let username = req.body.username;
     let date_added = req.body.date_added;
+    let comment = req.body.comment;
     let _id = ObjectId(req.body._id);
 
     console.log(username + " " + date_added + " " + _id);
 
     // List.findOneAndUpdate({ name: listName }, { $pull: { <field1>: <value|condition> } }
 
-    Topic.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "date_added": date_added } } }, (err) => {
+    // date added ne radi
+    // "date_added": date_added
+    // Topic.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "comment": comment} } }, (err) => {
 
-        if (err)
-            console.log(err);
-        else {
-            console.log('obrisali smo komentar');
-            res.json({ 'msg': 'ok' });
+    //     if (err)
+    //         console.log(err);
+    //     else {
+    //         console.log('obrisali smo komentar');
+    //         res.json({ 'msg': 'ok' });
 
-        }
+    //     }
 
 
-    });
+    // });
+
+    let msg = await services.delete_comment(_id, username, comment, date_added);
+    res.json(msg);
 
 });
 
 /////////////////////////////////////////////////
 
 
-router.route('/delete-appraisal').post((req: any, res: any) => {
+router.route('/delete-appraisal').post(async(req: any, res: any) => {
 
-    console.log(req);
+    console.log("usao u delete appriasal");
+    console.log(req.body._id);
 
     let id = ObjectId(req.body._id);
     console.log(id);
 
 
-    Appraisal.deleteOne({ '_id': id }, (err) => {
+    // Appraisal.deleteOne({ '_id': id }, (err) => {
 
-        if (err)
-            console.log(err);
-        else {
-            console.log('obrisali smo umetninu');
-            // res.json({ 'msg': 'ok' });
+    //     if (err)
+    //         console.log(err);
+    //     else {
+    //         console.log('obrisali smo umetninu');
+    //         // res.json({ 'msg': 'ok' });
 
-            res.json({ 'msg': 'ok' });
-        }
+    //         res.json({ 'msg': 'ok' });
+    //     }
 
-    });
+    // });
+
+    let msg = await services.delete_appraisal(id);
+    res.json(msg);
 
 });
 

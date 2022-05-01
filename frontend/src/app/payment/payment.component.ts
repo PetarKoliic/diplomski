@@ -19,14 +19,20 @@ export class PaymentComponent implements OnInit {
     this.username = JSON.parse(localStorage.getItem("user")).username;
     this.invoke_stripe();
     this.payment();
+
+    
+    if (JSON.parse(localStorage.getItem("user_payed")) == "true")
+      this.user_payed = true;
+    else this.user_payed = false;
   }
 
 
   monthly_fee: number;
   username: string;
-  
-  payment()
-  {
+  user_payed: boolean = true;
+
+
+  payment() {
     this.service.get_monthly_fee().subscribe((data: any) => {
 
 
@@ -41,47 +47,47 @@ export class PaymentComponent implements OnInit {
         token: (stripeToken: any) => {
           console.log("stripeToken");
           console.log(stripeToken);
-  
+
           this.service.pay(stripeToken).subscribe((data: any) => {
-  
+
             console.log(data);
-            console.log(data["data"] + " = " + "success");            
-            if(data["data"] === "success")
-            {
+            console.log(data["data"] + " = " + "success");
+            if (data["data"] === "success") {
               this.service.update_subscription(this.username).subscribe((data: any) => {
 
-                if(data["msg"] === "ok")
-                {
+                if (data["msg"] === "ok") {
                   // Promise p = async (this.notificationService.alert("Uspesno produzena clanarina, hvala !"));
-            
+                  
+                  this.user_payed = true;
+                  localStorage.setItem("user_payed", JSON.stringify(this.user_payed));
+
+
                   this.notificationService.alert("Uspesno produzena clanarina, hvala !")
                 }
-                else
-                {
+                else {
                   this.notificationService.alert("Internal error from server side");
                   this.router.navigate(['/user']);
                 }
 
                 setTimeout(() => {
-                  
+
                   this.router.navigate(['/user']);
 
-              }, 3500);
+                }, 1500);
 
               });
             }
-            else
-            {
+            else {
               this.notificationService.alert("Niste uspesno platili karticom")
             }
 
-        
-    
+
+
           });
-  
+
         }
       });
-  
+
       paymentHandler.open({
         name: "Placanje",
         description: "Uplata mesecne clanarine",
@@ -130,9 +136,9 @@ export class PaymentComponent implements OnInit {
 
 
     //       console.log(data);
-  
-      
-  
+
+
+
     //     });
 
     //   }

@@ -118,7 +118,7 @@ router.post('/add-appraisal', upload.array("images"), (req, res) => __awaiter(th
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.post('/get-appraisals-user', upload.array("images"), (req, res) => {
+router.post('/get-appraisals-user', upload.array("images"), (req, res) => __awaiter(this, void 0, void 0, function* () {
     let id = ObjectId(req.body.id);
     console.log("usao u add appraisal");
     console.log("username " + req.body.username);
@@ -132,108 +132,103 @@ router.post('/get-appraisals-user', upload.array("images"), (req, res) => {
         "description": req.body.description,
         "img_names": images, "date_added": new Date(), "finished": false
     });
-    appraisal.save().then(u => {
-        res.json({ "msg": "ok" });
-    }).catch(err => {
-        res.json({ "msg": "error" });
-    });
-});
+    let msg = yield services.get_appraisals_user(appraisal);
+    res.json(msg);
+}));
 ////////////////////////////////////////////////
-router.route('/get-current-appraisals-user').post((req, res) => {
+router.route('/get-current-appraisals-user').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     console.log("usao u get current appraisal");
-    appraisal_1.default.find({ "username": username, "finished": false }, (err, appraisals) => {
-        console.log(appraisals);
-        res.json(appraisals);
-    });
-});
+    let msg = yield services.get_current_appraisals_user(username);
+    res.json(msg);
+}));
 ////////////////////////////////////////////////
-router.route('/get-history-appraisals-user').post((req, res) => {
+router.route('/get-history-appraisals-user').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     console.log("usao u get current appraisal");
-    appraisal_1.default.find({ "username": username, "finished": true }, (err, appraisals) => {
-        console.log(appraisals);
-        res.json(appraisals);
-    });
-});
+    let msg = yield services.get_history_appraisals_user(username);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
-router.route('/get-current-appraisals-appraiser-history').post((req, res) => {
+router.route('/get-current-appraisals-appraiser-history').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
-    appraisal_1.default.find({ "finished": false, "evaluations.username": username }, (err, appraisals) => {
-        if (err)
-            console.log(err);
-        else {
-            console.log("appraisals");
-            console.log(appraisals);
-            res.json(appraisals);
-        }
-    });
-});
+    // Appraisal.find({ "finished": false, "evaluations.username": username }, (err, appraisals) => {
+    //     if (err) console.log(err);
+    //     else {
+    //         console.log("appraisals");
+    //         console.log(appraisals);
+    //         res.json(appraisals);
+    //     }
+    // });
+    let msg = yield services.get_current_appraisals_appraiser_history(username);
+    res.json(msg);
+}));
 // Person.find({ 
 //     "members.id": id1
 //  }); 
 // "evaluations.username": { $ne: username}}
 /////////////////////////////////////////////////
 // db.inventory.find( { quantity: { $nin: [ 5, 15 ] } }, { _id: 0 } )
-router.route('/get-current-appraisals-appraiser').post((req, res) => {
+router.route('/get-current-appraisals-appraiser').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("username");
     let username = req.body.username;
     console.log(username);
     console.log("usao u appraisals appraiser ");
     // M.findOne({list: {$ne: 'A'}}
-    appraisal_1.default.find({ "finished": false }, (err, appraisals) => {
-        if (err)
-            console.log(err);
-        else {
-            console.log(appraisals);
-            let a2 = [];
-            for (let i = 0; i < appraisals.length; i++) {
-                console.log("i : " + i + " duzina: " + appraisals.length);
-                let appraisal = appraisals[i].toObject();
-                let flag = false;
-                for (let j = 0; j < appraisal.evaluations; j++) {
-                    console.log("usao a nije trebalo");
-                    console.log("j : " + j + " duzina: " + appraisals.length);
-                    console.log(appraisal.evaluations[j].username);
-                    if (appraisal.evaluations[j].username === username)
-                        flag = true;
-                }
-                if (!flag)
-                    a2.push(appraisal);
-            }
-            console.log("prazno");
-            console.log(a2);
-            res.json(a2);
-        }
-    });
-});
+    // Appraisal.find({ "finished": false }, (err, appraisals) => {
+    //     if (err) console.log(err);
+    //     else {
+    //         console.log(appraisals);
+    //         let a2 = [];
+    //         for (let i = 0; i < appraisals.length; i++) {
+    //             console.log("i : " + i + " duzina: " + appraisals.length);
+    //             let appraisal = appraisals[i].toObject();
+    //             let flag: boolean = false;
+    //             for (let j = 0; j < appraisal.evaluations.length; j++) {
+    //                 console.log("usao a nije trebalo");
+    //                 console.log("j : " + j + " duzina: " + appraisals.length);
+    //                 console.log(appraisal.evaluations[j].username);
+    //                 if (appraisal.evaluations[j].username === username)
+    //                     flag = true;
+    //             }
+    //             if (!flag)
+    //                 a2.push(appraisal);
+    //         }
+    //         console.log("prazno");
+    //         console.log(a2);
+    //         res.json(a2);
+    //     }
+    // })
+    let msg = yield services.get_current_appraisals_appraiser(username);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
-router.route('/give-appraisal').post((req, res) => {
+router.route('/give-appraisal').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let value = req.body.value;
     let _id = ObjectId(req.body._id);
     console.log("username: " + username + " value: " + value + " _id" + _id);
-    console.log("usao u current appraisals");
-    user_1.default.findOne({ "username": username }, (err, user) => {
-        if (err)
-            console.log(err);
-        else {
-            let rating = user["rating"];
-            console.log(user);
-            console.log("rating : " + rating);
-            let evaluation = { "username": username, "rating": rating, "value": value };
-            appraisal_1.default.updateOne({ "_id": _id }, { $push: { "evaluations": evaluation } }).
-                then(user => {
-                res.status(200).json({ "msg": "ok" });
-            }).catch(err => {
-                res.status(400).json({ 'msg': 'no' });
-            });
-            ;
-        }
-    });
-});
+    console.log("usao u give appraisals");
+    // User.findOne({ "username": username }, (err, user: any) => {
+    //     if (err) console.log(err);
+    //     else {
+    //         let rating = user["rating"];
+    //         console.log(user);
+    //         console.log("rating : " + rating);
+    //         let evaluation = { "username": username, "rating": rating, "value": value };
+    //         Appraisal.updateOne({ "_id": _id }, { $push: { "evaluations": evaluation } }).
+    //             then(user => {
+    //                 res.status(200).json({ "msg": "ok" });
+    //             }).catch(err => {
+    //                 res.status(400).json({ 'msg': 'no' });
+    //             });;
+    //     }
+    // })
+    let msg = yield services.give_appraisal(username, value, _id, res);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
-router.route('/add-comment').post((req, res) => {
+router.route('/add-comment').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let date_added = req.body.date_added;
     let comment = req.body.comment;
@@ -241,47 +236,50 @@ router.route('/add-comment').post((req, res) => {
     console.log("usli smo ovde");
     console.log("username: " + username + " date: " + date_added + " _id: " + _id +
         " comment: " + comment);
-    topic_1.default.updateOne({ "_id": _id }, { $push: { "comments": { "username": username, "comment": comment, "date_added": date_added } } }).
-        then(user => {
-        res.status(200).json({ "msg": "ok" });
-    }).catch(err => {
-        res.status(400).json({ 'msg': 'no' });
-    });
-    ;
-});
+    // Topic.updateOne({ "_id": _id }, { $push: { "comments": { "username": username, "comment": comment, "date_added": date_added } } }).
+    //     then(user => {
+    //         res.status(200).json({ "msg": "ok" });
+    //     }).catch(err => {
+    //         res.status(400).json({ 'msg': 'no' });
+    //     });;
+    let msg = yield services.add_comment(username, _id, date_added, comment);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
-router.route('/user-finish-appraisal').post((req, res) => {
+router.route('/user-finish-appraisal').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(req.body.value);
     let _id = ObjectId(req.body._id);
-    // console.log("value: " + value + " _id : " + _id);
-    // console.log("11111111111111111111111");
-    appraisal_1.default.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then((user) => __awaiter(this, void 0, void 0, function* () {
-        res.status(200).json({ 'msg': "ok" });
-    })).catch((err) => {
-        if (err)
-            console.log(err);
-        res.status(400).json({ 'msg': 'no' });
-    });
-});
+    // Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then(async (user: any) => {
+    //     res.status(200).json({ 'msg': "ok" });
+    // }).catch((err: any) => {
+    //     if (err)
+    //         console.log(err);
+    //     res.status(400).json({ 'msg': 'no' });
+    // });
+    let msg = yield services.user_finish_appraisal(_id);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
-router.route('/finish-appraisal').post((req, res) => {
+router.route('/finish-appraisal').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(req.body.value);
     let value = req.body.value;
     let _id = ObjectId(req.body._id);
     // console.log("value: " + value + " _id : " + _id);
     // console.log("11111111111111111111111");
-    appraisal_1.default.findOneAndUpdate({ '_id': _id }, { $set: { 'value': value, 'finished': true } }).then((user) => __awaiter(this, void 0, void 0, function* () {
-        // console.log(user);
-        //////// ovde funkcija koja radi update uppraisala
-        let msg = yield update_ratings(res, user.evaluations, value);
-        // console.log("");
-        res.status(200).json({ 'msg': msg });
-    })).catch((err) => {
-        if (err)
-            console.log(err);
-        res.status(400).json({ 'msg': 'no' });
-    });
-});
+    // Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': value, 'finished': true } }).then(async (user: any) => {
+    //     // console.log(user);
+    //     //////// ovde funkcija koja radi update uppraisala
+    //     let msg = await update_ratings(res, user.evaluations, value);
+    //     // console.log("");
+    //     res.status(200).json({ 'msg': msg });
+    // }).catch((err: any) => {
+    //     if (err)
+    //         console.log(err);
+    //     res.status(400).json({ 'msg': 'no' });
+    // });
+    let msg = yield services.finish_appraisal(_id, value);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
 function update_ratings(res, evaluations, sold_value) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -315,122 +313,140 @@ function update_ratings(res, evaluations, sold_value) {
         return msg == null ? "ok" : msg;
     });
 }
+exports.update_ratings = update_ratings;
 /////////////////////////////////////////////////
-router.route('/get-all-current-appraisals').post((req, res) => {
-    appraisal_1.default.find({ "finished": false }, (err, appraisals) => {
-        if (err)
-            console.log(err);
-        else {
-            console.log("appraisals");
-            console.log(appraisals);
-            res.json(appraisals);
-        }
-    });
-});
+router.route('/get-all-current-appraisals').post((req, res) => __awaiter(this, void 0, void 0, function* () {
+    // Appraisal.find({ "finished": false }, (err, appraisals) => {
+    //     if (err) console.log(err);
+    //     else {
+    //         console.log("appraisals");
+    //         console.log(appraisals);
+    //         res.json(appraisals);
+    //     }
+    // })
+    let msg = yield services.get_all_current_appraisals();
+    res.json(msg);
+}));
 //////////////////////////////////////////////////
-router.route('/get-topic').post((req, res) => {
+router.route('/get-topic').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("inside login");
     let title = req.body.title;
     console.log(title);
-    topic_1.default.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
-        if (err)
-            console.log('error delegate');
-        else {
-            // let retObj = { 'user': user };
-            console.log(topic);
-            res.json(topic);
-        }
-    });
-});
+    // Topic.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
+    //     if (err)
+    //         console.log('error delegate');
+    //     else {
+    //         // let retObj = { 'user': user };
+    //         console.log(topic);
+    //         res.json(topic);
+    //     }
+    // });
+    let msg = yield services.get_topic(title);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
-router.route('/get-ratings-by-user').post((req, res) => {
+router.route('/get-ratings-by-user').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(req);
     let username = req.body.username;
     console.log(username);
-    rating_1.default.findOne({ "username": username }, (err, ratings) => {
-        if (err)
-            console.log(err);
-        else {
-            res.json(ratings);
-        }
-    });
-});
+    // rating.findOne({ "username": username }, (err, ratings) => {
+    //     if (err) console.log(err);
+    //     else {
+    //         res.json(ratings);
+    //     }
+    // })
+    let msg = yield services.get_ratings_by_user(username);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
-router.route('/get-rating').post((req, res) => {
+router.route('/get-rating').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
-    rating_1.default.findOne({ "username": username }, (err, ratings) => {
-        if (err)
-            console.log(err);
-        else {
-            let rating = util_2.calculate_new_rating(ratings != null ? ratings.toObject() : {});
-            res.json({ "rating": rating });
-        }
-    });
-});
+    // rating.findOne({ "username": username }, (err, ratings) => {
+    //     if (err) console.log(err);
+    //     else {
+    //         let rating = calculate_new_rating(ratings != null ? ratings.toObject() : {});
+    //         res.json({ "rating": rating });
+    //     }
+    // })
+    let msg = yield services.get_rating(username);
+    res.json(msg);
+}));
 ////////////////////////////////////////////////
-router.route('/load-all-users').get((req, res) => {
-    user_1.default.find({ "type": { $ne: "admin" } }, (err, users) => {
-        if (err)
-            console.log(err);
-        else
-            res.json(users);
-    });
-});
+router.route('/load-all-users').get((req, res) => __awaiter(this, void 0, void 0, function* () {
+    // User.find({ "type": { $ne: "admin" } }, (err, users) => {
+    //     if (err)
+    //         console.log(err);
+    //     else
+    //         res.json(users);
+    // });
+    let msg = yield services.load_all_users();
+    res.json(msg);
+}));
 //////////////////////////////////////////////////
-router.route('/delete-user').post((req, res) => {
+router.route('/delete-user').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(req);
     let username = req.body.username;
     console.log(username);
-    user_1.default.deleteOne({ 'username': username }, (err) => {
-        if (err)
-            console.log(err);
-        else {
-            console.log('obrisali smo korisnika');
-            // res.json({ 'msg': 'ok' });
-            appraisal_1.default.deleteMany({ "username": username, "finished": false }, (err) => {
-                if (err)
-                    console.log(err);
-                else {
-                    console.log('obrisali smo appraisale');
-                    res.json({ 'msg': 'ok' });
-                }
-            });
-        }
-    });
-});
+    // User.deleteOne({ 'username': username }, (err) => {
+    //     if (err)
+    //         console.log(err);
+    //     else {
+    //         console.log('obrisali smo korisnika');
+    //         // res.json({ 'msg': 'ok' });
+    //         Appraisal.deleteMany({ "username": username, "finished": false }, (err) => {
+    //             if (err)
+    //                 console.log(err);
+    //             else {
+    //                 console.log('obrisali smo appraisale');
+    //                 res.json({ 'msg': 'ok' });
+    //             }
+    //         })
+    //     }
+    // });
+    let msg = yield services.delete_user(username);
+    res.json(msg);
+}));
 //////////////////////////////////////////////////
 // TODO
-router.route('/delete-comment').post((req, res) => {
+router.route('/delete-comment').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("usao u delete comment");
     let username = req.body.username;
     let date_added = req.body.date_added;
+    let comment = req.body.comment;
     let _id = ObjectId(req.body._id);
     console.log(username + " " + date_added + " " + _id);
     // List.findOneAndUpdate({ name: listName }, { $pull: { <field1>: <value|condition> } }
-    topic_1.default.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "date_added": date_added } } }, (err) => {
-        if (err)
-            console.log(err);
-        else {
-            console.log('obrisali smo komentar');
-            res.json({ 'msg': 'ok' });
-        }
-    });
-});
+    // date added ne radi
+    // "date_added": date_added
+    // Topic.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "comment": comment} } }, (err) => {
+    //     if (err)
+    //         console.log(err);
+    //     else {
+    //         console.log('obrisali smo komentar');
+    //         res.json({ 'msg': 'ok' });
+    //     }
+    // });
+    let msg = yield services.delete_comment(_id, username, comment, date_added);
+    res.json(msg);
+}));
 /////////////////////////////////////////////////
-router.route('/delete-appraisal').post((req, res) => {
-    console.log(req);
+router.route('/delete-appraisal').post((req, res) => __awaiter(this, void 0, void 0, function* () {
+    console.log("usao u delete appriasal");
+    console.log(req.body._id);
     let id = ObjectId(req.body._id);
     console.log(id);
-    appraisal_1.default.deleteOne({ '_id': id }, (err) => {
-        if (err)
-            console.log(err);
-        else {
-            console.log('obrisali smo umetninu');
-            // res.json({ 'msg': 'ok' });
-            res.json({ 'msg': 'ok' });
-        }
-    });
-});
+    // Appraisal.deleteOne({ '_id': id }, (err) => {
+    //     if (err)
+    //         console.log(err);
+    //     else {
+    //         console.log('obrisali smo umetninu');
+    //         // res.json({ 'msg': 'ok' });
+    //         res.json({ 'msg': 'ok' });
+    //     }
+    // });
+    let msg = yield services.delete_appraisal(id);
+    res.json(msg);
+}));
 //////////////////////////////////////////////////
 router.route('/get-all-topics').post((req, res) => {
     topic_1.default.find({}, (err, topics) => {

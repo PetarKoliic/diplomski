@@ -2,9 +2,11 @@
 
 
 <button (click)="make_payment(10)"> Plati </button> -->
-<app-user-menu></app-user-menu>
-
-
-
-
-Loading payment page...
+<div *ngIf="user_payed==true">
+    <app-user-menu></app-user-menu>
+  </div>
+  
+  
+  <div *ngIf="user_payed==false">
+    <app-user-blocked-menu></app-user-blocked-menu>
+  </div>

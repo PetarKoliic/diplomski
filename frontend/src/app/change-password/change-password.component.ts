@@ -22,6 +22,12 @@ export class ChangePasswordComponent implements OnInit {
     console.log("type: " + this.type);
     this.old_password = "";
 
+    if (this.type == "user") {
+      if (JSON.parse(localStorage.getItem("user_payed")) == "true")
+        this.user_payed = true;
+      else this.user_payed = false;
+    }
+
   }
 
   username: string = "";
@@ -30,6 +36,7 @@ export class ChangePasswordComponent implements OnInit {
   // message: string = "";
   new_password_repeat: string = "";
   type: string = "";
+  user_payed: boolean = true;
 
   change_password() {
 

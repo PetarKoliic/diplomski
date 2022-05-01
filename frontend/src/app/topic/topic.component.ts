@@ -116,10 +116,13 @@ export class TopicComponent implements OnInit {
 
 
   delete_comment(comment: Comment) {
+
+    console.log(comment);
+
     console.log(comment.username + " " + comment.comment + " " + comment.date_added);
 
 
-    this.service.delete_comment(comment.username, this.topic._id, comment.date_added).subscribe((res: any) => {
+    this.service.delete_comment(comment.username, this.topic._id, comment.comment, comment.date_added).subscribe((res: any) => {
 
       console.log("vratili smo se iz http zahteva");
       console.log(res["msg"]);

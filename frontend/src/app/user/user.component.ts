@@ -72,6 +72,8 @@ export class UserComponent implements OnInit {
       this.notificationService.alert("istekao je rok zakasnelog placanja uplatite mesecnu clanarinu kako biste odblokirali sve funkcionalnosti");
     }
 
+    localStorage.setItem("user_payed", JSON.stringify(this.user_payed));
+
     });
     
 
