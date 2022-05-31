@@ -78,11 +78,11 @@ export class NewAppraisalComponent implements OnInit {
     if (this.name == "" || this.name == null ||  
         this.country == "" || this.country == null ||
                               this.date == null ||
-        this.author == "" || this.author == null ||
+        // this.author == "" || this.author == null ||
         // this.description == "" || this.description == null ||
         this.images == [] || this.images.length == 0) {
 
-          this.notificationService.error("polja ime, zemlja, autor i slika su obavezna polja");
+          this.notificationService.error("polja ime, zemlja i slika su obavezna polja");
 
     }
     else {

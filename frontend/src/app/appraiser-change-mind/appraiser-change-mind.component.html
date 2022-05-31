@@ -31,13 +31,23 @@
 
         <mat-card-content>
             <p>
-                Datum stvaranja: {{global_functions.format_date_only(appraisal.date_created)}}
+                Naziv: {{appraisal.name}}
             </p>
             <p>
                 Zemlja porekla: {{appraisal.country}}
             </p>
             <p>
+                Datum stvaranja: {{global_functions.format_date_only(appraisal.date_created)}}
+            </p>
+            <p>
+                Autor: {{appraisal.author}}
+            </p>
+            <p>
                 Opis: <br> {{appraisal.description}}
+            </p>
+
+            <p>
+                Vasa trenutna procena umetnine: <br> {{get_current_appraised_value(appraisal)}}
             </p>
 
             <mat-form-field appearance="fill">

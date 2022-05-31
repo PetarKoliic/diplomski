@@ -28,11 +28,18 @@
 
 
         <mat-card-content>
+
+            <p>
+                Naziv: {{appraisal.name}}
+            </p>
+            <p>
+                Zemlja porekla: {{appraisal.country}}
+            </p>
             <p>
                 Datum stvaranja: {{global_functions.format_date_only(appraisal.date_created)}}
             </p>
             <p>
-                Zemlja porekla: {{appraisal.country}}
+                Autor: {{appraisal.author}}
             </p>
             <p>
                 Opis: <br> {{appraisal.description}}

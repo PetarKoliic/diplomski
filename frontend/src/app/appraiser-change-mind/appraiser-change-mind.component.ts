@@ -78,6 +78,21 @@ export class AppraiserChangeMindComponent implements OnInit {
     return apprasial.img_names[this.img_map.get(apprasial._id)];
   }
 
+  get_current_appraised_value(appraisal: Appraisal)
+  {
+
+    let appraised_value = null;
+    for(let i = 0; i < appraisal.evaluations.length; i++)
+    {
+      if(appraisal.evaluations[i].username == this.username)
+      {
+        appraised_value = appraisal.evaluations[i].value;
+        break;
+      }
+    }
+
+    return appraised_value;
+  }
 
 
   forward_image(appraisal: Appraisal) {
