@@ -240,6 +240,31 @@ function give_appraisal(username, value, _id) {
         return res;
     });
 }
+function appraisal_change_mind(username, value, _id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let res;
+        yield appraisal_1.default.findOneAndUpdate({ "_id": _id, "evaluations.username": username }, {
+            $set: {
+                "evaluations.$.value": value,
+            }
+        }).then((user) => __awaiter(this, void 0, void 0, function* () {
+            res = { 'msg': "ok" };
+        })).catch((err) => {
+            if (err)
+                console.log(err);
+            res = { 'msg': 'no' };
+        });
+        // await Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then(async (user: any) => {
+        //     res = { 'msg': "ok" };
+        // }).catch((err: any) => {
+        //     if (err)
+        //         console.log(err);
+        //     res = { 'msg': 'no' };
+        // });
+        // return res;
+        return res;
+    });
+}
 function get_current_appraisals_appraiser_history(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
@@ -526,6 +551,7 @@ module.exports = {
     get_history_appraisals_user,
     get_current_appraisals_appraiser,
     give_appraisal,
+    appraisal_change_mind,
     get_current_appraisals_appraiser_history,
     add_comment,
     user_finish_appraisal,

@@ -353,6 +353,17 @@ export class GeneralService {
 
   }
 
+  appraisal_change_mind(id: string, username: string, value: number) {
+
+    const data = {
+      'username': username,
+      'value': value,
+      '_id': id
+    }
+
+    return this.http.post(`${this.uri}/appraisal-change-mind`, data);
+  }
+
 }
 
 

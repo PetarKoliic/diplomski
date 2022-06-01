@@ -228,6 +228,16 @@ router.route('/give-appraisal').post((req, res) => __awaiter(this, void 0, void 
     res.json(msg);
 }));
 /////////////////////////////////////////////////
+router.route('/appraisal-change-mind').post((req, res) => __awaiter(this, void 0, void 0, function* () {
+    let username = req.body.username;
+    let value = req.body.value;
+    let _id = ObjectId(req.body._id);
+    console.log("username: " + username + " value: " + value + " _id" + _id);
+    console.log("usao u appraisal change mind");
+    let msg = yield services.appraisal_change_mind(username, value, _id, res);
+    res.json(msg);
+}));
+/////////////////////////////////////////////////
 router.route('/add-comment').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let date_added = req.body.date_added;

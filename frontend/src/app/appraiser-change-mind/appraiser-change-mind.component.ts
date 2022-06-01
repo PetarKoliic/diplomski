@@ -138,17 +138,40 @@ export class AppraiserChangeMindComponent implements OnInit {
     this.estimated_value = this.estimated_values.get(appraisal._id);
 
     if (this.estimated_value > 0) {
-      this.service.give_appraisal(appraisal._id, this.username, this.estimated_value).subscribe(
+      this.service.appraisal_change_mind(appraisal._id, this.username, this.estimated_value).subscribe(
         (res: Object) => {
 
 
           if (res["msg"] == "ok") {
-            for (let i in this.appraisals) {
-              if (this.appraisals[i]._id === appraisal._id) {
+            // for (let i in this.appraisals) {
+            //   if (this.appraisals[i]._id === appraisal._id) {
 
-                this.appraisals.splice(Number(i), 1);
-              }
-            }
+            //     this.appraisals.splice(Number(i), 1);
+            //   }
+            // }
+
+            this.service.get_current_appraisals_appraiser_history(this.username).subscribe(
+              (appraisals: Array<Appraisal>) => {
+        
+        
+                this.appraisals = appraisals;
+        
+                console.log(this.appraisals);
+        
+                for (let i in appraisals) {
+                  this.img_map.set(appraisals[i]._id, 0);
+                  this.img_pagination.set(appraisals[i]._id, { "start_index": 0, "end_index": 1 });
+        
+                  // this.estimated_values.set(appraisals[i]._id, 0)
+                }
+        
+                console.log(this.appraisals);
+                console.log(this.img_map);
+        
+              });
+
+
+
             this.notificationService.success("Uspesno promenjena procena");
           }
           else

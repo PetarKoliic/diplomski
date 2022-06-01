@@ -387,6 +387,25 @@ router.route('/give-appraisal').post(async(req: any, res: any) => {
 
 /////////////////////////////////////////////////
 
+router.route('/appraisal-change-mind').post(async(req: any, res: any) => {
+
+    let username = req.body.username;
+    let value = req.body.value;
+    let _id = ObjectId(req.body._id);
+
+
+    console.log("username: " + username + " value: " + value + " _id" + _id);
+
+    console.log("usao u appraisal change mind");
+
+    let msg = await services.appraisal_change_mind(username, value, _id, res);
+
+    res.json(msg);
+
+});
+
+/////////////////////////////////////////////////
+
 router.route('/add-comment').post(async(req: any, res: any) => {
 
     let username = req.body.username;
