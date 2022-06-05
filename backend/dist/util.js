@@ -36,4 +36,8 @@ function calculate_new_rating(rating) {
     }
 }
 exports.calculate_new_rating = calculate_new_rating;
+function allocated_appraiser_budget(cnt, monthly_fee, percantage) {
+    return cnt * monthly_fee * percantage;
+}
+exports.allocated_appraiser_budget = allocated_appraiser_budget;
 //# sourceMappingURL=util.js.map

@@ -21,7 +21,8 @@ const topic_1 = __importDefault(require("./models/topic"));
 const util_1 = require("./util");
 const util_2 = require("./util");
 const multer = require("multer");
-const monthly_fee = 10;
+exports.monthly_fee = 10;
+exports.appraiser_percantage_fee = 0.5;
 var ObjectId = require('mongoose').Types.ObjectId;
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -52,7 +53,7 @@ router.route('/login').post((req, res) => __awaiter(this, void 0, void 0, functi
 router.route('/register').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let user = new user_1.default(req.body);
     console.log("user");
-    user.set("owned", monthly_fee);
+    user.set("owned", exports.monthly_fee);
     console.log(user);
     if (req.body.type === "appraiser") {
         user.set("rating", 5);
@@ -596,7 +597,7 @@ router.route('/pay').post((req, res) => {
             .then((customer) => {
             console.log(customer);
             return stripe.charges.create({
-                amount: monthly_fee * 100,
+                amount: exports.monthly_fee * 100,
                 description: "Test Purchase using express and Node",
                 currency: "EUR",
                 customer: customer.id,
@@ -620,9 +621,14 @@ router.route('/pay').post((req, res) => {
     }
 });
 //////////////////////////////////////////////////
+router.route('/get-number-of-payed-subscriptions').get((req, res) => __awaiter(this, void 0, void 0, function* () {
+    yield services.get_number_of_payed_subscriptions();
+    // res.json({ "monthly_fee": monthly_fee });
+    res.json({ "msg": "ok" });
+}));
 /////////////////////////////////////////////////
 router.route('/get-monthly-fee').get((req, res) => {
-    res.json({ "monthly_fee": monthly_fee });
+    res.json({ "monthly_fee": exports.monthly_fee });
 });
 ///////////////////////////////////////////
 module.exports = router;

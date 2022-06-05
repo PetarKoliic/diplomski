@@ -17,6 +17,9 @@ const user_1 = __importDefault(require("./models/user"));
 const routes_1 = require("./routes");
 const rating_1 = __importDefault(require("./models/rating"));
 const util_1 = require("./util");
+const util_2 = require("./util");
+const routes_2 = require("./routes");
+const routes_3 = require("./routes");
 // async function create(programmingLanguage){
 //     const result = await db.query(
 //       `INSERT INTO programming_languages 
@@ -540,6 +543,72 @@ function add_topic(_id, username, title, category, date, comment) {
         return res;
     });
 }
+function get_number_of_payed_subscriptions() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let res;
+        let d = new Date();
+        // svakog prvog u mesecu
+        // 1. maja gledamo ko je platio
+        d.setDate(1);
+        d.setMonth(d.getMonth() - 1);
+        let cnt = 0;
+        yield user_1.default.find({ "type": "user", "valid_until": { $gte: d } }).count(function (err, count) {
+            if (err)
+                console.log(err);
+            else {
+                console.log("Count is", count);
+                cnt = count;
+            }
+        });
+        return cnt;
+    });
+}
+// setInterval(get_number_of_payed_subscriptions, 1000 * 10);
+const cron = require("node-cron");
+cron.schedule("* * * 5 * *", function () {
+    return __awaiter(this, void 0, void 0, function* () {
+        let count = yield get_number_of_payed_subscriptions();
+        let budget = util_2.allocated_appraiser_budget(count, routes_2.monthly_fee, routes_3.appraiser_percantage_fee);
+        yield user_1.default.find({ "type": "appraiser" }, (err, appraisers) => __awaiter(this, void 0, void 0, function* () {
+            if (err) {
+                console.log('error finding users');
+            }
+            else {
+                let sum_quote = 0;
+                for (let i = 0; i < appraisers.length; i++) {
+                    let appraiser = appraisers[i].toObject();
+                    sum_quote += appraiser["cnt_appraisals_monthly"] * appraiser["rating"] * appraiser["rating"];
+                }
+                console.log("sum_quote : " + sum_quote);
+                for (let i = 0; i < appraisers.length; i++) {
+                    let appraiser = appraisers[i].toObject();
+                    let money_owned = (budget / sum_quote) * appraiser["cnt_appraisals_monthly"] * appraiser["rating"] * appraiser["rating"];
+                    if (money_owned != 0 && money_owned != null && sum_quote != 0)
+                        yield user_1.default.updateOne({ 'username': appraiser["username"] }, {
+                            $set: { 'cnt_appraisals_monthly': 0 },
+                            $inc: { "balance": money_owned }
+                        }).then(user => {
+                            console.log(user);
+                        }).catch(err => {
+                            console.log(err);
+                        });
+                    // .then((user: any) => {
+                    // }).catch((err: any) => {
+                    //         if (err)
+                    //             console.log(err);
+                    //     });
+                    // await User.updateOne({ 'username': username }, { $set: { 'password': new_password } }).then((user: any) => {
+                    //     res = { 'msg': 'ok' };
+                    // }).catch((err: any) => {
+                    //     if (err)
+                    //         console.log(err);
+                    //     res = { 'msg': 'no' };
+                    // });
+                }
+            }
+        }));
+    });
+});
 module.exports = {
     login,
     register,
@@ -566,6 +635,7 @@ module.exports = {
     delete_appraisal,
     update_subscription,
     get_subscription_valid_until,
-    add_topic
+    add_topic,
+    get_number_of_payed_subscriptions
 };
 //# sourceMappingURL=services.js.map

@@ -45,3 +45,8 @@ export function calculate_new_rating(rating: Ratings) {
 
     }
 }
+
+export function allocated_appraiser_budget(cnt: number, monthly_fee: number, percantage: number) {
+   
+    return cnt * monthly_fee * percantage;
+}

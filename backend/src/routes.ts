@@ -20,7 +20,9 @@ import { calculate_new_rating } from './util';
 
 const multer = require("multer");
 
-const monthly_fee = 10;
+export const monthly_fee = 10;
+export const appraiser_percantage_fee = 0.5;
+
 var ObjectId = require('mongoose').Types.ObjectId;
 
 const storage = multer.diskStorage({
@@ -1036,7 +1038,14 @@ router.route('/pay').post((req: any, res: any) => {
 
 //////////////////////////////////////////////////
 
+router.route('/get-number-of-payed-subscriptions').get(async(req: any, res: any) => {
 
+
+    await services.get_number_of_payed_subscriptions();
+    // res.json({ "monthly_fee": monthly_fee });
+    res.json({ "msg": "ok" });
+
+});
 
 
 /////////////////////////////////////////////////

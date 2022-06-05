@@ -41,7 +41,13 @@ let User = new Schema({
     },
     bonus: {
         type: Number
-    }
+    },
+    cnt_appraisals_monthly: {
+        type: Number
+    },
+    balance: {
+        type: Number
+    },
 });
 exports.default = mongoose_1.default.model('user', User, 'users');
 //# sourceMappingURL=user.js.map
