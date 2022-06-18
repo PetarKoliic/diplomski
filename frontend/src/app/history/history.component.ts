@@ -36,11 +36,18 @@ export class HistoryComponent implements OnInit {
   init(): void {
 
     // this.user_type = localStorage.getItem("type");
-
+    console.log("****************");
+    console.log(localStorage.getItem("user_payed"));
+    console.log("****************");
     // if (this.user_type == "user") {
-      if (JSON.parse(localStorage.getItem("user_payed")) == "true")
+      if (localStorage.getItem("user_payed") == "true")
         this.user_payed = true;
       else this.user_payed = false;
+
+      console.log("***");
+      console.log(this.user_payed);
+      console.log("***");
+
     // }
 
     this.service.get_history_appraisals_user(this.username).subscribe(

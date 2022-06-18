@@ -23,7 +23,7 @@ export class ChangePasswordComponent implements OnInit {
     this.old_password = "";
 
     if (this.type == "user") {
-      if (JSON.parse(localStorage.getItem("user_payed")) == "true")
+      if (localStorage.getItem("user_payed") == "true")
         this.user_payed = true;
       else this.user_payed = false;
     }

@@ -21,7 +21,7 @@ export class PaymentComponent implements OnInit {
     this.payment();
 
     
-    if (JSON.parse(localStorage.getItem("user_payed")) == "true")
+    if (localStorage.getItem("user_payed") == "true")
       this.user_payed = true;
     else this.user_payed = false;
   }

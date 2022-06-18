@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.allocated_appraiser_budget = exports.calculate_new_rating = exports.calculate_individual_rating = void 0;
 function calculate_individual_rating(appraised_value, sold_value) {
     let err = 10 * Math.abs(appraised_value - sold_value) / sold_value;
     if (err <= 3) {

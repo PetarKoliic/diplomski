@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -323,7 +324,7 @@ function finish_appraisal(_id, value) {
         yield appraisal_1.default.findOneAndUpdate({ '_id': _id }, { $set: { 'value': value, 'finished': true } }).then((user) => __awaiter(this, void 0, void 0, function* () {
             // console.log(user);
             //////// ovde funkcija koja radi update uppraisala
-            let msg = yield routes_1.update_ratings(res, user.evaluations, value);
+            let msg = yield (0, routes_1.update_ratings)(res, user.evaluations, value);
             // console.log("");
             res = { 'msg': msg };
         })).catch((err) => {
@@ -385,7 +386,7 @@ function get_rating(username) {
             if (err)
                 console.log(err);
             else {
-                let rating = util_1.calculate_new_rating(ratings != null ? ratings.toObject() : {});
+                let rating = (0, util_1.calculate_new_rating)(ratings != null ? ratings.toObject() : {});
                 res = { "rating": rating };
             }
         });
@@ -568,7 +569,7 @@ const cron = require("node-cron");
 cron.schedule("* * * 5 * *", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let count = yield get_number_of_payed_subscriptions();
-        let budget = util_2.allocated_appraiser_budget(count, routes_2.monthly_fee, routes_3.appraiser_percantage_fee);
+        let budget = (0, util_2.allocated_appraiser_budget)(count, routes_2.monthly_fee, routes_3.appraiser_percantage_fee);
         yield user_1.default.find({ "type": "appraiser" }, (err, appraisers) => __awaiter(this, void 0, void 0, function* () {
             if (err) {
                 console.log('error finding users');
