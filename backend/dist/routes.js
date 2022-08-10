@@ -1,10 +1,9 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -12,7 +11,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.update_ratings = exports.appraiser_percantage_fee = exports.monthly_fee = void 0;
 const express = require('express');
 const router = express.Router();
 const user_1 = __importDefault(require("./models/user"));
@@ -37,7 +35,7 @@ const storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 const DIR = './uploads/';
 var services = require('./services');
-router.route('/login').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/login').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("inside login");
     let username = req.body.username;
     let password = req.body.password;
@@ -52,7 +50,7 @@ router.route('/login').post((req, res) => __awaiter(void 0, void 0, void 0, func
     }
 }));
 //////////////////////////////////////////////////
-router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/register').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let user = new user_1.default(req.body);
     console.log("user");
     user.set("owned", exports.monthly_fee);
@@ -64,10 +62,12 @@ router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, f
     let username = req.body.username;
     let email = req.body.email;
     let msg = yield services.register(user, username, email);
+    console.log("finalni rezultat");
+    console.log(msg);
     res.json(msg);
 }));
 //////////////////////////////////////////////////
-router.route('/check-old-password').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/check-old-password').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("inside check-old password");
     let username = req.body.username;
     let password = req.body.old_password;
@@ -76,7 +76,7 @@ router.route('/check-old-password').post((req, res) => __awaiter(void 0, void 0,
     res.json(msg);
 }));
 //////////////////////////////////////////////////
-router.route('/change-password').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/change-password').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("inside password");
     let username = req.body.username;
     let new_password = req.body.new_password;
@@ -101,7 +101,7 @@ router.post('/upload_pic', upload.single("picture"), (req, res) => {
     }
 });
 ////////////////////////////////////////////
-router.post('/add-appraisal', upload.array("images"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/add-appraisal', upload.array("images"), (req, res) => __awaiter(this, void 0, void 0, function* () {
     let id = ObjectId(req.body.id);
     console.log("usao u add appraisal");
     console.log("username " + req.body.username);
@@ -121,7 +121,7 @@ router.post('/add-appraisal', upload.array("images"), (req, res) => __awaiter(vo
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.post('/get-appraisals-user', upload.array("images"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/get-appraisals-user', upload.array("images"), (req, res) => __awaiter(this, void 0, void 0, function* () {
     let id = ObjectId(req.body.id);
     console.log("usao u add appraisal");
     console.log("username " + req.body.username);
@@ -139,21 +139,21 @@ router.post('/get-appraisals-user', upload.array("images"), (req, res) => __awai
     res.json(msg);
 }));
 ////////////////////////////////////////////////
-router.route('/get-current-appraisals-user').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-current-appraisals-user').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     console.log("usao u get current appraisal");
     let msg = yield services.get_current_appraisals_user(username);
     res.json(msg);
 }));
 ////////////////////////////////////////////////
-router.route('/get-history-appraisals-user').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-history-appraisals-user').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     console.log("usao u get current appraisal");
     let msg = yield services.get_history_appraisals_user(username);
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/get-current-appraisals-appraiser-history').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-current-appraisals-appraiser-history').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     // Appraisal.find({ "finished": false, "evaluations.username": username }, (err, appraisals) => {
     //     if (err) console.log(err);
@@ -172,7 +172,7 @@ router.route('/get-current-appraisals-appraiser-history').post((req, res) => __a
 // "evaluations.username": { $ne: username}}
 /////////////////////////////////////////////////
 // db.inventory.find( { quantity: { $nin: [ 5, 15 ] } }, { _id: 0 } )
-router.route('/get-current-appraisals-appraiser').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-current-appraisals-appraiser').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("username");
     let username = req.body.username;
     console.log(username);
@@ -206,7 +206,7 @@ router.route('/get-current-appraisals-appraiser').post((req, res) => __awaiter(v
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/give-appraisal').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/give-appraisal').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let value = req.body.value;
     let _id = ObjectId(req.body._id);
@@ -231,7 +231,7 @@ router.route('/give-appraisal').post((req, res) => __awaiter(void 0, void 0, voi
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/appraisal-change-mind').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/appraisal-change-mind').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let value = req.body.value;
     let _id = ObjectId(req.body._id);
@@ -241,7 +241,7 @@ router.route('/appraisal-change-mind').post((req, res) => __awaiter(void 0, void
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/add-comment').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/add-comment').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let date_added = req.body.date_added;
     let comment = req.body.comment;
@@ -259,7 +259,7 @@ router.route('/add-comment').post((req, res) => __awaiter(void 0, void 0, void 0
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/user-finish-appraisal').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/user-finish-appraisal').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(req.body.value);
     let _id = ObjectId(req.body._id);
     // Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then(async (user: any) => {
@@ -273,7 +273,7 @@ router.route('/user-finish-appraisal').post((req, res) => __awaiter(void 0, void
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/finish-appraisal').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/finish-appraisal').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(req.body.value);
     let value = req.body.value;
     let _id = ObjectId(req.body._id);
@@ -301,13 +301,13 @@ function update_ratings(res, evaluations, sold_value) {
         let msg = null;
         // console.log("evaluations.length : " + evaluations.length);
         for (let i = 0; i < evaluations.length; i++) {
-            let individual_rating = (0, util_1.calculate_individual_rating)(evaluations[i].value, sold_value);
+            let individual_rating = util_1.calculate_individual_rating(evaluations[i].value, sold_value);
             // console.log("individual ratings:");
             // console.log(individual_rating);
             yield rating_1.default.findOneAndUpdate({ 'username': evaluations[i].username }, { $push: { 'ratings': individual_rating } }).setOptions({ "upsert": true, "new": true }).then((ratings) => __awaiter(this, void 0, void 0, function* () {
                 // console.log("333333333333333333");
                 let username = ratings.toObject().username;
-                let new_rating = (0, util_2.calculate_new_rating)(ratings.toObject());
+                let new_rating = util_2.calculate_new_rating(ratings.toObject());
                 yield user_1.default.updateOne({ 'username': username }, { $set: { 'rating': new_rating } }).then((user) => {
                     // console.log("4.44444444");
                     // res.status(200).json({ 'msg': 'ok' });
@@ -328,7 +328,7 @@ function update_ratings(res, evaluations, sold_value) {
 }
 exports.update_ratings = update_ratings;
 /////////////////////////////////////////////////
-router.route('/get-all-current-appraisals').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-all-current-appraisals').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     // Appraisal.find({ "finished": false }, (err, appraisals) => {
     //     if (err) console.log(err);
     //     else {
@@ -341,7 +341,7 @@ router.route('/get-all-current-appraisals').post((req, res) => __awaiter(void 0,
     res.json(msg);
 }));
 //////////////////////////////////////////////////
-router.route('/get-topic').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-topic').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("inside login");
     let title = req.body.title;
     console.log(title);
@@ -358,7 +358,7 @@ router.route('/get-topic').post((req, res) => __awaiter(void 0, void 0, void 0, 
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/get-ratings-by-user').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-ratings-by-user').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(req);
     let username = req.body.username;
     console.log(username);
@@ -372,7 +372,7 @@ router.route('/get-ratings-by-user').post((req, res) => __awaiter(void 0, void 0
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/get-rating').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-rating').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     // rating.findOne({ "username": username }, (err, ratings) => {
     //     if (err) console.log(err);
@@ -385,7 +385,7 @@ router.route('/get-rating').post((req, res) => __awaiter(void 0, void 0, void 0,
     res.json(msg);
 }));
 ////////////////////////////////////////////////
-router.route('/load-all-users').get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/load-all-users').get((req, res) => __awaiter(this, void 0, void 0, function* () {
     // User.find({ "type": { $ne: "admin" } }, (err, users) => {
     //     if (err)
     //         console.log(err);
@@ -396,7 +396,7 @@ router.route('/load-all-users').get((req, res) => __awaiter(void 0, void 0, void
     res.json(msg);
 }));
 //////////////////////////////////////////////////
-router.route('/delete-user').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/delete-user').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(req);
     let username = req.body.username;
     console.log(username);
@@ -421,7 +421,7 @@ router.route('/delete-user').post((req, res) => __awaiter(void 0, void 0, void 0
 }));
 //////////////////////////////////////////////////
 // TODO
-router.route('/delete-comment').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/delete-comment').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("usao u delete comment");
     let username = req.body.username;
     let date_added = req.body.date_added;
@@ -443,7 +443,7 @@ router.route('/delete-comment').post((req, res) => __awaiter(void 0, void 0, voi
     res.json(msg);
 }));
 /////////////////////////////////////////////////
-router.route('/delete-appraisal').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/delete-appraisal').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("usao u delete appriasal");
     console.log(req.body._id);
     let id = ObjectId(req.body._id);
@@ -467,7 +467,7 @@ router.route('/get-all-topics').post((req, res) => {
     });
 });
 //////////////////////////////////////////////////
-router.route('/update-subscription').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/update-subscription').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     console.log("pocetak");
     // User.findOne({ "username": username }, (err, user_doc) => {
@@ -494,7 +494,7 @@ router.route('/update-subscription').post((req, res) => __awaiter(void 0, void 0
     res.json(msg);
 }));
 //////////////////////////////////////////
-router.route('/get-subscription-valid-until').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-subscription-valid-until').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     console.log("get-subscription-valid-until");
     // User.findOne({ "username": username }, (err, user) => {
@@ -518,7 +518,7 @@ router.route('/get-subscription-valid-until').post((req, res) => __awaiter(void 
 //         { $set : { nextRun : nextRunDate } }
 //     );
 //////////////////////////////////////////////////
-router.route('/add-topic').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/add-topic').post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let title = req.body.title;
     let category = req.body.category;
@@ -623,7 +623,7 @@ router.route('/pay').post((req, res) => {
     }
 });
 //////////////////////////////////////////////////
-router.route('/get-number-of-payed-subscriptions').get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/get-number-of-payed-subscriptions').get((req, res) => __awaiter(this, void 0, void 0, function* () {
     yield services.get_number_of_payed_subscriptions();
     // res.json({ "monthly_fee": monthly_fee });
     res.json({ "msg": "ok" });

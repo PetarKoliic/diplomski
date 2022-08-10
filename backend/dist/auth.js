@@ -19,7 +19,7 @@ passport.use(new GoogleStrategy({
     // user = new user({"username": "imamo_novajliju"});
     // user.save();
     console.log(profile);
-    (0, server_1.save_info)(profile.given_name, profile.family_name, profile.displayName, profile.email);
+    server_1.save_info(profile.given_name, profile.family_name, profile.displayName, profile.email);
     // console.log("pravljenje novih korisnika");
     // console.log("request");
     // console.log(request);

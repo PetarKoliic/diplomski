@@ -90,6 +90,9 @@ router.route('/register').post(async (req: any, res: any) => {
     
     let msg = await services.register(user, username, email);
 
+    console.log("finalni rezultat");
+    console.log(msg);
+
     res.json(msg);
 });
 //////////////////////////////////////////////////

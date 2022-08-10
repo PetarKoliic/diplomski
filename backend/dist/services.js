@@ -1,10 +1,9 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -23,10 +22,10 @@ const routes_2 = require("./routes");
 const routes_3 = require("./routes");
 // async function create(programmingLanguage){
 //     const result = await db.query(
-//       `INSERT INTO programming_languages 
-//       (name, released_year, githut_rank, pypl_rank, tiobe_rank) 
-//       VALUES 
-//       (?, ?, ?, ?, ?)`, 
+//       `INSERT INTO programming_languages
+//       (name, released_year, githut_rank, pypl_rank, tiobe_rank)
+//       VALUES
+//       (?, ?, ?, ?, ?)`,
 //       [
 //         programmingLanguage.name, programmingLanguage.released_year,
 //         programmingLanguage.githut_rank, programmingLanguage.pypl_rank,
@@ -42,12 +41,12 @@ const routes_3 = require("./routes");
 function login(username, password) {
     return __awaiter(this, void 0, void 0, function* () {
         let user_res;
-        yield user_1.default.findOne({ 'username': username, 'password': password }, (err, user) => {
+        yield user_1.default.findOne({ username: username, password: password }, (err, user) => {
             // console.log("user");
             // console.log(user);
             if (err) {
-                console.log('error delegate');
-                return { "msg": "no" };
+                console.log("error delegate");
+                return { msg: "no" };
             }
             else {
                 // let retObj = { 'user': user };
@@ -62,23 +61,41 @@ function login(username, password) {
 function register(user, username, email) {
     return __awaiter(this, void 0, void 0, function* () {
         var res;
-        yield user_1.default.findOne({ "username": username }, (err, user_obj) => __awaiter(this, void 0, void 0, function* () {
+        let flag_exists = false;
+        yield user_1.default.findOne({ username: username }, (err, user_obj) => __awaiter(this, void 0, void 0, function* () {
             if (user_obj) {
-                res = { "msg": "Username postoji" };
+                flag_exists = true;
+                res = { msg: "Username postoji" };
             }
             else {
-                yield user_1.default.findOne({ "email": email }, (err, user_obj) => {
-                    if (user_obj) {
-                        res = { "msg": "Email postoji" };
-                    }
-                    else {
-                        user.save().then((u) => {
-                            res = { "msg": "ok" };
-                        });
-                    }
-                });
+                console.log("usao u register i nisam pronasao nikoga");
             }
         }));
+        if (flag_exists == false) {
+            yield user_1.default.findOne({ email: email }, (err, user_obj) => __awaiter(this, void 0, void 0, function* () {
+                if (user_obj) {
+                    flag_exists = true;
+                    res = { msg: "Email postoji" };
+                    console.log("email postoji");
+                    console.log(res);
+                }
+                else {
+                    // await user.save().then((u: any) => {
+                    //     res = { "msg": "ok" };
+                    //     console.log("sacuvao sam");
+                    // });
+                }
+            }));
+        }
+        console.log("provera flaga : " + flag_exists);
+        if (flag_exists == false) {
+            yield user.save().then((u) => {
+                res = { msg: "ok" };
+                console.log("sacuvao sam");
+            });
+        }
+        console.log("vracam se sa rezultatom");
+        console.log(res);
         return res;
     });
 }
@@ -86,17 +103,17 @@ function register(user, username, email) {
 function check_old_password(username, password) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield user_1.default.findOne({ 'username': username, 'password': password }, (err, user) => {
+        yield user_1.default.findOne({ username: username, password: password }, (err, user) => {
             console.log("user");
             console.log(user);
             if (err)
-                console.log('error delegate');
+                console.log("error delegate");
             else {
                 // let retObj = { 'user': user };
                 if (user != null)
-                    res = { "msg": "ok" };
+                    res = { msg: "ok" };
                 else
-                    res = { "msg": "no" };
+                    res = { msg: "no" };
             }
         });
         console.log(res);
@@ -106,12 +123,14 @@ function check_old_password(username, password) {
 function change_password(username, new_password) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield user_1.default.updateOne({ 'username': username }, { $set: { 'password': new_password } }).then((user) => {
-            res = { 'msg': 'ok' };
-        }).catch((err) => {
+        yield user_1.default.updateOne({ username: username }, { $set: { password: new_password } })
+            .then((user) => {
+            res = { msg: "ok" };
+        })
+            .catch((err) => {
             if (err)
                 console.log(err);
-            res = { 'msg': 'no' };
+            res = { msg: "no" };
         });
         return res;
     });
@@ -119,10 +138,13 @@ function change_password(username, new_password) {
 function add_appraisal(appraisal) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield appraisal.save().then((u) => {
-            res = { "msg": "ok" };
-        }).catch((err) => {
-            res = { "msg": "error" };
+        yield appraisal
+            .save()
+            .then((u) => {
+            res = { msg: "ok" };
+        })
+            .catch((err) => {
+            res = { msg: "error" };
         });
         return res;
     });
@@ -135,10 +157,13 @@ function get_appraisals_user(appraisal) {
         // }).catch((err:any) => {
         //     res = { "msg": "error" };
         // })
-        yield appraisal.save().then((u) => {
-            res = { "msg": "ok" };
-        }).catch((err) => {
-            res = { "msg": "error" };
+        yield appraisal
+            .save()
+            .then((u) => {
+            res = { msg: "ok" };
+        })
+            .catch((err) => {
+            res = { msg: "error" };
         });
         return res;
     });
@@ -151,7 +176,7 @@ function get_current_appraisals_user(username) {
         // }).catch((err:any) => {
         //     res = { "msg": "error" };
         // })
-        yield appraisal_1.default.find({ "username": username, "finished": false }, (err, appraisals) => {
+        yield appraisal_1.default.find({ username: username, finished: false }, (err, appraisals) => {
             console.log(appraisals);
             res = appraisals;
         });
@@ -166,7 +191,7 @@ function get_history_appraisals_user(username) {
         // }).catch((err:any) => {
         //     res = { "msg": "error" };
         // })
-        yield appraisal_1.default.find({ "username": username, "finished": true }, (err, appraisals) => {
+        yield appraisal_1.default.find({ username: username, finished: true }, (err, appraisals) => {
             console.log(appraisals);
             res = appraisals;
         });
@@ -181,7 +206,7 @@ function get_current_appraisals_appraiser(username) {
         // }).catch((err:any) => {
         //     res = { "msg": "error" };
         // })
-        yield appraisal_1.default.find({ "finished": false }, (err, appraisals) => {
+        yield appraisal_1.default.find({ finished: false }, (err, appraisals) => {
             if (err)
                 console.log(err);
             else {
@@ -221,7 +246,7 @@ function give_appraisal(username, value, _id) {
         let rating;
         let evaluation;
         let error = null;
-        yield user_1.default.findOne({ "username": username }, (err, user) => {
+        yield user_1.default.findOne({ username: username }, (err, user) => {
             error = err;
             if (err)
                 console.log(err);
@@ -229,34 +254,38 @@ function give_appraisal(username, value, _id) {
                 rating = user["rating"];
                 console.log(user);
                 console.log("rating : " + rating);
-                evaluation = { "username": username, "rating": rating, "value": value };
+                evaluation = { username: username, rating: rating, value: value };
             }
         });
         if (!error) {
-            yield appraisal_1.default.updateOne({ "_id": _id }, { $push: { "evaluations": evaluation } }).then(user => {
-                res = { "msg": "ok" };
-            }).catch(err => {
-                res = { 'msg': 'no' };
+            yield appraisal_1.default.updateOne({ _id: _id }, { $push: { evaluations: evaluation } })
+                .then((user) => {
+                res = { msg: "ok" };
+            })
+                .catch((err) => {
+                res = { msg: "no" };
             });
         }
         else
-            res = { 'msg': 'no' };
+            res = { msg: "no" };
         return res;
     });
 }
 function appraisal_change_mind(username, value, _id) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield appraisal_1.default.findOneAndUpdate({ "_id": _id, "evaluations.username": username }, {
+        yield appraisal_1.default.findOneAndUpdate({ _id: _id, "evaluations.username": username }, {
             $set: {
                 "evaluations.$.value": value,
-            }
-        }).then((user) => __awaiter(this, void 0, void 0, function* () {
-            res = { 'msg': "ok" };
-        })).catch((err) => {
+            },
+        })
+            .then((user) => __awaiter(this, void 0, void 0, function* () {
+            res = { msg: "ok" };
+        }))
+            .catch((err) => {
             if (err)
                 console.log(err);
-            res = { 'msg': 'no' };
+            res = { msg: "no" };
         });
         // await Appraisal.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then(async (user: any) => {
         //     res = { 'msg': "ok" };
@@ -272,7 +301,7 @@ function appraisal_change_mind(username, value, _id) {
 function get_current_appraisals_appraiser_history(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield appraisal_1.default.find({ "finished": false, "evaluations.username": username }, (err, appraisals) => {
+        yield appraisal_1.default.find({ finished: false, "evaluations.username": username }, (err, appraisals) => {
             if (err)
                 console.log(err);
             else {
@@ -295,25 +324,35 @@ function add_comment(username, _id, date_added, comment) {
         //         res = appraisals;
         //     }
         // });
-        yield topic_1.default.updateOne({ "_id": _id }, { $push: { "comments": { "username": username, "comment": comment, "date_added": date_added } } }).
-            then(user => {
-            res = { "msg": "ok" };
-        }).catch(err => {
-            res = { 'msg': 'no' };
+        yield topic_1.default.updateOne({ _id: _id }, {
+            $push: {
+                comments: {
+                    username: username,
+                    comment: comment,
+                    date_added: date_added,
+                },
+            },
+        })
+            .then((user) => {
+            res = { msg: "ok" };
+        })
+            .catch((err) => {
+            res = { msg: "no" };
         });
-        ;
         return res;
     });
 }
 function user_finish_appraisal(_id) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield appraisal_1.default.findOneAndUpdate({ '_id': _id }, { $set: { 'value': 0, 'finished': true } }).then((user) => __awaiter(this, void 0, void 0, function* () {
-            res = { 'msg': "ok" };
-        })).catch((err) => {
+        yield appraisal_1.default.findOneAndUpdate({ _id: _id }, { $set: { value: 0, finished: true } })
+            .then((user) => __awaiter(this, void 0, void 0, function* () {
+            res = { msg: "ok" };
+        }))
+            .catch((err) => {
             if (err)
                 console.log(err);
-            res = { 'msg': 'no' };
+            res = { msg: "no" };
         });
         return res;
     });
@@ -321,16 +360,18 @@ function user_finish_appraisal(_id) {
 function finish_appraisal(_id, value) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield appraisal_1.default.findOneAndUpdate({ '_id': _id }, { $set: { 'value': value, 'finished': true } }).then((user) => __awaiter(this, void 0, void 0, function* () {
+        yield appraisal_1.default.findOneAndUpdate({ _id: _id }, { $set: { value: value, finished: true } })
+            .then((user) => __awaiter(this, void 0, void 0, function* () {
             // console.log(user);
             //////// ovde funkcija koja radi update uppraisala
-            let msg = yield (0, routes_1.update_ratings)(res, user.evaluations, value);
+            let msg = yield routes_1.update_ratings(res, user.evaluations, value);
             // console.log("");
-            res = { 'msg': msg };
-        })).catch((err) => {
+            res = { msg: msg };
+        }))
+            .catch((err) => {
             if (err)
                 console.log(err);
-            res = { 'msg': 'no' };
+            res = { msg: "no" };
         });
         return res;
     });
@@ -338,7 +379,7 @@ function finish_appraisal(_id, value) {
 function get_all_current_appraisals() {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield appraisal_1.default.find({ "finished": false }, (err, appraisals) => {
+        yield appraisal_1.default.find({ finished: false }, (err, appraisals) => {
             if (err)
                 console.log(err);
             else {
@@ -354,9 +395,9 @@ function get_all_current_appraisals() {
 function get_topic(title) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield topic_1.default.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
+        yield topic_1.default.findOneAndUpdate({ title: title }, { $inc: { views: 1 } }, (err, topic) => {
             if (err)
-                console.log('error delegate');
+                console.log("error delegate");
             else {
                 // let retObj = { 'user': user };
                 // console.log(topic);
@@ -369,7 +410,7 @@ function get_topic(title) {
 function get_ratings_by_user(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield rating_1.default.findOne({ "username": username }, (err, ratings) => {
+        yield rating_1.default.findOne({ username: username }, (err, ratings) => {
             if (err)
                 console.log(err);
             else {
@@ -382,12 +423,12 @@ function get_ratings_by_user(username) {
 function get_rating(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield rating_1.default.findOne({ "username": username }, (err, ratings) => {
+        yield rating_1.default.findOne({ username: username }, (err, ratings) => {
             if (err)
                 console.log(err);
             else {
-                let rating = (0, util_1.calculate_new_rating)(ratings != null ? ratings.toObject() : {});
-                res = { "rating": rating };
+                let rating = util_1.calculate_new_rating(ratings != null ? ratings.toObject() : {});
+                res = { rating: rating };
             }
         });
         return res;
@@ -396,7 +437,7 @@ function get_rating(username) {
 function load_all_users() {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield user_1.default.find({ "type": { $ne: "admin" } }, (err, users) => {
+        yield user_1.default.find({ type: { $ne: "admin" } }, (err, users) => {
             if (err)
                 console.log(err);
             else
@@ -409,30 +450,30 @@ function delete_user(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
         var error;
-        yield user_1.default.deleteOne({ 'username': username }, (err) => __awaiter(this, void 0, void 0, function* () {
+        yield user_1.default.deleteOne({ username: username }, (err) => __awaiter(this, void 0, void 0, function* () {
             error = err;
             if (err)
                 console.log(err);
             else {
-                console.log('obrisali smo korisnika');
+                console.log("obrisali smo korisnika");
                 // res.json({ 'msg': 'ok' });
             }
         }));
         let promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             if (!error) {
-                yield appraisal_1.default.deleteMany({ "username": username, "finished": false }, (err) => __awaiter(this, void 0, void 0, function* () {
+                yield appraisal_1.default.deleteMany({ username: username, finished: false }, (err) => __awaiter(this, void 0, void 0, function* () {
                     if (err)
                         console.log(err);
                     else {
-                        console.log('obrisali smo appraisale');
-                        res = { 'msg': 'ok' };
+                        console.log("obrisali smo appraisale");
+                        res = { msg: "ok" };
                     }
                     resolve("success");
                 }));
             }
             else {
                 console.log(error);
-                res = { "msg": "no" };
+                res = { msg: "no" };
             }
         }));
         yield promise;
@@ -442,12 +483,12 @@ function delete_user(username) {
 function delete_comment(_id, username, comment, date_added) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield topic_1.default.findOneAndUpdate({ '_id': _id }, { $pull: { "comments": { "username": username, "comment": comment } } }, (err) => {
+        yield topic_1.default.findOneAndUpdate({ _id: _id }, { $pull: { comments: { username: username, comment: comment } } }, (err) => {
             if (err)
                 console.log(err);
             else {
-                console.log('obrisali smo komentar');
-                res = { 'msg': 'ok' };
+                console.log("obrisali smo komentar");
+                res = { msg: "ok" };
             }
         });
         return res;
@@ -456,15 +497,15 @@ function delete_comment(_id, username, comment, date_added) {
 function delete_appraisal(id) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield appraisal_1.default.deleteOne({ '_id': id }, (err) => {
+        yield appraisal_1.default.deleteOne({ _id: id }, (err) => {
             if (err) {
                 // console.log(err);
                 console.log("ERROR");
             }
             else {
-                console.log('obrisali smo umetninu');
+                console.log("obrisali smo umetninu");
                 // res.json({ 'msg': 'ok' });
-                res = { 'msg': 'ok' };
+                res = { msg: "ok" };
             }
         });
         return res;
@@ -474,25 +515,25 @@ function update_subscription(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
         let promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-            yield user_1.default.findOne({ "username": username }, (err, user_doc) => {
+            yield user_1.default.findOne({ username: username }, (err, user_doc) => {
                 if (!err) {
                     let user_obj = user_doc.toObject();
                     let valid_until = new Date(user_obj.valid_until);
                     valid_until.setMonth(valid_until.getMonth() + 1);
                     console.log("valid until");
                     console.log(valid_until);
-                    user_1.default.findOneAndUpdate({ "username": username }, { $set: { "valid_until": valid_until } }, (err, data) => {
+                    user_1.default.findOneAndUpdate({ username: username }, { $set: { valid_until: valid_until } }, (err, data) => {
                         if (err) {
-                            res = { "msg": "no" };
+                            res = { msg: "no" };
                         }
                         else {
-                            res = { "msg": "ok" };
+                            res = { msg: "ok" };
                         }
                         resolve("success");
                     });
                 }
                 else {
-                    res = { "msg": "no" };
+                    res = { msg: "no" };
                     resolve("success");
                 }
             });
@@ -504,12 +545,12 @@ function update_subscription(username) {
 function get_subscription_valid_until(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield user_1.default.findOne({ "username": username }, (err, user) => {
+        yield user_1.default.findOne({ username: username }, (err, user) => {
             if (!err) {
-                res = { "valid_until": user.get("valid_until") };
+                res = { valid_until: user.get("valid_until") };
             }
             else {
-                res = { "msg": "no" };
+                res = { msg: "no" };
             }
         });
         return res;
@@ -519,22 +560,28 @@ function add_topic(_id, username, title, category, date, comment) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
         let promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-            yield topic_1.default.findOne({ "title": title }, (err, topic_found) => {
+            yield topic_1.default.findOne({ title: title }, (err, topic_found) => {
                 if (topic_found) {
-                    res = { "msg": "postoji vec ista tema" };
+                    res = { msg: "postoji vec ista tema" };
                 }
                 else {
                     let topic = new topic_1.default({
-                        "_id": _id,
-                        "username": username, "title": title,
-                        "date_added": date, "comments": [comment],
-                        "category": category, "views": 0
+                        _id: _id,
+                        username: username,
+                        title: title,
+                        date_added: date,
+                        comments: [comment],
+                        category: category,
+                        views: 0,
                     });
-                    topic.save().then(u => {
-                        res = { "msg": "ok" };
+                    topic
+                        .save()
+                        .then((u) => {
+                        res = { msg: "ok" };
                         resolve("sucess");
-                    }).catch(err => {
-                        res = { "msg": "greska unutar servera" };
+                    })
+                        .catch((err) => {
+                        res = { msg: "greska unutar servera" };
                         resolve("sucess");
                     });
                 }
@@ -553,7 +600,7 @@ function get_number_of_payed_subscriptions() {
         d.setDate(1);
         d.setMonth(d.getMonth() - 1);
         let cnt = 0;
-        yield user_1.default.find({ "type": "user", "valid_until": { $gte: d } }).count(function (err, count) {
+        yield user_1.default.find({ type: "user", valid_until: { $gte: d } }).count(function (err, count) {
             if (err)
                 console.log(err);
             else {
@@ -569,28 +616,36 @@ const cron = require("node-cron");
 cron.schedule("* * * 5 * *", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let count = yield get_number_of_payed_subscriptions();
-        let budget = (0, util_2.allocated_appraiser_budget)(count, routes_2.monthly_fee, routes_3.appraiser_percantage_fee);
-        yield user_1.default.find({ "type": "appraiser" }, (err, appraisers) => __awaiter(this, void 0, void 0, function* () {
+        let budget = util_2.allocated_appraiser_budget(count, routes_2.monthly_fee, routes_3.appraiser_percantage_fee);
+        yield user_1.default.find({ type: "appraiser" }, (err, appraisers) => __awaiter(this, void 0, void 0, function* () {
             if (err) {
-                console.log('error finding users');
+                console.log("error finding users");
             }
             else {
                 let sum_quote = 0;
                 for (let i = 0; i < appraisers.length; i++) {
                     let appraiser = appraisers[i].toObject();
-                    sum_quote += appraiser["cnt_appraisals_monthly"] * appraiser["rating"] * appraiser["rating"];
+                    sum_quote +=
+                        appraiser["cnt_appraisals_monthly"] *
+                            appraiser["rating"] *
+                            appraiser["rating"];
                 }
                 console.log("sum_quote : " + sum_quote);
                 for (let i = 0; i < appraisers.length; i++) {
                     let appraiser = appraisers[i].toObject();
-                    let money_owned = (budget / sum_quote) * appraiser["cnt_appraisals_monthly"] * appraiser["rating"] * appraiser["rating"];
+                    let money_owned = (budget / sum_quote) *
+                        appraiser["cnt_appraisals_monthly"] *
+                        appraiser["rating"] *
+                        appraiser["rating"];
                     if (money_owned != 0 && money_owned != null && sum_quote != 0)
-                        yield user_1.default.updateOne({ 'username': appraiser["username"] }, {
-                            $set: { 'cnt_appraisals_monthly': 0 },
-                            $inc: { "balance": money_owned }
-                        }).then(user => {
+                        yield user_1.default.updateOne({ username: appraiser["username"] }, {
+                            $set: { cnt_appraisals_monthly: 0 },
+                            $inc: { balance: money_owned },
+                        })
+                            .then((user) => {
                             console.log(user);
-                        }).catch(err => {
+                        })
+                            .catch((err) => {
                             console.log(err);
                         });
                     // .then((user: any) => {
@@ -637,6 +692,6 @@ module.exports = {
     update_subscription,
     get_subscription_valid_until,
     add_topic,
-    get_number_of_payed_subscriptions
+    get_number_of_payed_subscriptions,
 };
 //# sourceMappingURL=services.js.map
