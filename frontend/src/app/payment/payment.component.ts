@@ -14,13 +14,23 @@ export class PaymentComponent implements OnInit {
 
   constructor(private router: Router, private service: GeneralService, private notificationService: NotificationService) { }
 
-  ngOnInit() {
+
+  async ngOnInit() {
 
     this.username = JSON.parse(localStorage.getItem("user")).username;
     this.invoke_stripe();
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+
+    console.log("waiting from now on");
+      await delay(2500);
+      console.log("Waited 5s");
+
+
+
     this.payment();
 
-    
+
     if (localStorage.getItem("user_payed") == "true")
       this.user_payed = true;
     else this.user_payed = false;
@@ -39,8 +49,10 @@ export class PaymentComponent implements OnInit {
       console.log(data);
       this.monthly_fee = data["monthly_fee"];
 
+
+
       const paymentHandler = (<any>window).StripeCheckout.configure({
-        key: 'pk_test_51KpTkCKC9d8RyJ0E2l8VGCG5JJg2RtBDDUFyFS0NBQNLu3I47cg0MSCODuxNwEnjuGGVlEazilmshjzRb7oIftTK00onUGPqeN',
+        key: 'pk_test_51KpTakHwTNfRVrcdfA8n2MZqvduw0BCYLC2SjxytDUd6zQttJBqCHvCPwKfPOpunKTPZqQBqxunIzfbbSKlBtCNl00WWzaTSbw',
         locale: 'auto',
         currency: "eur",
         // token koji ce biti vracen sa klijentske strane
@@ -57,7 +69,7 @@ export class PaymentComponent implements OnInit {
 
                 if (data["msg"] === "ok") {
                   // Promise p = async (this.notificationService.alert("Uspesno produzena clanarina, hvala !"));
-                  
+
                   this.user_payed = true;
                   localStorage.setItem("user_payed", JSON.stringify(this.user_payed));
 
@@ -108,7 +120,7 @@ export class PaymentComponent implements OnInit {
       script.onload = () => {
         this.paymentHandler = (<any>window).StripeCheckout.configure({
 
-          key: 'pk_test_51KpTkCKC9d8RyJ0E2l8VGCG5JJg2RtBDDUFyFS0NBQNLu3I47cg0MSCODuxNwEnjuGGVlEazilmshjzRb7oIftTK00onUGPqeN',
+          key: 'pk_test_51KpTakHwTNfRVrcdfA8n2MZqvduw0BCYLC2SjxytDUd6zQttJBqCHvCPwKfPOpunKTPZqQBqxunIzfbbSKlBtCNl00WWzaTSbw',
           locale: 'auto',
           token: function (stripeToken: any) {
             console.log(stripeToken);

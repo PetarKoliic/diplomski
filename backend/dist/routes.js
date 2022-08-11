@@ -578,7 +578,7 @@ router.route('/login-register').post((req, res) => {
         }
     });
 });
-const stripe = require('stripe')("sk_test_51KpTkCKC9d8RyJ0Ejxlyv3LhgX52fExbMMUyzQ1Kpqzz8aIbdDEssxTqDJm81UumKSDf9LMcoOvzpheLMnUCArfm00v1QbB8lu");
+const stripe = require('stripe')("sk_test_51KpTakHwTNfRVrcdzFx83eNapyiseDRXrx2LbLgEvojEhABm6AjfE6jPJ79UpdNyqsVwgcRPdXDcoV9YfWFekxSH00EO6Q3Ach");
 router.route('/pay').post((req, res) => {
     console.log("token");
     console.log("*********************");
