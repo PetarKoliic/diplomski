@@ -12,8 +12,9 @@
         <mat-form-field class='half-width' appearance="fill">
             <mat-label>Kategorija</mat-label>
             <mat-select [(ngModel)]="category">
-                <mat-option *ngFor="let category of categories" [value]="category">
-                    {{category}}
+                <mat-option *ngFor="let category of get_keys(categories_map)" [value]="category">
+
+                    {{categories_map.get(category)}}
 
                 </mat-option>
             </mat-select>

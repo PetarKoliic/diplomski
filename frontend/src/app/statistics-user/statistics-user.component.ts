@@ -61,13 +61,13 @@ draw_chart() {
 
   for (let i = 0; i < this.appraisals.length; i++) {
 
-      
+
 
       if (this.functions.number_of_evaluations(this.appraisals[i]) > 0 &&
           !isNaN(this.appraisals[i].value)) {
 
           appraisal_statistics.push(new AppraisalStatistics(this.appraisals[i].name, parseInt(this.functions.current_evaluation(this.appraisals[i]).toString()), this.appraisals[i].value));
-          // ovo je procenjena vrednost 
+          // ovo je procenjena vrednost
       }
   }
 
@@ -140,7 +140,7 @@ draw_chart() {
           yAxis: 1,
           data: this.functions.extractValue(appraisal_statistics, "estimated_value"),
           tooltip: {
-              valueSuffix: ' mm'
+              valueSuffix: ' €'
           }
 
       }, {
@@ -148,7 +148,7 @@ draw_chart() {
           type: 'spline',
           data: this.functions.extractValue(appraisal_statistics, "sold_value"),
           tooltip: {
-              valueSuffix: '°C'
+              valueSuffix: ' €'
           }
       }]
   });

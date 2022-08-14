@@ -79,7 +79,7 @@ export class StatisticsAppraisalComponent implements OnInit {
                 appraisal_statistics.push(new AppraisalStatistics(this.appraisal_selected.evaluations[i].username, parseInt(this.appraisal_selected.evaluations[i].value.toString()), this.appraisal_selected.value));
                 // ovo je procenjena vrednost
 
-                appraisal_statistics[i].estimated_value = parseInt(appraisal_statistics[i].estimated_value.toString()); 
+                appraisal_statistics[i].estimated_value = parseInt(appraisal_statistics[i].estimated_value.toString());
             }
         }
 
@@ -152,7 +152,7 @@ export class StatisticsAppraisalComponent implements OnInit {
                 yAxis: 1,
                 data: this.functions.extractValue(appraisal_statistics, "estimated_value"),
                 tooltip: {
-                    valueSuffix: ' mm'
+                    valueSuffix: ' €'
                 }
 
             }, {
@@ -160,7 +160,7 @@ export class StatisticsAppraisalComponent implements OnInit {
                 type: 'spline',
                 data: this.functions.extractValue(appraisal_statistics, "sold_value"),
                 tooltip: {
-                    valueSuffix: '°C'
+                    valueSuffix: ' €'
                 }
             }]
         });

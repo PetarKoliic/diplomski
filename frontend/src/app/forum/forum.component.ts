@@ -37,7 +37,7 @@ export class ForumComponent implements OnInit {
   search_topic: string;
   sort_choosen: string = "date_created";
   up_down_flag: string;
-  
+
 
   // $event
   sort() {
@@ -70,7 +70,7 @@ export class ForumComponent implements OnInit {
       TopicPagination.empty_all_topics();
 
       for (let i = 0; i < this.topics.length; i++) {
-        
+
         if (this.topics[i].category === "social") {
           this.socials.topics.push(this.topics[i]);
         }
@@ -154,7 +154,7 @@ export class ForumComponent implements OnInit {
       console.log(topics);
 
       this.topics = topics;
-      
+
 
 
       for (let i = 0; i < this.topics.length; i++) {
@@ -187,7 +187,7 @@ export class ForumComponent implements OnInit {
       // this.arts.refresh_show_topics(this.startIndex, this.endIndex, this.page_size_options[0]);
       TopicPagination.refresh_all_topics(this.startIndex, this.endIndex, this.page_size_options[0]);
 
-    this.changeDetectorRefs.detectChanges();      
+    this.changeDetectorRefs.detectChanges();
       console.log("load_topics()");
       console.log(this.arts.show_topics);
     });
@@ -197,7 +197,6 @@ export class ForumComponent implements OnInit {
 
   open_topic(topic_name: string)
   {
-    console.log("usao 22");
     this.router.navigate(['topic/', topic_name ]);
   }
 }

@@ -17,6 +17,10 @@ export class NewTopicDialogComponent implements OnInit {
   ngOnInit(): void {
 
     this.username = JSON.parse(localStorage.getItem("user")).username;
+    this.categories_map.set("art","umetnine");
+    this.categories_map.set("social","druzenje");
+    this.categories_map.set("fair","sajmovi");
+
 
   }
 
@@ -26,6 +30,10 @@ export class NewTopicDialogComponent implements OnInit {
   comment: string;
   selected_category: string;
   categories: String[] = ["art", "fair", "social"];
+
+  categories_map = new Map<any, String>();
+
+
   // result: boolean;
 
   close_topic() {
@@ -33,6 +41,9 @@ export class NewTopicDialogComponent implements OnInit {
   }
 
   add_topic() {
+
+
+
     console.log("nesto smo i uradili" + this.title + " " + this.category + " " + this.comment);
 
     if (this.title == "" || this.title == null ||
@@ -43,7 +54,7 @@ export class NewTopicDialogComponent implements OnInit {
 
     // this.result = false;
 
-    // this.parentFun.emit();    
+    // this.parentFun.emit();
 
     else {
 
@@ -57,6 +68,10 @@ export class NewTopicDialogComponent implements OnInit {
       });
     }
 
+  }
+
+  get_keys(map: any){
+    return Array.from(map.keys());
   }
 
 }
