@@ -1,1 +1,49 @@
-<p>Redirecting</p>
+  <div *ngIf="register_form_flag == true"
+    class="backgroundPicture"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
+    <div
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      style="background-color: #fbeec1; padding: 50px"
+    >
+      <mat-form-field class="half-width" appearance="legacy">
+        <mat-label>Korisnicko ime</mat-label>
+        <input
+          matInput
+          required
+          placeholder="Korisnicko ime"
+          [(ngModel)]="username"
+        />
+      </mat-form-field>
+
+      <div class="divider"></div>
+      <!-- <mat-form-field appearance="fill">
+    <mat-label>Tip</mat-label>
+    <select matNativeControl required [(value)]="type">
+      <option value="procenitelj">Procenitelj</option>
+      <option value="clan">Clan</option>
+
+    </select>
+  </mat-form-field> -->
+
+      <mat-form-field>
+        <mat-select name="Tip naloga" [(value)]="type" placeholder="Tip naloga">
+          <mat-option [value]="'user'">Clan</mat-option>
+          <mat-option [value]="'appraiser'">Procenitelj</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="divider"></div>
+
+      <div class="centerComponent">
+        <button mat-raised-button color="primary" (click)="register()">
+          Registracija
+        </button>
+      </div>
+
+      <div class="divider"></div>
+
+    </div>
+  </div>

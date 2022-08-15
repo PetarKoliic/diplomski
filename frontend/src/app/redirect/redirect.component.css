@@ -1,0 +1,16 @@
+.center {
+
+  width: 340px;
+  padding : 40px;
+  position : absolute;
+  top: 5%;
+  left : 50%;
+  transform:  translate(-50%,50%);
+  background-color: #FBEEC1;
+
+
+}
+.centerSingleComponent{
+  display: flex;
+  justify-content: center;
+}
