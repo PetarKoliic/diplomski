@@ -38,7 +38,7 @@ export class NotificationService {
 
   /**
    * Shows a confirmation modal, presenting the user with
-   * an OK and Cancel button. 
+   * an OK and Cancel button.
    * @param message Body of the modal
    * @param okCallback Optional function to call when the user clicks Ok
    * @param title Optional modal title
@@ -113,7 +113,7 @@ export class NotificationService {
     message: string,
     action: string,
     className = '',
-    duration = 1000
+    duration = 2500
   ) {
     this.snackBar.open(message, action, {
       duration: duration,
