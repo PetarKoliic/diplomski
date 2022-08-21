@@ -88,6 +88,14 @@ app.get('/redirect', (req, res) => {
 //////////////////////////////////////////////////
 app.use('/', routes);
 //////////////////////////////////////////////////
+//TODO FIX
+// async function intervalFunc() {
+//     console.log("setInterval funcition callback");
+//     let obj: any = await get_revenue();
+//       console.log("obj");
+//       console.log(obj.value);
+//   }
+//  setInterval(intervalFunc, 3500);
 // app.use('/', router);
 app.listen(4000, () => console.log(`Express server running on port 4000`));
 //# sourceMappingURL=server.js.map

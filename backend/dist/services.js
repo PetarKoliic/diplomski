@@ -20,6 +20,7 @@ const util_1 = require("./util");
 const util_2 = require("./util");
 const routes_2 = require("./routes");
 const routes_3 = require("./routes");
+const global_1 = __importDefault(require("./models/global"));
 // async function create(programmingLanguage){
 //     const result = await db.query(
 //       `INSERT INTO programming_languages
@@ -147,6 +148,32 @@ function add_appraisal(appraisal) {
             res = { msg: "error" };
         });
         return res;
+    });
+}
+function get_revenue() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let res;
+        res = yield global_1.default.findOne({ type: { $ne: "admin" } }, (err, res_val) => {
+            if (err)
+                console.log(err);
+            else
+                res = res_val;
+            // console.log("response in callback");
+            // console.log(res);
+        });
+    });
+}
+exports.get_revenue = get_revenue;
+function add_revenue_monthly_subscription() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let msg = { "msg": "ok" };
+        yield global_1.default.updateOne({ "name": "revenue" }, {
+            $inc: { "balance": routes_2.monthly_fee }
+        }).catch((err) => {
+            msg = { "msg": "error incrementing value" };
+            console.log(err);
+        });
+        return msg;
     });
 }
 function get_appraisals_user(appraisal) {
@@ -597,8 +624,8 @@ function get_number_of_payed_subscriptions() {
         let d = new Date();
         // svakog prvog u mesecu
         // 1. maja gledamo ko je platio
-        d.setDate(1);
-        d.setMonth(d.getMonth() - 1);
+        // d.setDate(1);
+        // d.setMonth(d.getMonth() - 1);
         let cnt = 0;
         yield user_1.default.find({ type: "user", valid_until: { $gte: d } }).count(function (err, count) {
             if (err)
@@ -613,16 +640,20 @@ function get_number_of_payed_subscriptions() {
 }
 // setInterval(get_number_of_payed_subscriptions, 1000 * 10);
 const cron = require("node-cron");
-cron.schedule("* * * 5 * *", function () {
+cron.schedule("0 0 1 * * * * *", function () {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("invoked cron job distributing money");
         let count = yield get_number_of_payed_subscriptions();
+        console.log(count);
         let budget = util_2.allocated_appraiser_budget(count, routes_2.monthly_fee, routes_3.appraiser_percantage_fee);
+        console.log("budget : " + budget);
         yield user_1.default.find({ type: "appraiser" }, (err, appraisers) => __awaiter(this, void 0, void 0, function* () {
             if (err) {
                 console.log("error finding users");
             }
             else {
-                let sum_quote = 0;
+                var sum_quote = 0;
+                console.log(appraisers);
                 for (let i = 0; i < appraisers.length; i++) {
                     let appraiser = appraisers[i].toObject();
                     sum_quote +=
@@ -648,18 +679,18 @@ cron.schedule("* * * 5 * *", function () {
                             .catch((err) => {
                             console.log(err);
                         });
-                    // .then((user: any) => {
-                    // }).catch((err: any) => {
-                    //         if (err)
-                    //             console.log(err);
-                    //     });
-                    // await User.updateOne({ 'username': username }, { $set: { 'password': new_password } }).then((user: any) => {
-                    //     res = { 'msg': 'ok' };
-                    // }).catch((err: any) => {
-                    //     if (err)
-                    //         console.log(err);
-                    //     res = { 'msg': 'no' };
-                    // });
+                    // .then((user: any) => {	
+                    // }).catch((err: any) => {	
+                    //         if (err)	
+                    //             console.log(err);	
+                    //     });	
+                    // await User.updateOne({ 'username': username }, { $set: { 'password': new_password } }).then((user: any) => {	
+                    //     res = { 'msg': 'ok' };	
+                    // }).catch((err: any) => {	
+                    //     if (err)	
+                    //         console.log(err);	
+                    //     res = { 'msg': 'no' };	
+                    // });	
                 }
             }
         }));
@@ -693,5 +724,7 @@ module.exports = {
     get_subscription_valid_until,
     add_topic,
     get_number_of_payed_subscriptions,
+    get_revenue,
+    add_revenue_monthly_subscription
 };
 //# sourceMappingURL=services.js.map

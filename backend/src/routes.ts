@@ -14,7 +14,13 @@ import user from "./models/user";
 import { name } from "ejs";
 import { calculate_individual_rating } from "./util";
 import { calculate_new_rating } from "./util";
+// import {register} from './services';
 
+
+// var services = require("./services");
+
+
+const services = require('./services');
 const multer = require("multer");
 
 export const monthly_fee = 10;
@@ -35,7 +41,7 @@ var upload = multer({ storage: storage });
 
 const DIR = "./uploads/";
 
-var services = require("./services");
+
 
 router.route("/login").post(async (req: any, res: any) => {
   console.log("inside login");
@@ -67,6 +73,9 @@ router.route("/register").post(async (req: any, res: any) => {
 
   if (req.body.type === "appraiser") {
     user.set("rating", 5);
+    user.set("cnt_appraisals_monthly", 0);
+    user.set("balance", 0);
+
   }
 
   console.log(user);
@@ -95,6 +104,8 @@ router.route("/register-google").post(async (req: any, res: any) => {
 
   if (req.body.type === "appraiser") {
     user.set("rating", 5);
+    user.set("cnt_appraisals_monthly", 0);
+    user.set("balance", 0);
   }
 
   console.log(user);
@@ -388,6 +399,18 @@ router.route("/appraisal-change-mind").post(async (req: any, res: any) => {
 
 /////////////////////////////////////////////////
 
+router.route("/add-revenue-monthly-subscription").post(async (req: any, res: any) => {
+  
+
+  let msg = await services.add_revenue_monthly_subscription();
+
+  res.json(msg);
+});
+
+
+
+/////////////////////////////////////////////////
+
 router.route("/add-comment").post(async (req: any, res: any) => {
   let username = req.body.username;
   let date_added = req.body.date_added;
@@ -496,7 +519,8 @@ export async function update_ratings(
     await rating
       .findOneAndUpdate(
         { username: evaluations[i].username },
-        { $push: { ratings: individual_rating } }
+        { $push: { ratings: individual_rating }
+         }
       )
       .setOptions({ upsert: true, new: true })
       .then(async (ratings: any) => {
@@ -508,7 +532,8 @@ export async function update_ratings(
 
         await User.updateOne(
           { username: username },
-          { $set: { rating: new_rating } }
+          { $set: { rating: new_rating }, 
+          $inc: {cnt_appraisals_monthly: 1} }
         )
           .then((user: any) => {
             // console.log("4.44444444");
@@ -654,7 +679,7 @@ router.route("/delete-user").post(async (req: any, res: any) => {
 });
 
 //////////////////////////////////////////////////
-// TODO
+//
 router.route("/delete-comment").post(async (req: any, res: any) => {
   console.log("usao u delete comment");
 

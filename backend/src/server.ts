@@ -5,6 +5,8 @@ import mongoose, { Schema } from 'mongoose';
 // import image from './models/image';
 import passport from 'passport';
 
+// import Global from "./models/global";
+import {get_revenue} from "./services"
 
 require('./auth');
 
@@ -142,6 +144,19 @@ app.use('/',  routes);
 
 
 //////////////////////////////////////////////////
+
+//TODO FIX
+// async function intervalFunc() {
+    
+//     console.log("setInterval funcition callback");
+//     let obj: any = await get_revenue();
+
+
+//       console.log("obj");
+//       console.log(obj.value);
+//   }
+  
+//  setInterval(intervalFunc, 3500);
 
 
 

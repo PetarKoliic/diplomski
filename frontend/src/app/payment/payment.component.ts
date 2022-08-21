@@ -74,7 +74,10 @@ export class PaymentComponent implements OnInit {
                   localStorage.setItem("user_payed", JSON.stringify(this.user_payed));
 
 
-                  this.notificationService.alert("Uspesno produzena clanarina, hvala !")
+                  this.notificationService.alert("Uspesno produzena clanarina, hvala !");
+
+
+
                 }
                 else {
                   this.notificationService.alert("Internal error from server side");

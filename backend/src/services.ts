@@ -13,6 +13,7 @@ import { allocated_appraiser_budget } from "./util";
 import { promiseImpl } from "ejs";
 import { monthly_fee } from "./routes";
 import { appraiser_percantage_fee } from "./routes";
+import Global from "./models/global";
 
 // async function create(programmingLanguage){
 //     const result = await db.query(
@@ -160,6 +161,40 @@ async function add_appraisal(appraisal: Appraisal) {
     });
 
   return res;
+}
+
+export async function get_revenue() {
+
+let res: any;
+
+res = await Global.findOne({ type: { $ne: "admin" } }, (err, res_val) => {
+  if (err) console.log(err);
+  else res = res_val;
+
+  // console.log("response in callback");
+  // console.log(res);
+});
+
+}
+
+
+ async function add_revenue_monthly_subscription() {
+
+  let msg: Object = {"msg": "ok"};
+
+  await Global.updateOne(
+    { "name": "revenue" },
+    {
+      $inc: { "balance": monthly_fee }
+    }
+  ).catch((err) => {
+
+      msg = {"msg": "error incrementing value"};
+      console.log(err);
+    });
+
+return msg;
+
 }
 
 async function get_appraisals_user(appraisal: Appraisal) {
@@ -434,6 +469,7 @@ async function finish_appraisal(_id: any, value: number) {
 
       //////// ovde funkcija koja radi update uppraisala
       let msg = await update_ratings(res, user.evaluations, value);
+ 
 
       // console.log("");
 
@@ -700,8 +736,10 @@ async function get_number_of_payed_subscriptions() {
   let d = new Date();
   // svakog prvog u mesecu
   // 1. maja gledamo ko je platio
-  d.setDate(1);
-  d.setMonth(d.getMonth() - 1);
+ 
+ 
+  // d.setDate(1);
+  // d.setMonth(d.getMonth() - 1);
   let cnt = 0;
 
   await User.find({ type: "user", valid_until: { $gte: d } }).count(function (
@@ -720,73 +758,77 @@ async function get_number_of_payed_subscriptions() {
 
 // setInterval(get_number_of_payed_subscriptions, 1000 * 10);
 
+	
 const cron = require("node-cron");
 
-cron.schedule("* * * 5 * *", async function () {
-  let count = await get_number_of_payed_subscriptions();
+cron.schedule("0 0 1 * * * * *", async function () {	
 
-  let budget = allocated_appraiser_budget(
-    count,
-    monthly_fee,
-    appraiser_percantage_fee
+  console.log("invoked cron job distributing money");
+
+  let count = await get_number_of_payed_subscriptions();	
+
+  console.log(count);
+  let budget = allocated_appraiser_budget(	
+    count,	
+    monthly_fee,	
+    appraiser_percantage_fee	
   );
-
-  await User.find({ type: "appraiser" }, async (err: any, appraisers: any) => {
-    if (err) {
-      console.log("error finding users");
-    } else {
-      let sum_quote = 0;
-      for (let i = 0; i < appraisers.length; i++) {
-        let appraiser = appraisers[i].toObject();
-        sum_quote +=
-          appraiser["cnt_appraisals_monthly"] *
-          appraiser["rating"] *
-          appraiser["rating"];
-      }
-      console.log("sum_quote : " + sum_quote);
-
-      for (let i = 0; i < appraisers.length; i++) {
-        let appraiser = appraisers[i].toObject();
-
-        let money_owned =
-          (budget / sum_quote) *
-          appraiser["cnt_appraisals_monthly"] *
-          appraiser["rating"] *
-          appraiser["rating"];
-
-        if (money_owned != 0 && money_owned != null && sum_quote != 0)
-          await User.updateOne(
-            { username: appraiser["username"] },
-            {
-              $set: { cnt_appraisals_monthly: 0 },
-              $inc: { balance: money_owned },
-            }
-          )
-            .then((user) => {
-              console.log(user);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        // .then((user: any) => {
-
-        // }).catch((err: any) => {
-        //         if (err)
-        //             console.log(err);
-        //     });
-
-        // await User.updateOne({ 'username': username }, { $set: { 'password': new_password } }).then((user: any) => {
-
-        //     res = { 'msg': 'ok' };
-        // }).catch((err: any) => {
-        //     if (err)
-        //         console.log(err);
-        //     res = { 'msg': 'no' };
-        // });
-      }
-    }
-  });
+  
+  console.log("budget : " + budget);
+  
+  
+  await User.find({ type: "appraiser" }, async (err: any, appraisers: any) => {	
+    if (err) {	
+      console.log("error finding users");	
+    } else {	
+      var sum_quote = 0;
+      console.log(appraisers);	
+      for (let i = 0; i < appraisers.length; i++) {	
+        let appraiser = appraisers[i].toObject();	
+        sum_quote +=	
+          appraiser["cnt_appraisals_monthly"] *	
+          appraiser["rating"] *	
+          appraiser["rating"];	
+      }	
+      console.log("sum_quote : " + sum_quote);	
+      for (let i = 0; i < appraisers.length; i++) {	
+        let appraiser = appraisers[i].toObject();	
+        let money_owned =	
+          (budget / sum_quote) *	
+          appraiser["cnt_appraisals_monthly"] *	
+          appraiser["rating"] *	
+          appraiser["rating"];	
+        if (money_owned != 0 && money_owned != null && sum_quote != 0)	
+          await User.updateOne(	
+            { username: appraiser["username"] },	
+            {	
+              $set: { cnt_appraisals_monthly: 0 },	
+              $inc: { balance: money_owned },	
+            }	
+          )	
+            .then((user) => {	
+              console.log(user);	
+            })	
+            .catch((err) => {	
+              console.log(err);	
+            });	
+        // .then((user: any) => {	
+        // }).catch((err: any) => {	
+        //         if (err)	
+        //             console.log(err);	
+        //     });	
+        // await User.updateOne({ 'username': username }, { $set: { 'password': new_password } }).then((user: any) => {	
+        //     res = { 'msg': 'ok' };	
+        // }).catch((err: any) => {	
+        //     if (err)	
+        //         console.log(err);	
+        //     res = { 'msg': 'no' };	
+        // });	
+      }	
+    }	
+  });	
 });
+
 
 module.exports = {
   login,
@@ -816,4 +858,6 @@ module.exports = {
   get_subscription_valid_until,
   add_topic,
   get_number_of_payed_subscriptions,
-};
+  get_revenue,
+  add_revenue_monthly_subscription
+}

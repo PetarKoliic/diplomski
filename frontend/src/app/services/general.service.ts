@@ -386,4 +386,12 @@ export class GeneralService {
 
     return this.http.post(`${this.uri}/appraisal-change-mind`, data);
   }
+
+
+  add_revenue()
+  {
+    const data = {};
+    return this.http.post(`${this.uri}/add-revenue-monthly-subscription`, data);
+
+  }
 }

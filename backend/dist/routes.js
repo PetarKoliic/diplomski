@@ -20,6 +20,9 @@ const rating_1 = __importDefault(require("./models/rating"));
 const topic_1 = __importDefault(require("./models/topic"));
 const util_1 = require("./util");
 const util_2 = require("./util");
+// import {register} from './services';
+// var services = require("./services");
+const services = require('./services');
 const multer = require("multer");
 exports.monthly_fee = 10;
 exports.appraiser_percantage_fee = 0.5;
@@ -34,7 +37,6 @@ const storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 const DIR = "./uploads/";
-var services = require("./services");
 router.route("/login").post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("inside login");
     let username = req.body.username;
@@ -57,6 +59,8 @@ router.route("/register").post((req, res) => __awaiter(this, void 0, void 0, fun
     console.log(user);
     if (req.body.type === "appraiser") {
         user.set("rating", 5);
+        user.set("cnt_appraisals_monthly", 0);
+        user.set("balance", 0);
     }
     console.log(user);
     let username = req.body.username;
@@ -75,6 +79,8 @@ router.route("/register-google").post((req, res) => __awaiter(this, void 0, void
     console.log(user);
     if (req.body.type === "appraiser") {
         user.set("rating", 5);
+        user.set("cnt_appraisals_monthly", 0);
+        user.set("balance", 0);
     }
     console.log(user);
     let username = req.body.username;
@@ -275,6 +281,11 @@ router.route("/appraisal-change-mind").post((req, res) => __awaiter(this, void 0
     res.json(msg);
 }));
 /////////////////////////////////////////////////
+router.route("/add-revenue-monthly-subscription").post((req, res) => __awaiter(this, void 0, void 0, function* () {
+    let msg = yield services.add_revenue_monthly_subscription();
+    res.json(msg);
+}));
+/////////////////////////////////////////////////
 router.route("/add-comment").post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let date_added = req.body.date_added;
@@ -345,13 +356,15 @@ function update_ratings(res, evaluations, sold_value) {
             // console.log("individual ratings:");
             // console.log(individual_rating);
             yield rating_1.default
-                .findOneAndUpdate({ username: evaluations[i].username }, { $push: { ratings: individual_rating } })
+                .findOneAndUpdate({ username: evaluations[i].username }, { $push: { ratings: individual_rating }
+            })
                 .setOptions({ upsert: true, new: true })
                 .then((ratings) => __awaiter(this, void 0, void 0, function* () {
                 // console.log("333333333333333333");
                 let username = ratings.toObject().username;
                 let new_rating = util_2.calculate_new_rating(ratings.toObject());
-                yield user_1.default.updateOne({ username: username }, { $set: { rating: new_rating } })
+                yield user_1.default.updateOne({ username: username }, { $set: { rating: new_rating },
+                    $inc: { cnt_appraisals_monthly: 1 } })
                     .then((user) => {
                     // console.log("4.44444444");
                     // res.status(200).json({ 'msg': 'ok' });
@@ -466,7 +479,7 @@ router.route("/delete-user").post((req, res) => __awaiter(this, void 0, void 0, 
     res.json(msg);
 }));
 //////////////////////////////////////////////////
-// TODO
+//
 router.route("/delete-comment").post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("usao u delete comment");
     let username = req.body.username;
