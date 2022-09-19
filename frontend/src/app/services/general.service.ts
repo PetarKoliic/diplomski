@@ -266,7 +266,7 @@ export class GeneralService {
 
   get_topic(title: string) {
     const data = {
-      title: title,
+      title: title
     };
 
     return this.http.post(`${this.uri}/get-topic`, data);

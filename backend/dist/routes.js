@@ -55,7 +55,7 @@ router.route("/login").post((req, res) => __awaiter(this, void 0, void 0, functi
 router.route("/register").post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let user = new user_1.default(req.body);
     console.log("user");
-    user.set("owned", exports.monthly_fee);
+    // user.set("owned", monthly_fee);
     console.log(user);
     if (req.body.type === "appraiser") {
         user.set("rating", 5);
@@ -174,8 +174,10 @@ router.post("/get-appraisals-user", upload.array("images"), (req, res) => __awai
 router
     .route("/get-current-appraisals-user")
     .post((req, res) => __awaiter(this, void 0, void 0, function* () {
+    console.log(req.body);
     let username = req.body.username;
     console.log("usao u get current appraisal");
+    console.log(username);
     let msg = yield services.get_current_appraisals_user(username);
     res.json(msg);
 }));
@@ -401,9 +403,9 @@ router.route("/get-all-current-appraisals").post((req, res) => __awaiter(this, v
 }));
 //////////////////////////////////////////////////
 router.route("/get-topic").post((req, res) => __awaiter(this, void 0, void 0, function* () {
-    console.log("inside login");
+    console.log("inside get topic");
     let title = req.body.title;
-    console.log(title);
+    // console.log(title);
     // Topic.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
     //     if (err)
     //         console.log('error delegate');

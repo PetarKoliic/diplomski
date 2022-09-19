@@ -85,7 +85,7 @@ export class RedirectComponent implements OnInit {
   register() {
     if (this.username === '' || this.type === '') {
 
-      this.notificationService.success('svako polje mora biti uneto');
+      this.notificationService.error('svako polje mora biti uneto');
     } else {
       // this.message = this.checkPw(this.password);
       // if error message "" means no error

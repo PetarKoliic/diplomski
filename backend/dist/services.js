@@ -422,16 +422,33 @@ function get_all_current_appraisals() {
 function get_topic(title) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield topic_1.default.findOneAndUpdate({ title: title }, { $inc: { views: 1 } }, (err, topic) => {
+        // await Topic.findOneAndUpdate(
+        //   { title: title },
+        //   { $inc: { views: 1 } },
+        //   (err, topic) => {
+        //     if (err) console.log("error delegate");
+        //     else {
+        //       // let retObj = { 'user': user };
+        //       // console.log(topic);
+        //       // console.log("topic");
+        //       // console.log(topic);
+        //       res = topic;
+        //     }
+        //   }
+        // );
+        let topic_loaded;
+        yield topic_1.default.findOne({ title }, (err, topic) => {
             if (err)
-                console.log("error delegate");
+                console.log(err);
             else {
-                // let retObj = { 'user': user };
-                // console.log(topic);
-                res = topic;
+                topic_loaded = topic;
             }
         });
-        return res;
+        yield topic_1.default.updateOne({ 'title': title }, { $set: { 'views': parseInt(topic_loaded.get("views")) + 1 } }, (err, user) => {
+            if (err)
+                console.log(err);
+        });
+        return topic_loaded;
     });
 }
 function get_ratings_by_user(username) {

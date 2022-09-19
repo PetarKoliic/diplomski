@@ -4,7 +4,7 @@ import { Evaluation } from "./models/evaluation.model";
 import Topic from "./models/topic";
 import User from "./models/user";
 import { any } from "async";
-import { PropertyAccessEntityNameExpression } from "typescript";
+import { PropertyAccessEntityNameExpression, tokenToString } from "typescript";
 import { update_ratings } from "./routes";
 import rating from "./models/rating";
 import { calculate_individual_rating } from "./util";
@@ -503,20 +503,40 @@ async function get_all_current_appraisals() {
 async function get_topic(title: string) {
   let res: Object;
 
-  await Topic.findOneAndUpdate(
-    { title: title },
-    { $inc: { views: 1 } },
-    (err, topic) => {
-      if (err) console.log("error delegate");
-      else {
-        // let retObj = { 'user': user };
-        // console.log(topic);
-        res = topic;
-      }
-    }
-  );
+  // await Topic.findOneAndUpdate(
+  //   { title: title },
+  //   { $inc: { views: 1 } },
+  //   (err, topic) => {
+  //     if (err) console.log("error delegate");
+  //     else {
+  //       // let retObj = { 'user': user };
+  //       // console.log(topic);
+        
+  //       // console.log("topic");
+  //       // console.log(topic);
+  //       res = topic;
+  //     }
+  //   }
+  // );
 
-  return res;
+  let topic_loaded: any;
+  await Topic.findOne({title}, (err, topic) => {
+
+    if(err)
+      console.log(err);
+    
+    else
+    {
+      topic_loaded = topic;
+    }
+  });
+
+  await Topic.updateOne({ 'title': title}, {$set :{'views' : parseInt(topic_loaded.get("views")) + 1}}, (err, user) => {
+    if(err)
+      console.log(err);
+  });
+
+  return topic_loaded;
 }
 
 async function get_ratings_by_user(username: string) {

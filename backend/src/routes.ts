@@ -67,7 +67,7 @@ router.route("/register").post(async (req: any, res: any) => {
 
   console.log("user");
 
-  user.set("owned", monthly_fee);
+  // user.set("owned", monthly_fee);
 
   console.log(user);
 
@@ -247,9 +247,11 @@ router.post(
 router
   .route("/get-current-appraisals-user")
   .post(async (req: any, res: any) => {
+    console.log(req.body);
     let username = req.body.username;
 
     console.log("usao u get current appraisal");
+    console.log(username);
 
     let msg = await services.get_current_appraisals_user(username);
 
@@ -574,10 +576,10 @@ router.route("/get-all-current-appraisals").post(async (req: any, res: any) => {
 
 //////////////////////////////////////////////////
 router.route("/get-topic").post(async (req: any, res: any) => {
-  console.log("inside login");
+  console.log("inside get topic");
 
   let title = req.body.title;
-  console.log(title);
+  // console.log(title);
 
   // Topic.findOneAndUpdate({ 'title': title }, { $inc: { "views": 1 } }, (err, topic) => {
 

@@ -9,6 +9,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Comment } from '../models/comment.model';
 import { NotificationService } from '../services/notification.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { ThisReceiver } from '@angular/compiler';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class TopicComponent implements OnInit {
   ngOnInit(): void {
 
 
+    this.topic = null;
     this.init();
 
     console.log("usao u ngOnInit");
@@ -42,12 +44,15 @@ export class TopicComponent implements OnInit {
     console.log(this.username);
 
     this.show_comments = [];
-    this.service.get_topic(this.topic_title).subscribe((topic: Topic) => {
+    this.service.get_topic(this.topic_title).subscribe((topic: any) => {
+
+      console.log(topic);
 
       this.topic = topic;
-      console.log(topic);
 
-      console.log(topic);
+      console.log(this.topic.comments);
+
+      console.log("startIndex: " + this.startIndex + " endIndex: " + this.endIndex);
 
       this.show_comments = this.topic.comments.slice(this.startIndex, this.endIndex);
 
@@ -64,6 +69,10 @@ export class TopicComponent implements OnInit {
   show_comments: Comment[];
 
   pageEvent(event: PageEvent) {
+
+    console.log("usao u page event");
+    console.log("page size : " + event.pageSize);
+    console.log("pageIndex " + event.pageIndex);
     this.startIndex = event.pageIndex * event.pageSize;
     this.endIndex = this.startIndex + event.pageSize;
     this.pageSize = event.pageSize;

@@ -31,15 +31,15 @@ let User = new Schema({
     valid_until: {
         type: Date
     },
-    payed:{
-        type: Number
-    },
-    owned: {
-        type: Number
-    },
-    bonus: {
-        type: Number
-    },
+    // payed:{
+    //     type: Number
+    // },
+    // owned: {
+    //     type: Number
+    // },
+    // bonus: {
+    //     type: Number
+    // },
     cnt_appraisals_monthly: {
         type: Number
     },
