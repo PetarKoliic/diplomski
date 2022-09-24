@@ -90,7 +90,7 @@ export class RegisterComponent implements OnInit {
             // type: string = "";
             // password_repeat:string="";
           } else {
-            this.message_failure = user['user'];
+            // this.message_failure = user['user'];
 
             console.log('msg');
             console.log(user['msg']);

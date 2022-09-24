@@ -18,8 +18,8 @@ const routes_1 = require("./routes");
 const rating_1 = __importDefault(require("./models/rating"));
 const util_1 = require("./util");
 const util_2 = require("./util");
-const routes_2 = require("./routes");
-const routes_3 = require("./routes");
+// import { monthly_fee } from "./routes";
+// import { appraiser_percantage_fee } from "./routes";
 const global_1 = __importDefault(require("./models/global"));
 // async function create(programmingLanguage){
 //     const result = await db.query(
@@ -63,6 +63,22 @@ function register(user, username, email) {
     return __awaiter(this, void 0, void 0, function* () {
         var res;
         let flag_exists = false;
+        yield user_1.default.findOne({ email: email }, (err, user_obj) => __awaiter(this, void 0, void 0, function* () {
+            if (user_obj) {
+                flag_exists = true;
+                res = { msg: "Email postoji" };
+                console.log("email postoji");
+                console.log(res);
+                flag_exists = true;
+                console.log("provera flaga u ifu " + flag_exists);
+            }
+            else {
+                // await user.save().then((u: any) => {
+                //     res = { "msg": "ok" };
+                //     console.log("sacuvao sam");
+                // });
+            }
+        }));
         yield user_1.default.findOne({ username: username }, (err, user_obj) => __awaiter(this, void 0, void 0, function* () {
             if (user_obj) {
                 flag_exists = true;
@@ -72,22 +88,8 @@ function register(user, username, email) {
                 console.log("usao u register i nisam pronasao nikoga");
             }
         }));
-        if (flag_exists == false) {
-            yield user_1.default.findOne({ email: email }, (err, user_obj) => __awaiter(this, void 0, void 0, function* () {
-                if (user_obj) {
-                    flag_exists = true;
-                    res = { msg: "Email postoji" };
-                    console.log("email postoji");
-                    console.log(res);
-                }
-                else {
-                    // await user.save().then((u: any) => {
-                    //     res = { "msg": "ok" };
-                    //     console.log("sacuvao sam");
-                    // });
-                }
-            }));
-        }
+        // if (flag_exists == false) {
+        // }
         console.log("provera flaga : " + flag_exists);
         if (flag_exists == false) {
             yield user.save().then((u) => {
@@ -167,8 +169,17 @@ exports.get_revenue = get_revenue;
 function add_revenue_monthly_subscription() {
     return __awaiter(this, void 0, void 0, function* () {
         let msg = { "msg": "ok" };
+        let monthly_fee;
+        yield global_1.default.findOne({ "name": "monthly_fee" }, (err, doc) => {
+            if (err)
+                console.log(err);
+            else {
+                let global_obj = doc.toObject();
+                monthly_fee = global_obj["value"];
+            }
+        });
         yield global_1.default.updateOne({ "name": "revenue" }, {
-            $inc: { "balance": routes_2.monthly_fee }
+            $inc: { "balance": monthly_fee }
         }).catch((err) => {
             msg = { "msg": "error incrementing value" };
             console.log(err);
@@ -218,7 +229,7 @@ function get_history_appraisals_user(username) {
         // }).catch((err:any) => {
         //     res = { "msg": "error" };
         // })
-        yield appraisal_1.default.find({ username: username, finished: true }, (err, appraisals) => {
+        yield appraisal_1.default.find({ username: username, finished: true, value: { $ne: 0 } }, (err, appraisals) => {
             console.log(appraisals);
             res = appraisals;
         });
@@ -295,6 +306,7 @@ function give_appraisal(username, value, _id) {
         }
         else
             res = { msg: "no" };
+        yield user_1.default.updateOne({ "username": username }, { $inc: { "cnt_appraisals_monthly": 1 } });
         return res;
     });
 }
@@ -524,6 +536,24 @@ function delete_user(username) {
         return res;
     });
 }
+function delete_topic(title, date_added) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let error;
+        let msg;
+        yield topic_1.default.deleteOne({ "title": title, "date_added": date_added }, (err) => __awaiter(this, void 0, void 0, function* () {
+            error = err;
+            if (err) {
+                console.log(err);
+                msg = { 'msg': 'no' };
+            }
+            else {
+                console.log("obrisali smo temu");
+                msg = { 'msg': 'ok' };
+            }
+        }));
+        return msg;
+    });
+}
 function delete_comment(_id, username, comment, date_added) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
@@ -562,7 +592,8 @@ function update_subscription(username) {
             yield user_1.default.findOne({ username: username }, (err, user_doc) => {
                 if (!err) {
                     let user_obj = user_doc.toObject();
-                    let valid_until = new Date(user_obj.valid_until);
+                    // let valid_until = new Date(user_obj.valid_until);
+                    let valid_until = new Date();
                     valid_until.setMonth(valid_until.getMonth() + 1);
                     console.log("valid until");
                     console.log(valid_until);
@@ -661,8 +692,27 @@ cron.schedule("0 0 1 * * * * *", function () {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("invoked cron job distributing money");
         let count = yield get_number_of_payed_subscriptions();
+        let monthly_fee;
+        let appraiser_percantage_fee;
+        yield global_1.default.findOne({ "name": "monthly_fee" }, (err, doc) => {
+            if (err)
+                console.log(err);
+            else {
+                let global_obj = doc.toObject();
+                monthly_fee = global_obj["value"];
+            }
+        });
+        yield global_1.default.findOne({ "name": "appraiser_percantage_fee" }, (err, doc) => {
+            if (err)
+                console.log(err);
+            else {
+                let global_obj = doc.toObject();
+                monthly_fee = global_obj["appraiser_percantage_fee"];
+            }
+        });
+        console.log(monthly_fee);
         console.log(count);
-        let budget = util_2.allocated_appraiser_budget(count, routes_2.monthly_fee, routes_3.appraiser_percantage_fee);
+        let budget = util_2.allocated_appraiser_budget(count, monthly_fee, appraiser_percantage_fee);
         console.log("budget : " + budget);
         yield user_1.default.find({ type: "appraiser" }, (err, appraisers) => __awaiter(this, void 0, void 0, function* () {
             if (err) {
@@ -742,6 +792,7 @@ module.exports = {
     add_topic,
     get_number_of_payed_subscriptions,
     get_revenue,
-    add_revenue_monthly_subscription
+    add_revenue_monthly_subscription,
+    delete_topic
 };
 //# sourceMappingURL=services.js.map

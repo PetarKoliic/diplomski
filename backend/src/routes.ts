@@ -1,3 +1,4 @@
+// import { monthly_fee } from './routes';
 const express = require("express");
 const router = express.Router();
 import User from "./models/user";
@@ -14,6 +15,7 @@ import user from "./models/user";
 import { name } from "ejs";
 import { calculate_individual_rating } from "./util";
 import { calculate_new_rating } from "./util";
+import Global from  './models/global';
 // import {register} from './services';
 
 
@@ -23,8 +25,8 @@ import { calculate_new_rating } from "./util";
 const services = require('./services');
 const multer = require("multer");
 
-export const monthly_fee = 10;
-export const appraiser_percantage_fee = 0.5;
+// export const monthly_fee = 10;
+// export const appraiser_percantage_fee = 0.5;
 
 var ObjectId = require("mongoose").Types.ObjectId;
 
@@ -96,6 +98,22 @@ router.route("/register-google").post(async (req: any, res: any) => {
   let user = new User(req.body);
 
   console.log("user");
+
+  let monthly_fee;
+
+  await Global.findOne({"name": "monthly_fee"}, (err, doc) =>
+  {
+    if(err)
+      console.log(err)
+    else
+      {
+        let global_obj = doc.toObject();
+
+        monthly_fee = global_obj["value"];
+      }
+  });
+
+  console.log(monthly_fee);
 
   if (req.body.type === "user") 
     user.set("owned", monthly_fee);
@@ -535,7 +553,8 @@ export async function update_ratings(
         await User.updateOne(
           { username: username },
           { $set: { rating: new_rating }, 
-          $inc: {cnt_appraisals_monthly: 1} }
+          // $inc: {cnt_appraisals_monthly: 1} 
+        }
         )
           .then((user: any) => {
             // console.log("4.44444444");
@@ -677,6 +696,17 @@ router.route("/delete-user").post(async (req: any, res: any) => {
   // });
 
   let msg = await services.delete_user(username);
+  res.json(msg);
+});
+
+
+router.route("/delete-topic").post(async (req: any, res: any) => {
+
+  let title = req.body.title;
+  let date_added = req.body.date_added;
+  console.log("title: " + title + " date_added: " + date_added);
+
+  let msg = await services.delete_topic(title, date_added);
   res.json(msg);
 });
 
@@ -911,7 +941,7 @@ const stripe = require("stripe")(
   "sk_test_51KpTakHwTNfRVrcdzFx83eNapyiseDRXrx2LbLgEvojEhABm6AjfE6jPJ79UpdNyqsVwgcRPdXDcoV9YfWFekxSH00EO6Q3Ach"
 );
 
-router.route("/pay").post((req: any, res: any) => {
+router.route("/pay").post(async (req: any, res: any) => {
   console.log("token");
   console.log("*********************");
   // console.log(req.body);
@@ -920,10 +950,43 @@ router.route("/pay").post((req: any, res: any) => {
   // let email = req.body.card.name;
   // console.log(email);
 
+  var monthly_fee: any = 0;
+
+  await Global.findOne({"name": "monthly_fee"}, (err, doc) =>
+  {
+    if(err)
+      console.log(err)
+    else
+      {
+        let global_obj = doc.toObject();
+
+        monthly_fee = global_obj["value"];
+      }
+  });
+
+  console.log(monthly_fee);
+  
+  // var revenue = 0;
+  await Global.updateOne(
+    { "name": "revenue" },
+    {
+      $inc: { "value": parseFloat(monthly_fee) }
+    }
+  ).catch((err) => {
+
+      // msg = {"msg": "error incrementing value"};
+      console.log(err);
+    });
+
+  // console.log(revenue);
+
   try {
     console.log(req.body);
     token = req.body.token;
     let email = token.email;
+
+
+    
 
     const customer = stripe.customers
       .create({
@@ -968,8 +1031,27 @@ router
 
 /////////////////////////////////////////////////
 
-router.route("/get-monthly-fee").get((req: any, res: any) => {
-  res.json({ monthly_fee: monthly_fee });
+router.route("/get-monthly-fee").get(async (req: any, res: any) => {
+
+
+  let monthly_fee;
+
+  await Global.findOne({"name": "monthly_fee"}, (err, doc) =>
+  {
+    if(err)
+      console.log(err)
+    else
+      {
+        let global_obj = doc.toObject();
+
+        monthly_fee = global_obj["value"];
+
+        res.json({ monthly_fee: monthly_fee });
+      }
+  });
+
+
+
 });
 
 ///////////////////////////////////////////

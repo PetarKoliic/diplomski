@@ -73,11 +73,11 @@ export class NewAppraisalComponent implements OnInit {
 
     console.log("slika");
     console.log(this.images == [] ? "prazna slika" : "nije prazna");
-    console.log(this.images);    
+    console.log(this.images);
 
-    if (this.name == "" || this.name == null ||  
+    if (this.name == "" || this.name == null ||
         this.country == "" || this.country == null ||
-                              this.date == null ||
+                              // this.date == null ||
         // this.author == "" || this.author == null ||
         // this.description == "" || this.description == null ||
         this.images == [] || this.images.length == 0) {

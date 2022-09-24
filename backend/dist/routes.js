@@ -11,6 +11,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// import { monthly_fee } from './routes';
 const express = require("express");
 const router = express.Router();
 const user_1 = __importDefault(require("./models/user"));
@@ -20,12 +21,13 @@ const rating_1 = __importDefault(require("./models/rating"));
 const topic_1 = __importDefault(require("./models/topic"));
 const util_1 = require("./util");
 const util_2 = require("./util");
+const global_1 = __importDefault(require("./models/global"));
 // import {register} from './services';
 // var services = require("./services");
 const services = require('./services');
 const multer = require("multer");
-exports.monthly_fee = 10;
-exports.appraiser_percantage_fee = 0.5;
+// export const monthly_fee = 10;
+// export const appraiser_percantage_fee = 0.5;
 var ObjectId = require("mongoose").Types.ObjectId;
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -74,8 +76,18 @@ router.route("/register").post((req, res) => __awaiter(this, void 0, void 0, fun
 router.route("/register-google").post((req, res) => __awaiter(this, void 0, void 0, function* () {
     let user = new user_1.default(req.body);
     console.log("user");
+    let monthly_fee;
+    yield global_1.default.findOne({ "name": "monthly_fee" }, (err, doc) => {
+        if (err)
+            console.log(err);
+        else {
+            let global_obj = doc.toObject();
+            monthly_fee = global_obj["value"];
+        }
+    });
+    console.log(monthly_fee);
     if (req.body.type === "user")
-        user.set("owned", exports.monthly_fee);
+        user.set("owned", monthly_fee);
     console.log(user);
     if (req.body.type === "appraiser") {
         user.set("rating", 5);
@@ -366,7 +378,7 @@ function update_ratings(res, evaluations, sold_value) {
                 let username = ratings.toObject().username;
                 let new_rating = util_2.calculate_new_rating(ratings.toObject());
                 yield user_1.default.updateOne({ username: username }, { $set: { rating: new_rating },
-                    $inc: { cnt_appraisals_monthly: 1 } })
+                })
                     .then((user) => {
                     // console.log("4.44444444");
                     // res.status(200).json({ 'msg': 'ok' });
@@ -478,6 +490,13 @@ router.route("/delete-user").post((req, res) => __awaiter(this, void 0, void 0, 
     //     }
     // });
     let msg = yield services.delete_user(username);
+    res.json(msg);
+}));
+router.route("/delete-topic").post((req, res) => __awaiter(this, void 0, void 0, function* () {
+    let title = req.body.title;
+    let date_added = req.body.date_added;
+    console.log("title: " + title + " date_added: " + date_added);
+    let msg = yield services.delete_topic(title, date_added);
     res.json(msg);
 }));
 //////////////////////////////////////////////////
@@ -645,7 +664,7 @@ router.route("/login-register").post((req, res) => {
     });
 });
 const stripe = require("stripe")("sk_test_51KpTakHwTNfRVrcdzFx83eNapyiseDRXrx2LbLgEvojEhABm6AjfE6jPJ79UpdNyqsVwgcRPdXDcoV9YfWFekxSH00EO6Q3Ach");
-router.route("/pay").post((req, res) => {
+router.route("/pay").post((req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("token");
     console.log("*********************");
     // console.log(req.body);
@@ -653,6 +672,24 @@ router.route("/pay").post((req, res) => {
     let token;
     // let email = req.body.card.name;
     // console.log(email);
+    var monthly_fee = 0;
+    yield global_1.default.findOne({ "name": "monthly_fee" }, (err, doc) => {
+        if (err)
+            console.log(err);
+        else {
+            let global_obj = doc.toObject();
+            monthly_fee = global_obj["value"];
+        }
+    });
+    console.log(monthly_fee);
+    // var revenue = 0;
+    yield global_1.default.updateOne({ "name": "revenue" }, {
+        $inc: { "value": parseFloat(monthly_fee) }
+    }).catch((err) => {
+        // msg = {"msg": "error incrementing value"};
+        console.log(err);
+    });
+    // console.log(revenue);
     try {
         console.log(req.body);
         token = req.body.token;
@@ -665,7 +702,7 @@ router.route("/pay").post((req, res) => {
             .then((customer) => {
             console.log(customer);
             return stripe.charges.create({
-                amount: exports.monthly_fee * 100,
+                amount: monthly_fee * 100,
                 description: "Test Purchase using express and Node",
                 currency: "EUR",
                 customer: customer.id,
@@ -687,7 +724,7 @@ router.route("/pay").post((req, res) => {
     catch (error) {
         return false;
     }
-});
+}));
 //////////////////////////////////////////////////
 router
     .route("/get-number-of-payed-subscriptions")
@@ -697,9 +734,18 @@ router
     res.json({ msg: "ok" });
 }));
 /////////////////////////////////////////////////
-router.route("/get-monthly-fee").get((req, res) => {
-    res.json({ monthly_fee: exports.monthly_fee });
-});
+router.route("/get-monthly-fee").get((req, res) => __awaiter(this, void 0, void 0, function* () {
+    let monthly_fee;
+    yield global_1.default.findOne({ "name": "monthly_fee" }, (err, doc) => {
+        if (err)
+            console.log(err);
+        else {
+            let global_obj = doc.toObject();
+            monthly_fee = global_obj["value"];
+            res.json({ monthly_fee: monthly_fee });
+        }
+    });
+}));
 ///////////////////////////////////////////
 module.exports = router;
 //# sourceMappingURL=routes.js.map

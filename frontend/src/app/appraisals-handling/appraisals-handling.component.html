@@ -21,7 +21,7 @@
     <!-- <img mat-card-image style="width: 400px; height: 300px;"
         [src]="'http://localhost:4000/uploads/' + img_name(appraisal)" class="preview"> -->
 
-    <mat-paginator #paginator [length]="appraisal.img_names.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]" aria-label="Select page" (page)="pageEvent($event, appraisal)">
+    <mat-paginator #paginator [length]="appraisal.img_names.length" showFirstLastButtons="true" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]" aria-label="Select page" (page)="pageEvent($event, appraisal)">
     </mat-paginator>
 
 
@@ -29,7 +29,7 @@
         <p *ngIf="appraisal.name != ''">
             Ime: {{appraisal.name}} </p>
           <p *ngIf="appraisal.country!= ''"> Zemlja porekla: {{appraisal.country}} </p>
-    
+
           <p *ngIf="appraisal.date != null">
             Datum pravljenja: {{appraisal.date}}
           </p>
@@ -43,11 +43,11 @@
             Korisnik: {{appraisal.username}}
         </p>
         <p>
-        Datum pravljenja dela: 
+        Datum pravljenja dela:
         <span *ngIf="appraisal.date_created != null"> {{functions.format_date_only(appraisal.date_created)}} </span>
       </p>
       <p>
-        Datum stavljanja na procenu: 
+        Datum stavljanja na procenu:
         <span *ngIf="appraisal.date_created != null">{{functions.format_date(appraisal.date_added)}} </span>
       </p>
 
@@ -63,7 +63,7 @@
         <button mat-button onclick (click)='finish_appraisal(appraisal)'>Prodata cena</button>
         <!-- <button (click)='backward_image(appraisal)' mat-button>Nazad</button>
         <button (click)='forward_image(appraisal)' mat-button>Napred</button> -->
-    
+
         <button mat-button onclick (click)='delete_appraisal(appraisal)'>Obrisi umetninu</button>
     </mat-card-actions>
 </mat-card>

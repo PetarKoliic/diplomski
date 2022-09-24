@@ -120,7 +120,7 @@
          <!-- <h3 mat-subheader>Notes</h3> -->
       </mat-list>
 
-      <mat-paginator #paginator [length]="fairs.topics.length" [pageSize]="page_size_options[0]"
+      <mat-paginator #paginator [length]="fairs.topics.length" [pageSize]="page_size_options[0]" showFirstLastButtons="true"
          [pageSizeOptions]="page_size_options" aria-label="Select page" (page)="pageEvent($event, fairs)">
       </mat-paginator>
       <!-- </mat-card-content> -->

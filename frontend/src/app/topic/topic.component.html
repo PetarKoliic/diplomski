@@ -47,7 +47,7 @@
       </mat-form-field>
 
 
-      <mat-paginator #paginator [length]="topic.comments.length" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]"
+      <mat-paginator #paginator [length]="topic.comments.length" showFirstLastButtons="true" [pageSize]="1" [pageSizeOptions]="[1, 3, 5]"
         aria-label="Select page" (page)="pageEvent($event)">
       </mat-paginator>
 

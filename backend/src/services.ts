@@ -11,8 +11,8 @@ import { calculate_individual_rating } from "./util";
 import { calculate_new_rating } from "./util";
 import { allocated_appraiser_budget } from "./util";
 import { promiseImpl } from "ejs";
-import { monthly_fee } from "./routes";
-import { appraiser_percantage_fee } from "./routes";
+// import { monthly_fee } from "./routes";
+// import { appraiser_percantage_fee } from "./routes";
 import Global from "./models/global";
 
 // async function create(programmingLanguage){
@@ -66,6 +66,24 @@ async function register(user: any, username: string, email: string) {
   var res: any;
   let flag_exists: boolean = false;
 
+  await User.findOne({ email: email }, async (err, user_obj) => {
+      if (user_obj) {
+        flag_exists = true;
+
+        res = { msg: "Email postoji" };
+        console.log("email postoji");
+        console.log(res);
+        flag_exists = true;
+
+        console.log("provera flaga u ifu " + flag_exists);
+      } else {
+        // await user.save().then((u: any) => {
+        //     res = { "msg": "ok" };
+        //     console.log("sacuvao sam");
+        // });
+      }
+    });
+
   await User.findOne({ username: username }, async (err, user_obj) => {
     if (user_obj) {
       flag_exists = true;
@@ -75,22 +93,9 @@ async function register(user: any, username: string, email: string) {
     }
   });
 
-  if (flag_exists == false) {
-    await User.findOne({ email: email }, async (err, user_obj) => {
-      if (user_obj) {
-        flag_exists = true;
-
-        res = { msg: "Email postoji" };
-        console.log("email postoji");
-        console.log(res);
-      } else {
-        // await user.save().then((u: any) => {
-        //     res = { "msg": "ok" };
-        //     console.log("sacuvao sam");
-        // });
-      }
-    });
-  }
+  // if (flag_exists == false) {
+    
+  // }
   console.log("provera flaga : " + flag_exists);
 
   if (flag_exists == false) {
@@ -181,6 +186,21 @@ res = await Global.findOne({ type: { $ne: "admin" } }, (err, res_val) => {
  async function add_revenue_monthly_subscription() {
 
   let msg: Object = {"msg": "ok"};
+  let monthly_fee;
+
+
+  await Global.findOne({"name": "monthly_fee"}, (err, doc) =>
+  {
+    if(err)
+      console.log(err)
+    else
+      {
+        let global_obj = doc.toObject();
+
+        monthly_fee = global_obj["value"];
+      }
+  });
+
 
   await Global.updateOne(
     { "name": "revenue" },
@@ -249,7 +269,7 @@ async function get_history_appraisals_user(username: string) {
   // })
 
   await Appraisal.find(
-    { username: username, finished: true },
+    { username: username, finished: true, value: {$ne: 0 }},
     (err, appraisals) => {
       console.log(appraisals);
 
@@ -338,6 +358,11 @@ async function give_appraisal(username: string, value: number, _id: any) {
         res = { msg: "no" };
       });
   } else res = { msg: "no" };
+
+
+  await User.updateOne({"username": username},
+  {$inc: {"cnt_appraisals_monthly": 1}});
+  
 
   return res;
 }
@@ -614,6 +639,27 @@ async function delete_user(username: string) {
   return res;
 }
 
+async function delete_topic(title: string, date_added: Date)
+{
+  let error;
+  let msg: Object;
+  await Topic.deleteOne({ "title": title, "date_added": date_added}, async (err) => {
+    error = err;
+    if (err) 
+    {
+      console.log(err);
+      msg = { 'msg': 'no' };
+
+    }
+    else {
+      console.log("obrisali smo temu");
+      msg = { 'msg': 'ok' };
+    }
+  });
+
+  return msg;
+}
+
 async function delete_comment(
   _id: any,
   username: string,
@@ -663,7 +709,8 @@ async function update_subscription(username: string) {
       if (!err) {
         let user_obj = user_doc.toObject();
 
-        let valid_until = new Date(user_obj.valid_until);
+        // let valid_until = new Date(user_obj.valid_until);
+        let valid_until = new Date();
         valid_until.setMonth(valid_until.getMonth() + 1);
 
         console.log("valid until");
@@ -787,6 +834,35 @@ cron.schedule("0 0 1 * * * * *", async function () {
 
   let count = await get_number_of_payed_subscriptions();	
 
+  let monthly_fee;
+  let appraiser_percantage_fee;
+  await Global.findOne({"name": "monthly_fee"}, (err, doc) =>
+  {
+    if(err)
+      console.log(err)
+    else
+      {
+        let global_obj = doc.toObject();
+
+        monthly_fee = global_obj["value"];
+      }
+  });
+
+  await Global.findOne({"name": "appraiser_percantage_fee"}, (err, doc) =>
+  {
+    if(err)
+      console.log(err)
+    else
+      {
+        let global_obj = doc.toObject();
+
+        monthly_fee = global_obj["appraiser_percantage_fee"];
+      }
+  });
+
+  console.log(monthly_fee);
+
+
   console.log(count);
   let budget = allocated_appraiser_budget(	
     count,	
@@ -879,5 +955,6 @@ module.exports = {
   add_topic,
   get_number_of_payed_subscriptions,
   get_revenue,
-  add_revenue_monthly_subscription
+  add_revenue_monthly_subscription,
+  delete_topic
 }
