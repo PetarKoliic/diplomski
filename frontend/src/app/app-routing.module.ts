@@ -1,3 +1,4 @@
+import { AdminForumComponent } from './admin-forum/admin-forum.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -27,7 +28,7 @@ const routes: Routes = [
 
 
   {path:'', redirectTo: 'login',  pathMatch: 'full'},
-  {path:'login', component : LoginComponent },  
+  {path:'login', component : LoginComponent },
   {path:'user', component : UserComponent },
   {path:'appraiser', component : AppraiserComponent },
   {path:'admin', component : AdminComponent },
@@ -50,13 +51,15 @@ const routes: Routes = [
   {path:'google-sign-in', component : GoogleSignInComponent},
   {path:'redirect',  component : RedirectComponent},
   {path:'payment',  component : PaymentComponent},
+  {path:'admin-forum', component : AdminForumComponent},
 
 
 
-  
 
 
-  
+
+
+
 
 ];
 
@@ -64,7 +67,7 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { } 
+export class AppRoutingModule { }
 
 
 // this._router.navigate(['SecondComponent', {p1: this.property1, p2: property2 }]);
@@ -72,5 +75,5 @@ export class AppRoutingModule { }
 
 // @RouteConfig([
 //       // ...
-//       { path: '/SecondComponent/:p1:p2', name: 'SecondComponent', component: SecondComponent} 
+//       { path: '/SecondComponent/:p1:p2', name: 'SecondComponent', component: SecondComponent}
 // )]

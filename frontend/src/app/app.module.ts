@@ -91,6 +91,7 @@ import { RedirectComponent } from './redirect/redirect.component';
 import { PaymentComponent } from './payment/payment.component';
 import { UserBlockedMenuComponent } from './user-blocked-menu/user-blocked-menu.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AdminForumComponent } from './admin-forum/admin-forum.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 // import { HighchartsChartComponent } as 'highcharts-angular';
 
@@ -124,7 +125,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     GoogleSignInComponent,
     RedirectComponent,
     PaymentComponent,
-    UserBlockedMenuComponent
+    UserBlockedMenuComponent,
+    AdminForumComponent
   ],
   imports: [
     BrowserModule,

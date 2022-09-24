@@ -204,6 +204,17 @@ export class GeneralService {
     return this.http.post(`${this.uri}/delete-appraisal`, data);
   }
 
+  delete_topic(title: string, date_added: Date)
+  {
+    const data = {
+        "title": title,
+        "date_added": date_added
+    };
+
+    return this.http.post(`${this.uri}/delete-topic`, data);
+
+  }
+
   give_appraisal(id: string, username: string, value: number) {
     const data = {
       username: username,
