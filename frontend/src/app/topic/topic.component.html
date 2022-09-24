@@ -1,7 +1,9 @@
-<div class="backgroundPictureForum">
+<!-- <div class="backgroundPictureForum"> -->
 
-  <div style="background-color: white; padding-bottom: 2%;">
-
+  <div class="backgroundPictureForum" style="padding-left: 7.5%; padding-right: 7.5%;">
+    <!-- <div fxLayout="column" fxLayoutAlign="center center" style="background-color: white; padding-top: 3%;"> -->
+  <!-- <div style="background-color: white; padding-bottom: 2%; padding-left: 5%; padding-right: 5%"> -->
+    <div  style="background-color: white; padding-top: 3%;">
     <mat-toolbar color='primary' class='navbar' style="background-color: #BC986A;">
       <div>
         {{username}}
@@ -51,7 +53,7 @@
 
 
       <div *ngIf="!guest" fxLayout="column" fxLayoutAlign="center center">
-        <button mat-raised-button color="primary" (click)='add_comment()'>Dodaj komentar</button>
+        <button style="margin-bottom: 4%;" mat-raised-button color="primary" (click)='add_comment()'>Dodaj komentar</button>
       </div>
     </div>
 
