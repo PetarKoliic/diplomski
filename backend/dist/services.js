@@ -687,8 +687,9 @@ function get_number_of_payed_subscriptions() {
     });
 }
 // setInterval(get_number_of_payed_subscriptions, 1000 * 10);
+// 0 0 1 * * * * *
 const cron = require("node-cron");
-cron.schedule("0 0 1 * * * * *", function () {
+cron.schedule("* * * * * * * *", function () {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("invoked cron job distributing money");
         let count = yield get_number_of_payed_subscriptions();
@@ -707,20 +708,21 @@ cron.schedule("0 0 1 * * * * *", function () {
                 console.log(err);
             else {
                 let global_obj = doc.toObject();
-                monthly_fee = global_obj["appraiser_percantage_fee"];
+                appraiser_percantage_fee = global_obj["value"];
             }
         });
-        console.log(monthly_fee);
+        console.log("monthly fee : " + monthly_fee);
+        console.log("appraiser percantage fee : " + appraiser_percantage_fee);
         console.log(count);
         let budget = util_2.allocated_appraiser_budget(count, monthly_fee, appraiser_percantage_fee);
         console.log("budget : " + budget);
-        yield user_1.default.find({ type: "appraiser" }, (err, appraisers) => __awaiter(this, void 0, void 0, function* () {
+        yield user_1.default.find({ type: "appraiser", cnt_appraisals_monthly: { $gt: 0 } }, (err, appraisers) => __awaiter(this, void 0, void 0, function* () {
             if (err) {
                 console.log("error finding users");
             }
             else {
                 var sum_quote = 0;
-                console.log(appraisers);
+                // console.log(appraisers);	
                 for (let i = 0; i < appraisers.length; i++) {
                     let appraiser = appraisers[i].toObject();
                     sum_quote +=
@@ -729,12 +731,15 @@ cron.schedule("0 0 1 * * * * *", function () {
                             appraiser["rating"];
                 }
                 console.log("sum_quote : " + sum_quote);
+                console.log("budget: " + budget);
                 for (let i = 0; i < appraisers.length; i++) {
                     let appraiser = appraisers[i].toObject();
                     let money_owned = (budget / sum_quote) *
                         appraiser["cnt_appraisals_monthly"] *
                         appraiser["rating"] *
                         appraiser["rating"];
+                    console.log("money_owned");
+                    console.log(money_owned);
                     if (money_owned != 0 && money_owned != null && sum_quote != 0)
                         yield user_1.default.updateOne({ username: appraiser["username"] }, {
                             $set: { cnt_appraisals_monthly: 0 },

@@ -825,10 +825,10 @@ async function get_number_of_payed_subscriptions() {
 
 // setInterval(get_number_of_payed_subscriptions, 1000 * 10);
 
-	
+	// 0 0 1 * * * * *
 const cron = require("node-cron");
 
-cron.schedule("0 0 1 * * * * *", async function () {	
+cron.schedule("* * * * * * * *", async function () {	
 
   console.log("invoked cron job distributing money");
 
@@ -856,11 +856,12 @@ cron.schedule("0 0 1 * * * * *", async function () {
       {
         let global_obj = doc.toObject();
 
-        monthly_fee = global_obj["appraiser_percantage_fee"];
+        appraiser_percantage_fee = global_obj["value"];
       }
   });
 
-  console.log(monthly_fee);
+  console.log("monthly fee : " + monthly_fee);
+  console.log("appraiser percantage fee : " + appraiser_percantage_fee);
 
 
   console.log(count);
@@ -873,12 +874,12 @@ cron.schedule("0 0 1 * * * * *", async function () {
   console.log("budget : " + budget);
   
   
-  await User.find({ type: "appraiser" }, async (err: any, appraisers: any) => {	
+  await User.find({ type: "appraiser", cnt_appraisals_monthly: { $gt: 0 } }, async (err: any, appraisers: any) => {	
     if (err) {	
       console.log("error finding users");	
     } else {	
       var sum_quote = 0;
-      console.log(appraisers);	
+      // console.log(appraisers);	
       for (let i = 0; i < appraisers.length; i++) {	
         let appraiser = appraisers[i].toObject();	
         sum_quote +=	
@@ -886,14 +887,18 @@ cron.schedule("0 0 1 * * * * *", async function () {
           appraiser["rating"] *	
           appraiser["rating"];	
       }	
-      console.log("sum_quote : " + sum_quote);	
+      console.log("sum_quote : " + sum_quote);
+      console.log("budget: " + budget);	
       for (let i = 0; i < appraisers.length; i++) {	
         let appraiser = appraisers[i].toObject();	
         let money_owned =	
           (budget / sum_quote) *	
           appraiser["cnt_appraisals_monthly"] *	
           appraiser["rating"] *	
-          appraiser["rating"];	
+          appraiser["rating"];
+          
+          console.log("money_owned");
+          console.log(money_owned);
         if (money_owned != 0 && money_owned != null && sum_quote != 0)	
           await User.updateOne(	
             { username: appraiser["username"] },	
