@@ -73,6 +73,10 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/google-sign-in']);
   }
 
+  forum() {
+    this.router.navigate(['/forum']);
+  }
+
   // encryptedMessage: string;
   // decryptedMessage: string;
   // encrypt() {

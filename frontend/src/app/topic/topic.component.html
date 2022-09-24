@@ -38,8 +38,8 @@
         <!-- <h3 mat-subheader>Notes</h3> -->
       </mat-list>
 
-      <mat-form-field class="example-full-width" style="margin-top: 7.5%;" appearance="fill">
-        <mat-label>Nov komentar</mat-label>
+      <mat-form-field *ngIf="!guest" class="example-full-width" style="margin-top: 7.5%;" appearance="fill">
+        <mat-label >Nov komentar</mat-label>
         <textarea class="example-full-width" matInput placeholder="Nov komentar" name="description"
           [(ngModel)]="new_comment"></textarea>
       </mat-form-field>
@@ -50,7 +50,7 @@
       </mat-paginator>
 
 
-      <div fxLayout="column" fxLayoutAlign="center center">
+      <div *ngIf="!guest" fxLayout="column" fxLayoutAlign="center center">
         <button mat-raised-button color="primary" (click)='add_comment()'>Dodaj komentar</button>
       </div>
     </div>

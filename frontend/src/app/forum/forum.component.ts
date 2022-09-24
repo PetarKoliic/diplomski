@@ -39,6 +39,8 @@ export class ForumComponent implements OnInit {
   up_down_flag: string;
 
 
+  guest: boolean = false;
+
   // $event
   sort() {
     console.log(this.up_down_flag);
@@ -110,6 +112,12 @@ export class ForumComponent implements OnInit {
 
 
   init(): void {
+
+    if(localStorage.getItem("username") == null)
+      this.guest = true;
+    else
+      this.guest = false;
+
 
     this.load_topics();
 

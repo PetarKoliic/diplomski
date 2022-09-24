@@ -1,4 +1,4 @@
-<app-forum-menu (load_topics)="load_topics()"></app-forum-menu>
+<app-forum-menu *ngIf="guest != true" (load_topics)="load_topics()"></app-forum-menu>
 
 
 <div class="backgroundPictureForum" style="padding-left: 15%; padding-right: 15%">

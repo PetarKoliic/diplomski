@@ -35,8 +35,18 @@ export class TopicComponent implements OnInit {
   topic: Topic = null;
   new_comment: string;
 
+  guest: boolean = false;
+
 
   init(): void {
+
+    console.log("username: ");
+    console.log(localStorage.getItem("username"));
+    if(localStorage.getItem("username") == null)
+    this.guest = true;
+  else
+    this.guest = false;
+
     this.topic_title = this.router.snapshot.paramMap.get('name');
     this.username = localStorage.getItem("username");
 
