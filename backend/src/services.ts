@@ -828,7 +828,7 @@ async function get_number_of_payed_subscriptions() {
 	// 0 0 1 * * * * *
 const cron = require("node-cron");
 
-cron.schedule("* * * * * * * *", async function () {	
+cron.schedule("0 0 1 * * * * *", async function () {	
 
   console.log("invoked cron job distributing money");
 

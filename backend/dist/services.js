@@ -689,7 +689,7 @@ function get_number_of_payed_subscriptions() {
 // setInterval(get_number_of_payed_subscriptions, 1000 * 10);
 // 0 0 1 * * * * *
 const cron = require("node-cron");
-cron.schedule("* * * * * * * *", function () {
+cron.schedule("0 0 1 * * * * *", function () {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("invoked cron job distributing money");
         let count = yield get_number_of_payed_subscriptions();
