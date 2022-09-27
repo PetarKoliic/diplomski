@@ -62,6 +62,31 @@ async function login(username: string, password: string) {
 
 //////////////////////////////////////////////////
 
+async function check_name_available(username: string)
+{
+  let flag:boolean = true;
+
+
+  let promise = new Promise(async (resolve, reject) => {
+    await User.findOne({ "username": username }, async (err, user_obj) => {
+      if (user_obj)
+        flag = false;
+      else  
+        flag = true;
+      resolve("success");
+    });
+
+        }
+      );
+    
+
+  await promise;
+  return flag;
+
+}
+
+//////////////////////////////////////////////////
+
 async function register(user: any, username: string, email: string) {
   var res: any;
   let flag_exists: boolean = false;
@@ -270,6 +295,27 @@ async function get_history_appraisals_user(username: string) {
 
   await Appraisal.find(
     { username: username, finished: true, value: {$ne: 0 }},
+    (err, appraisals) => {
+      console.log(appraisals);
+
+      res = appraisals;
+    }
+  );
+
+  return res;
+}
+
+async function get_history_appraisals_user_panel(username: string) {
+  let res: any;
+
+  // await appraisal.save().then((u:any) => {
+  //     res = { "msg": "ok" };
+  // }).catch((err:any) => {
+  //     res = { "msg": "error" };
+  // })
+
+  await Appraisal.find(
+    { username: username, finished: true},
     (err, appraisals) => {
       console.log(appraisals);
 
@@ -743,9 +789,11 @@ async function get_subscription_valid_until(username: string) {
   let res: Object;
 
   await User.findOne({ username: username }, (err, user) => {
-    if (!err) {
-      res = { valid_until: user.get("valid_until") };
+    if (!err && user != null) {
+      console.log(user);
+      // res = { valid_until: user.get("valid_until") };
     } else {
+      console.log(err);
       res = { msg: "no" };
     }
   });
@@ -940,6 +988,7 @@ module.exports = {
   get_appraisals_user,
   get_current_appraisals_user,
   get_history_appraisals_user,
+  get_history_appraisals_user_panel,
   get_current_appraisals_appraiser,
   give_appraisal,
   appraisal_change_mind,
@@ -961,5 +1010,6 @@ module.exports = {
   get_number_of_payed_subscriptions,
   get_revenue,
   add_revenue_monthly_subscription,
-  delete_topic
+  delete_topic,
+  check_name_available
 }

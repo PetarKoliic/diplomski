@@ -219,8 +219,10 @@ export class AdminForumComponent implements OnInit {
         console.log(res);
 
         if (res['msg'] === 'ok') {
+          this.notificationService.success('Uspesno obrisana tema');
+
           this.load_topics();
-        }
+        } else this.notificationService.error('Neuspesno obrisana tema');
       });
   }
 

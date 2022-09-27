@@ -67,6 +67,7 @@
                <div>Napravljeno: {{format_date(topic.date_added)}}</div>
                <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
             </div>
+            <button mat-button (click)='delete(topic)' style="margin-left: 30px;">Obrisi</button>
             <mat-divider [inset]="true"></mat-divider>
          </mat-list-item>
          <mat-divider></mat-divider>
@@ -117,6 +118,7 @@
                <div>Napravljeno: {{format_date(topic.date_added)}}</div>
                <div>Zadnji komentar: {{format_date(topic.comments[topic.comments.length - 1].date_added)}}</div>
             </div>
+            <button mat-button (click)='delete(topic)' style="margin-left: 30px;">Obrisi</button>
             <mat-divider [inset]="true"></mat-divider>
          </mat-list-item>
          <mat-divider></mat-divider>

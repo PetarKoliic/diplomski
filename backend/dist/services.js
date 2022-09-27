@@ -59,6 +59,23 @@ function login(username, password) {
     });
 }
 //////////////////////////////////////////////////
+function check_name_available(username) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let flag = true;
+        let promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            yield user_1.default.findOne({ "username": username }, (err, user_obj) => __awaiter(this, void 0, void 0, function* () {
+                if (user_obj)
+                    flag = false;
+                else
+                    flag = true;
+                resolve("success");
+            }));
+        }));
+        yield promise;
+        return flag;
+    });
+}
+//////////////////////////////////////////////////
 function register(user, username, email) {
     return __awaiter(this, void 0, void 0, function* () {
         var res;
@@ -230,6 +247,21 @@ function get_history_appraisals_user(username) {
         //     res = { "msg": "error" };
         // })
         yield appraisal_1.default.find({ username: username, finished: true, value: { $ne: 0 } }, (err, appraisals) => {
+            console.log(appraisals);
+            res = appraisals;
+        });
+        return res;
+    });
+}
+function get_history_appraisals_user_panel(username) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let res;
+        // await appraisal.save().then((u:any) => {
+        //     res = { "msg": "ok" };
+        // }).catch((err:any) => {
+        //     res = { "msg": "error" };
+        // })
+        yield appraisal_1.default.find({ username: username, finished: true }, (err, appraisals) => {
             console.log(appraisals);
             res = appraisals;
         });
@@ -621,10 +653,12 @@ function get_subscription_valid_until(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
         yield user_1.default.findOne({ username: username }, (err, user) => {
-            if (!err) {
-                res = { valid_until: user.get("valid_until") };
+            if (!err && user != null) {
+                console.log(user);
+                // res = { valid_until: user.get("valid_until") };
             }
             else {
+                console.log(err);
                 res = { msg: "no" };
             }
         });
@@ -777,6 +811,7 @@ module.exports = {
     get_appraisals_user,
     get_current_appraisals_user,
     get_history_appraisals_user,
+    get_history_appraisals_user_panel,
     get_current_appraisals_appraiser,
     give_appraisal,
     appraisal_change_mind,
@@ -798,6 +833,7 @@ module.exports = {
     get_number_of_payed_subscriptions,
     get_revenue,
     add_revenue_monthly_subscription,
-    delete_topic
+    delete_topic,
+    check_name_available
 };
 //# sourceMappingURL=services.js.map

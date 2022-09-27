@@ -15,14 +15,12 @@ import user from "./models/user";
 import { name } from "ejs";
 import { calculate_individual_rating } from "./util";
 import { calculate_new_rating } from "./util";
-import Global from  './models/global';
+import Global from "./models/global";
 // import {register} from './services';
-
 
 // var services = require("./services");
 
-
-const services = require('./services');
+const services = require("./services");
 const multer = require("multer");
 
 // export const monthly_fee = 10;
@@ -42,8 +40,6 @@ const storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 const DIR = "./uploads/";
-
-
 
 router.route("/login").post(async (req: any, res: any) => {
   console.log("inside login");
@@ -77,7 +73,6 @@ router.route("/register").post(async (req: any, res: any) => {
     user.set("rating", 5);
     user.set("cnt_appraisals_monthly", 0);
     user.set("balance", 0);
-
   }
 
   console.log(user);
@@ -101,42 +96,44 @@ router.route("/register-google").post(async (req: any, res: any) => {
 
   let monthly_fee;
 
-  await Global.findOne({"name": "monthly_fee"}, (err, doc) =>
-  {
-    if(err)
-      console.log(err)
-    else
-      {
+  let name_flag = await services.check_name_available(req.body.username);
+
+  if (name_flag == false) 
+      res.json({ msg: "no" });
+  else {
+    await Global.findOne({ name: "monthly_fee" }, (err, doc) => {
+      if (err) console.log(err);
+      else {
         let global_obj = doc.toObject();
 
         monthly_fee = global_obj["value"];
       }
-  });
+    });
 
-  console.log(monthly_fee);
+    console.log(monthly_fee);
 
-  if (req.body.type === "user") 
-    user.set("owned", monthly_fee);
+    if (req.body.type === "user") user.set("owned", monthly_fee);
 
-  console.log(user);
+    console.log(user);
 
-  if (req.body.type === "appraiser") {
-    user.set("rating", 5);
-    user.set("cnt_appraisals_monthly", 0);
-    user.set("balance", 0);
+    if (req.body.type === "appraiser") {
+      user.set("rating", 5);
+      user.set("cnt_appraisals_monthly", 0);
+      user.set("balance", 0);
+    }
+
+    console.log(user);
+
+    let username = req.body.username;
+    let email = req.body.email;
+
+    let msg = await services.register(user, username, email);
+
+    console.log("finalni rezultat");
+    console.log(msg);
+
+    res.json(msg);
   }
-
-  console.log(user);
-
-  let username = req.body.username;
-  let email = req.body.email;
-
-  let msg = await services.register(user, username, email);
-
-  console.log("finalni rezultat");
-  console.log(msg);
-
-  res.json(msg);
 });
 //////////////////////////////////////////////////
 
@@ -290,6 +287,22 @@ router
     res.json(msg);
   });
 
+////////////////////////////////////////////////
+
+router
+  .route("/get-history-appraisals-user-panel")
+  .post(async (req: any, res: any) => {
+    let username = req.body.username;
+
+    console.log("usao u get current appraisal");
+
+    let msg = await services.get_history_appraisals_user_panel(username);
+
+    res.json(msg);
+  });
+
+// get_history_appraisals_user_panel
+
 /////////////////////////////////////////////////
 
 router
@@ -419,15 +432,13 @@ router.route("/appraisal-change-mind").post(async (req: any, res: any) => {
 
 /////////////////////////////////////////////////
 
-router.route("/add-revenue-monthly-subscription").post(async (req: any, res: any) => {
-  
+router
+  .route("/add-revenue-monthly-subscription")
+  .post(async (req: any, res: any) => {
+    let msg = await services.add_revenue_monthly_subscription();
 
-  let msg = await services.add_revenue_monthly_subscription();
-
-  res.json(msg);
-});
-
-
+    res.json(msg);
+  });
 
 /////////////////////////////////////////////////
 
@@ -539,8 +550,7 @@ export async function update_ratings(
     await rating
       .findOneAndUpdate(
         { username: evaluations[i].username },
-        { $push: { ratings: individual_rating }
-         }
+        { $push: { ratings: individual_rating } }
       )
       .setOptions({ upsert: true, new: true })
       .then(async (ratings: any) => {
@@ -552,9 +562,10 @@ export async function update_ratings(
 
         await User.updateOne(
           { username: username },
-          { $set: { rating: new_rating }, 
-          // $inc: {cnt_appraisals_monthly: 1} 
-        }
+          {
+            $set: { rating: new_rating },
+            // $inc: {cnt_appraisals_monthly: 1}
+          }
         )
           .then((user: any) => {
             // console.log("4.44444444");
@@ -699,9 +710,7 @@ router.route("/delete-user").post(async (req: any, res: any) => {
   res.json(msg);
 });
 
-
 router.route("/delete-topic").post(async (req: any, res: any) => {
-
   let title = req.body.title;
   let date_added = req.body.date_added;
   console.log("title: " + title + " date_added: " + date_added);
@@ -952,31 +961,27 @@ router.route("/pay").post(async (req: any, res: any) => {
 
   var monthly_fee: any = 0;
 
-  await Global.findOne({"name": "monthly_fee"}, (err, doc) =>
-  {
-    if(err)
-      console.log(err)
-    else
-      {
-        let global_obj = doc.toObject();
+  await Global.findOne({ name: "monthly_fee" }, (err, doc) => {
+    if (err) console.log(err);
+    else {
+      let global_obj = doc.toObject();
 
-        monthly_fee = global_obj["value"];
-      }
+      monthly_fee = global_obj["value"];
+    }
   });
 
   console.log(monthly_fee);
-  
+
   // var revenue = 0;
   await Global.updateOne(
-    { "name": "revenue" },
+    { name: "revenue" },
     {
-      $inc: { "value": parseFloat(monthly_fee) }
+      $inc: { value: parseFloat(monthly_fee) },
     }
   ).catch((err) => {
-
-      // msg = {"msg": "error incrementing value"};
-      console.log(err);
-    });
+    // msg = {"msg": "error incrementing value"};
+    console.log(err);
+  });
 
   // console.log(revenue);
 
@@ -984,9 +989,6 @@ router.route("/pay").post(async (req: any, res: any) => {
     console.log(req.body);
     token = req.body.token;
     let email = token.email;
-
-
-    
 
     const customer = stripe.customers
       .create({
@@ -1032,26 +1034,18 @@ router
 /////////////////////////////////////////////////
 
 router.route("/get-monthly-fee").get(async (req: any, res: any) => {
-
-
   let monthly_fee;
 
-  await Global.findOne({"name": "monthly_fee"}, (err, doc) =>
-  {
-    if(err)
-      console.log(err)
-    else
-      {
-        let global_obj = doc.toObject();
+  await Global.findOne({ name: "monthly_fee" }, (err, doc) => {
+    if (err) console.log(err);
+    else {
+      let global_obj = doc.toObject();
 
-        monthly_fee = global_obj["value"];
+      monthly_fee = global_obj["value"];
 
-        res.json({ monthly_fee: monthly_fee });
-      }
+      res.json({ monthly_fee: monthly_fee });
+    }
   });
-
-
-
 });
 
 ///////////////////////////////////////////

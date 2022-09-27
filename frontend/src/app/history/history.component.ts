@@ -50,7 +50,7 @@ export class HistoryComponent implements OnInit {
 
     // }
 
-    this.service.get_history_appraisals_user(this.username).subscribe(
+    this.service.get_history_appraisals_user_panel(this.username).subscribe(
       (appraisals: Array<Appraisal>) => {
 
         console.log("vratio se iz appraisala");
@@ -110,21 +110,21 @@ export class HistoryComponent implements OnInit {
   // {
   // this.service.user_finish_appraisal(appraisal._id).subscribe(
   // (res: Object) => {
-  // 
-  // 
+  //
+  //
   // console.log(res["msg"]);
   // if (res["msg"] == "ok") {
   // for (let i in this.appraisals) {
   // if (this.appraisals[i]._id === appraisal._id) {
-  // 
+  //
   // this.appraisals.splice(Number(i), 1);
   // }
   // }
   // }
-  // 
+  //
   // this.notificationService.alert("Nasilno zavrsena procena");
   // console.log("response : " + res["msg"]);
-  // 
+  //
   // });
   // }
 

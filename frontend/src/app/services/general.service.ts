@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class GeneralService {
   uri = 'http://localhost:4000';
 
-  constructor(private http: HttpClient, private ruter: Router) { }
+  constructor(private http: HttpClient, private ruter: Router) {}
 
   login(username: string, password: string) {
     const data = {
@@ -59,12 +59,18 @@ export class GeneralService {
   }
 
   register_google(
-    username: string, firstname: string, lastname: string, email: string, type: string) {
+    username: string,
+    firstname: string,
+    lastname: string,
+    email: string,
+    type: string
+  ) {
     let data: any;
 
-    console.log(username + " : " + firstname + " " + lastname + " " + email
-    + " " + type);
-    if (type == "user") {
+    console.log(
+      username + ' : ' + firstname + ' ' + lastname + ' ' + email + ' ' + type
+    );
+    if (type == 'user') {
       data = {
         username: username,
         firstname: firstname,
@@ -78,8 +84,7 @@ export class GeneralService {
         last_payment: new Date(),
         valid_until: new Date(),
       };
-    }
-    else {
+    } else {
       data = {
         username: username,
         firstname: firstname,
@@ -87,8 +92,7 @@ export class GeneralService {
         email: email,
         type: type,
         date_added: new Date(),
-      }
-
+      };
     }
     // console.log(data);
     return this.http.post(`${this.uri}/register-google`, data);
@@ -157,6 +161,20 @@ export class GeneralService {
     return this.http.post(`${this.uri}/get-history-appraisals-user`, data);
   }
 
+  get_history_appraisals_user_panel(username: string) {
+    const data = {
+      username: username,
+    };
+
+    console.log('usao u history appraisal user');
+    console.log(username);
+
+    return this.http.post(
+      `${this.uri}/get-history-appraisals-user-panel`,
+      data
+    );
+  }
+
   get_current_appraisals_appraiser(username: string) {
     const data = {
       username: username,
@@ -204,15 +222,13 @@ export class GeneralService {
     return this.http.post(`${this.uri}/delete-appraisal`, data);
   }
 
-  delete_topic(title: string, date_added: Date)
-  {
+  delete_topic(title: string, date_added: Date) {
     const data = {
-        "title": title,
-        "date_added": date_added
+      title: title,
+      date_added: date_added,
     };
 
     return this.http.post(`${this.uri}/delete-topic`, data);
-
   }
 
   give_appraisal(id: string, username: string, value: number) {
@@ -277,7 +293,7 @@ export class GeneralService {
 
   get_topic(title: string) {
     const data = {
-      title: title
+      title: title,
     };
 
     return this.http.post(`${this.uri}/get-topic`, data);
@@ -398,11 +414,8 @@ export class GeneralService {
     return this.http.post(`${this.uri}/appraisal-change-mind`, data);
   }
 
-
-  add_revenue()
-  {
+  add_revenue() {
     const data = {};
     return this.http.post(`${this.uri}/add-revenue-monthly-subscription`, data);
-
   }
 }

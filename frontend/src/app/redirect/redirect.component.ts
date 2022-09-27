@@ -128,6 +128,9 @@ export class RedirectComponent implements OnInit {
           //   console.log(user['msg']);
 
           //   this.notificationService.error(user['msg']);
+          } else
+          {
+            this.notificationService.error("korisnicko ime vec postoji");
           }
         });
     }
