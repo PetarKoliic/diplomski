@@ -71,7 +71,6 @@ export class StatisticsAppraiserRatingComponent implements OnInit {
           type: 'line'
         },
         xAxis: {
-          name: ''
           // categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         },
         title: {
@@ -83,9 +82,17 @@ export class StatisticsAppraiserRatingComponent implements OnInit {
             fillOpacity: 1
           }
         },
+        yAxis: {
+          title: {
+            text: 'Rejteng',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+        },
 
         series: [{
-          "data": y_axis_1 
+          "data": y_axis_1
         }]
       };
 
@@ -97,7 +104,7 @@ export class StatisticsAppraiserRatingComponent implements OnInit {
 
       this.options_2 = JSON.parse(JSON.stringify(this.options_1));
 
-      
+
       let y_axis_2 = [];
       // let x_axis_1 = [];
 
@@ -109,8 +116,8 @@ export class StatisticsAppraiserRatingComponent implements OnInit {
       }
 
 
-    
-      
+
+
       for (let i = 1; i < cnt_values; i++) {
 
         total_value += y_axis_1[i];
@@ -120,10 +127,10 @@ export class StatisticsAppraiserRatingComponent implements OnInit {
       console.log(y_axis_2);
       this.options_2["series"][0]["data"] = y_axis_2;
       this.options_2["title"]["text"] = "ukupan rejting posle svakog pogadjanja";
-      
+
 
       Highcharts.chart('container_2', this.options_2);
-      
+
 
     });
   }

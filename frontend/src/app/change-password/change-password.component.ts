@@ -69,6 +69,12 @@ export class ChangePasswordComponent implements OnInit {
 
 
             }
+            else {
+              // this.message = "Uspesno promenjena lozinka";
+              this.notificationService.success("Uspesno promenjena lozinka");
+
+
+            }
 
           }
           )

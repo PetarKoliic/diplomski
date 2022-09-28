@@ -141,21 +141,26 @@ async function register(user: any, username: string, email: string) {
 async function check_old_password(username: string, password: string) {
   let res: any;
 
-  await User.findOne(
+  let promise = new Promise(async (resolve, reject) => {
+  User.findOne(
     { username: username, password: password },
     (err, user) => {
-      console.log("user");
-      console.log(user);
+      // console.log("user");
+      // console.log(user);
       if (err) console.log("error delegate");
       else {
         // let retObj = { 'user': user };
 
         if (user != null) res = { msg: "ok" };
         else res = { msg: "no" };
+
+        resolve("success");
       }
     }
   );
+});
 
+  await promise;
   console.log(res);
 
   return res;
@@ -163,17 +168,35 @@ async function check_old_password(username: string, password: string) {
 
 async function change_password(username: string, new_password: string) {
   let res: any;
-  await User.updateOne(
-    { username: username },
-    { $set: { password: new_password } }
+  
+  console.log(1);
+
+  let promise = new Promise(async (resolve, reject) => {
+    User.updateOne(
+    { "username": username },
+    { $set: { "password": new_password } }
   )
     .then((user: any) => {
       res = { msg: "ok" };
+      console.log(2);
+      resolve("success");
     })
     .catch((err: any) => {
       if (err) console.log(err);
       res = { msg: "no" };
+      console.log(2);
+      reject("failure");
     });
+  });
+
+  console.log(3);
+  
+
+  await promise;
+
+  console.log(4);
+
+
 
   return res;
 }
@@ -791,7 +814,7 @@ async function get_subscription_valid_until(username: string) {
   await User.findOne({ username: username }, (err, user) => {
     if (!err && user != null) {
       console.log(user);
-      // res = { valid_until: user.get("valid_until") };
+      res = { valid_until: user.get("valid_until") };
     } else {
       console.log(err);
       res = { msg: "no" };

@@ -122,7 +122,7 @@ router.route("/change-password").post((req, res) => __awaiter(this, void 0, void
     let username = req.body.username;
     let new_password = req.body.new_password;
     console.log(username + " " + new_password);
-    let msg = yield services.check_old_password(username, new_password);
+    let msg = yield services.change_password(username, new_password);
     res.json(msg);
 }));
 ///////////////////////////////////////////////////

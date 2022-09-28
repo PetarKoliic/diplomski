@@ -123,19 +123,23 @@ function register(user, username, email) {
 function check_old_password(username, password) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield user_1.default.findOne({ username: username, password: password }, (err, user) => {
-            console.log("user");
-            console.log(user);
-            if (err)
-                console.log("error delegate");
-            else {
-                // let retObj = { 'user': user };
-                if (user != null)
-                    res = { msg: "ok" };
-                else
-                    res = { msg: "no" };
-            }
-        });
+        let promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            user_1.default.findOne({ username: username, password: password }, (err, user) => {
+                // console.log("user");
+                // console.log(user);
+                if (err)
+                    console.log("error delegate");
+                else {
+                    // let retObj = { 'user': user };
+                    if (user != null)
+                        res = { msg: "ok" };
+                    else
+                        res = { msg: "no" };
+                    resolve("success");
+                }
+            });
+        }));
+        yield promise;
         console.log(res);
         return res;
     });
@@ -143,15 +147,25 @@ function check_old_password(username, password) {
 function change_password(username, new_password) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
-        yield user_1.default.updateOne({ username: username }, { $set: { password: new_password } })
-            .then((user) => {
-            res = { msg: "ok" };
-        })
-            .catch((err) => {
-            if (err)
-                console.log(err);
-            res = { msg: "no" };
-        });
+        console.log(1);
+        let promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            user_1.default.updateOne({ "username": username }, { $set: { "password": new_password } })
+                .then((user) => {
+                res = { msg: "ok" };
+                console.log(2);
+                resolve("success");
+            })
+                .catch((err) => {
+                if (err)
+                    console.log(err);
+                res = { msg: "no" };
+                console.log(2);
+                reject("failure");
+            });
+        }));
+        console.log(3);
+        yield promise;
+        console.log(4);
         return res;
     });
 }
@@ -655,7 +669,7 @@ function get_subscription_valid_until(username) {
         yield user_1.default.findOne({ username: username }, (err, user) => {
             if (!err && user != null) {
                 console.log(user);
-                // res = { valid_until: user.get("valid_until") };
+                res = { valid_until: user.get("valid_until") };
             }
             else {
                 console.log(err);

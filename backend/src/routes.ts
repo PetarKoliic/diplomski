@@ -158,7 +158,7 @@ router.route("/change-password").post(async (req: any, res: any) => {
   let new_password = req.body.new_password;
   console.log(username + " " + new_password);
 
-  let msg = await services.check_old_password(username, new_password);
+  let msg = await services.change_password(username, new_password);
 
   res.json(msg);
 });
