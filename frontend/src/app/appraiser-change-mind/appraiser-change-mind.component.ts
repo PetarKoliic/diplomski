@@ -137,7 +137,13 @@ export class AppraiserChangeMindComponent implements OnInit {
 
     this.estimated_value = this.estimated_values.get(appraisal._id);
 
-    if (this.estimated_value > 0) {
+
+    if(!this.global_functions.check_positive_number(this.estimated_value))
+     {
+       this.notificationService.error("Greska morate uneti pozitivan broj");
+     }
+    else
+    {
       this.service.appraisal_change_mind(appraisal._id, this.username, this.estimated_value).subscribe(
         (res: Object) => {
 
@@ -152,22 +158,22 @@ export class AppraiserChangeMindComponent implements OnInit {
 
             this.service.get_current_appraisals_appraiser_history(this.username).subscribe(
               (appraisals: Array<Appraisal>) => {
-        
-        
+
+
                 this.appraisals = appraisals;
-        
+
                 console.log(this.appraisals);
-        
+
                 for (let i in appraisals) {
                   this.img_map.set(appraisals[i]._id, 0);
                   this.img_pagination.set(appraisals[i]._id, { "start_index": 0, "end_index": 1 });
-        
+
                   // this.estimated_values.set(appraisals[i]._id, 0)
                 }
-        
+
                 console.log(this.appraisals);
                 console.log(this.img_map);
-        
+
               });
 
 
@@ -176,17 +182,17 @@ export class AppraiserChangeMindComponent implements OnInit {
           }
           else
             this.notificationService.error("Neuspesno promenjena procena");
-        
+
 
           console.log("response : " + res["msg"]);
 
     });
 
-
+    }
 
   }
 
 
 }
 
-}
+

@@ -15,7 +15,7 @@ import { FunctionService } from '../services/function.service';
 })
 export class AppraisalsHandlingComponent implements OnInit {
 
-  constructor(private router: Router, private service: GeneralService, public functions: FunctionService, private notificationService: NotificationService) { }
+  constructor(private router: Router, private service: GeneralService, public global_functions: FunctionService, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
 
@@ -105,6 +105,9 @@ export class AppraisalsHandlingComponent implements OnInit {
 
     let final_value = this.estimated_values.get(appraisal._id);
 
+    if (!this.global_functions.check_positive_number(final_value)) {
+      this.notificationService.error('Greska morate uneti pozitivan broj');
+    } else {
     this.service.finish_appraisal(appraisal._id, final_value).subscribe(
       (res: Object) => {
 
@@ -127,10 +130,11 @@ export class AppraisalsHandlingComponent implements OnInit {
         console.log("response : " + res["msg"]);
 
       });
+    }
   }
 
   delete_appraisal(appraisal: Appraisal) {
-  
+
     this.service.delete_appraisal(appraisal._id).subscribe(
       (res: Object) => {
 

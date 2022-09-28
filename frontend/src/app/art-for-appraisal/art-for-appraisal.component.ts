@@ -121,27 +121,25 @@ export class ArtForAppraisalComponent implements OnInit {
 
     this.estimated_value = this.estimated_values.get(appraisal._id);
 
-    if (this.estimated_value)
-      console.log(this.estimated_value);
-    else {
-      if (this.estimated_value > 0) {
-        this.service
-          .give_appraisal(appraisal._id, this.username, this.estimated_value)
-          .subscribe((res: Object) => {
-            if (res['msg'] == 'ok') {
-              for (let i in this.appraisals) {
-                if (this.appraisals[i]._id === appraisal._id) {
-                  this.appraisals.splice(Number(i), 1);
-                }
+    if (!this.global_functions.check_positive_number(this.estimated_value)) {
+      this.notificationService.error('Greska morate uneti pozitivan broj');
+    } else {
+      this.service
+        .give_appraisal(appraisal._id, this.username, this.estimated_value)
+        .subscribe((res: Object) => {
+          if (res['msg'] == 'ok') {
+            for (let i in this.appraisals) {
+              if (this.appraisals[i]._id === appraisal._id) {
+                this.appraisals.splice(Number(i), 1);
               }
+            }
 
-              this.notificationService.success('uspesno procenjena umetnina');
-            } else
-              this.notificationService.error('neuspesno procenjena umetnina');
+            this.notificationService.success('uspesno procenjena umetnina');
+          } else
+            this.notificationService.error('neuspesno procenjena umetnina');
 
-            console.log('response : ' + res['msg']);
-          });
-      }
+          console.log('response : ' + res['msg']);
+        });
     }
   }
 }

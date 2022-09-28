@@ -26,6 +26,21 @@ export class FunctionService {
     return date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ".";
   }
 
+  check_positive_number(str: any) : boolean
+  {
+    if (typeof str !== 'string') {
+      return false;
+    }
+
+    const num = Number(str);
+
+    if (Number.isInteger(num) && num > 0) {
+      return true;
+    }
+
+    return false;
+  }
+
   current_evaluation(appraisal: Appraisal): String {
 
 
@@ -76,13 +91,13 @@ export class FunctionService {
       else
         return (value_high_priority * 0.95 + value_low_priority * 0.05).toString();
     }
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
   }
 
 

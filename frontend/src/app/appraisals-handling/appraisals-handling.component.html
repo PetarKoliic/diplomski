@@ -44,11 +44,11 @@
         </p>
         <p>
         Datum pravljenja dela:
-        <span *ngIf="appraisal.date_created != null"> {{functions.format_date_only(appraisal.date_created)}} </span>
+        <span *ngIf="appraisal.date_created != null"> {{global_functions.format_date_only(appraisal.date_created)}} </span>
       </p>
       <p>
         Datum stavljanja na procenu:
-        <span *ngIf="appraisal.date_created != null">{{functions.format_date(appraisal.date_added)}} </span>
+        <span *ngIf="appraisal.date_created != null">{{global_functions.format_date(appraisal.date_added)}} </span>
       </p>
 
 
